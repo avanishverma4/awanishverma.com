@@ -7,6 +7,74 @@ import { MOTION_OK, dialogIn, gsap, reducedMotion, useGSAP } from "./motion";
 import { badge, button, card, iconButton, interactiveCard } from "./ui";
 
 const categories = [...new Set(projects.map((p) => p.category))];
+
+type Variant = "feature" | "standard" | "wide" | "compact";
+
+// Bento tiles for "All work" (lg: 6 columns). DOCTO leads as a 4×2 feature; XpertOnline and Water
+// stack beside it; Plant and Dental form a wide row; the two small prototypes are compact tiles.
+// At sm (2 columns) the feature spans both columns and the rest pair up.
+const bentoLayout: Record<string, { tile: string; variant: Variant }> = {
+  "project-4": { tile: "sm:col-span-2 lg:col-span-4 lg:row-span-2", variant: "feature" },
+  "project-1": { tile: "lg:col-span-2", variant: "standard" },
+  "project-2": { tile: "lg:col-span-2", variant: "standard" },
+  "project-3": { tile: "lg:col-span-3", variant: "wide" },
+  "project-5": { tile: "lg:col-span-3", variant: "wide" },
+  "project-6": { tile: "lg:col-span-3", variant: "compact" },
+  "project-7": { tile: "lg:col-span-3", variant: "compact" },
+};
+
+const imageFrame: Record<Variant, string> = {
+  feature: "aspect-[16/10] lg:aspect-auto lg:min-h-80 lg:flex-1",
+  standard: "aspect-[16/10]",
+  wide: "aspect-[16/10] lg:aspect-[2/1]",
+  compact: "aspect-[16/10] lg:aspect-auto lg:w-2/5 lg:shrink-0 lg:border-b-0 lg:border-r",
+};
+
+const imageSizes: Record<Variant, string> = {
+  feature: "(min-width: 1024px) 760px, (min-width: 640px) 100vw, 100vw",
+  standard: "(min-width: 1024px) 380px, (min-width: 640px) 50vw, 100vw",
+  wide: "(min-width: 1024px) 570px, (min-width: 640px) 50vw, 100vw",
+  compact: "(min-width: 1024px) 230px, (min-width: 640px) 50vw, 100vw",
+};
+
+function ProjectCard({ project, variant, onOpen }: { project: Project; variant: Variant; onOpen: () => void }) {
+  const t = ui.projects;
+  return (
+    <button
+      type="button"
+      aria-label={`${t.openCaseStudy}${project.title}`}
+      aria-haspopup="dialog"
+      onClick={onOpen}
+      className={`${interactiveCard} group flex h-full w-full flex-col overflow-hidden text-left ${variant === "compact" ? "lg:flex-row" : ""}`}
+    >
+      <span className={`relative block w-full overflow-hidden border-b border-line bg-media ${imageFrame[variant]}`}>
+        <Image
+          src={project.cover.src}
+          alt=""
+          fill
+          sizes={imageSizes[variant]}
+          className="object-cover object-top transition-transform duration-500 ease-out motion-safe:group-hover:scale-105"
+        />
+      </span>
+      {/* In the feature tile only the image grows to fill the two rows; elsewhere the text block does. */}
+      <span className={`flex flex-col gap-2 ${variant === "feature" ? "p-6" : "flex-1 p-5"}`}>
+        <span className="font-mono text-label-12 text-fg-secondary">{String(projects.indexOf(project) + 1).padStart(2, "0")}</span>
+        <span className={variant === "feature" ? "text-heading-24" : "text-heading-20"}>{project.title}</span>
+        <span className="text-copy-14 text-fg-secondary">{project.tagline}</span>
+        {variant === "feature" && (
+          <span className="flex flex-wrap gap-2 pt-1">
+            {project.techStack.map((tech) => (
+              <span key={tech} className={badge}>
+                {tech}
+              </span>
+            ))}
+          </span>
+        )}
+        <span className="mt-auto pt-2 font-mono text-label-12 text-fg-secondary">{project.category}</span>
+      </span>
+    </button>
+  );
+}
 const tabKeys = ["overview", "architecture", "features", "gallery"] as const;
 type TabKey = (typeof tabKeys)[number];
 
@@ -18,6 +86,8 @@ export function ProjectGrid() {
   const grid = useRef<HTMLUListElement>(null);
   const filtered = useRef(false);
   const shown = filter ? projects.filter((p) => p.category === filter) : projects;
+  // Bento layout only for "All work"; a filtered subset uses the uniform grid so no gaps appear.
+  const bento = filter === null;
 
   // After a filter change, stagger the visible cards in. Skipped on first render (ScrollReveal handles that).
   useGSAP(
@@ -70,38 +140,23 @@ export function ProjectGrid() {
           </button>
         </div>
       ) : (
-        <ul ref={grid} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {shown.map((project) => (
-            <li key={project.id} data-reveal>
-              <button
-                type="button"
-                aria-label={`${t.openCaseStudy}${project.title}`}
-                aria-haspopup="dialog"
-                onClick={() => {
-                  setOpen(project);
-                  dialogRef.current?.showModal();
-                  dialogIn(dialogRef.current);
-                }}
-                className={`${interactiveCard} group flex h-full w-full flex-col overflow-hidden text-left`}
-              >
-                <span className="relative block aspect-[16/10] w-full overflow-hidden border-b border-line bg-media">
-                  <Image
-                    src={project.cover.src}
-                    alt=""
-                    fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    className="object-cover object-top transition-transform duration-500 ease-out motion-safe:group-hover:scale-105"
-                  />
-                </span>
-                <span className="flex flex-1 flex-col gap-2 p-5">
-                  <span className="font-mono text-label-12 text-fg-secondary">{String(projects.indexOf(project) + 1).padStart(2, "0")}</span>
-                  <span className="text-heading-20">{project.title}</span>
-                  <span className="text-copy-14 text-fg-secondary">{project.tagline}</span>
-                  <span className="mt-auto pt-2 font-mono text-label-12 text-fg-secondary">{project.category}</span>
-                </span>
-              </button>
-            </li>
-          ))}
+        <ul ref={grid} className={`grid gap-4 sm:grid-cols-2 ${bento ? "lg:grid-cols-6" : "lg:grid-cols-3"}`}>
+          {shown.map((project) => {
+            const variant = bento ? (bentoLayout[project.id]?.variant ?? "standard") : "standard";
+            return (
+              <li key={project.id} data-reveal className={bento ? bentoLayout[project.id]?.tile : ""}>
+                <ProjectCard
+                  project={project}
+                  variant={variant}
+                  onOpen={() => {
+                    setOpen(project);
+                    dialogRef.current?.showModal();
+                    dialogIn(dialogRef.current);
+                  }}
+                />
+              </li>
+            );
+          })}
         </ul>
       )}
 

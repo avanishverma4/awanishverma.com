@@ -61,7 +61,33 @@ export const profile = {
   "instagram": "https://www.instagram.com/avanishverma4"
 };
 
+// Order is the Work section order: DOCTO first as the featured bento tile.
 export const projects: Project[] = [
+  {
+    "id": "project-4",
+    "title": "Doctor-Patient Management App",
+    "tagline": "Healthcare platform UI/UX connecting doctors and patients with streamlined appointment booking & EHR.",
+    "category": "UI/UX & Product Design",
+    "cover": {"src": "/images/projects/docto-cover.jpg", "width": 1260, "height": 750, "alt": "DOCTO cover: angled phone screens including the doctor home, login, patient information, and splash screens."},
+    "gallery": [{"src": "/images/projects/docto-cover.jpg", "width": 1260, "height": 750, "alt": "DOCTO cover: angled phone screens including the doctor home, login, patient information, and splash screens."}, {"src": "/images/projects/docto-screens.jpg", "width": 1600, "height": 877, "alt": "Four DOCTO screens: Today's appointment, Patient information with appointments and prescriptions, Missed appointment, and search results."}, {"src": "/images/projects/docto-colors.jpg", "width": 1440, "height": 1509, "alt": "DOCTO design system colour page: primary blue, secondary red, grey, and alert colour scales with hex values."}],
+    "description": "A comprehensive healthcare UI/UX case study featuring dual-role interfaces for medical professionals and patients, electronic health record (EHR) management, and telehealth consultations.",
+    "overview": "Designed to bridge communication between healthcare providers and patients. Focused on high legibility, HIPAA-compliant design patterns, empathetic color palettes, and clear appointment scheduling workflows.",
+    "architecture": "Healthcare UX Patterns, Figma Wireframing, Dual Persona Architecture, Accessible Medical Dashboards.",
+    "keyFeatures": [
+      "Patient portal for friction-free specialist search and instant slot booking",
+      "Doctor clinical dashboard with patient vitals, medical history & prescription generator",
+      "Secure video consultation call interface with real-time note-taking",
+      "Lab report viewer with intuitive chart visualizations of health parameters"
+    ],
+    "techStack": [
+      "Healthcare UI/UX",
+      "Figma",
+      "Product Design",
+      "Design Systems",
+      "User Research"
+    ],
+    "liveUrl": "https://www.behance.net/gallery/221640093/Doctor-Patient-Management-App"
+  },
   {
     "id": "project-1",
     "title": "XpertOnline Chatbot",
@@ -139,31 +165,6 @@ export const projects: Project[] = [
     "liveUrl": "https://www.behance.net/gallery/178415273/Plant-App-UX-Design-Process"
   },
   {
-    "id": "project-4",
-    "title": "Doctor-Patient Management App",
-    "tagline": "Healthcare platform UI/UX connecting doctors and patients with streamlined appointment booking & EHR.",
-    "category": "UI/UX & Product Design",
-    "cover": {"src": "/images/projects/docto-cover.jpg", "width": 1260, "height": 750, "alt": "DOCTO cover: angled phone screens including the doctor home, login, patient information, and splash screens."},
-    "gallery": [{"src": "/images/projects/docto-cover.jpg", "width": 1260, "height": 750, "alt": "DOCTO cover: angled phone screens including the doctor home, login, patient information, and splash screens."}, {"src": "/images/projects/docto-screens.jpg", "width": 1600, "height": 877, "alt": "Four DOCTO screens: Today's appointment, Patient information with appointments and prescriptions, Missed appointment, and search results."}, {"src": "/images/projects/docto-colors.jpg", "width": 1440, "height": 1509, "alt": "DOCTO design system colour page: primary blue, secondary red, grey, and alert colour scales with hex values."}],
-    "description": "A comprehensive healthcare UI/UX case study featuring dual-role interfaces for medical professionals and patients, electronic health record (EHR) management, and telehealth consultations.",
-    "overview": "Designed to bridge communication between healthcare providers and patients. Focused on high legibility, HIPAA-compliant design patterns, empathetic color palettes, and clear appointment scheduling workflows.",
-    "architecture": "Healthcare UX Patterns, Figma Wireframing, Dual Persona Architecture, Accessible Medical Dashboards.",
-    "keyFeatures": [
-      "Patient portal for friction-free specialist search and instant slot booking",
-      "Doctor clinical dashboard with patient vitals, medical history & prescription generator",
-      "Secure video consultation call interface with real-time note-taking",
-      "Lab report viewer with intuitive chart visualizations of health parameters"
-    ],
-    "techStack": [
-      "Healthcare UI/UX",
-      "Figma",
-      "Product Design",
-      "Design Systems",
-      "User Research"
-    ],
-    "liveUrl": "https://www.behance.net/gallery/221640093/Doctor-Patient-Management-App"
-  },
-  {
     "id": "project-5",
     "title": "Academy of Dental Excellence",
     "tagline": "Dental education web platform with course enrollment, clinical masterclasses, and a student portal.",
@@ -239,6 +240,7 @@ export const projects: Project[] = [
     ],
     "liveUrl": "https://jumblefix.vercel.app/"
   }
+
 ];
 
 export const experiences: Experience[] = [

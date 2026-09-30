@@ -622,3 +622,31 @@ Awanish asked for animation in the Experience section. The role list moved from 
   - Keyboard Enter opens and closes. Under reduced motion, open and close are instant and there is no rail scrub transform.
 - Rail widened from 1px to 2px after a screenshot showed the 1px fill barely visible.
 - Test note: some earlier "stuck" results were the automated tab rendering 0 frames per second (GSAP's ticker needs frames); re-tested with a frame-rate probe.
+
+### Work section as a bento grid (2026-09-30)
+
+Awanish asked for the Work section as a bento grid.
+
+- **Order:** `projects` reordered so DOCTO comes first (it has the richest material: Figma cover, screens, and design system). The DOM order matches the visual order. The CV "Projects" block (first 4) is now DOCTO, XpertOnline, Water, Plant: the same four projects, new order.
+- **Layout** (`Projects.tsx`, `bentoLayout` map, lg is 6 columns):
+
+| Tile | lg span | Variant |
+|---|---|---|
+| DOCTO | 4 columns × 2 rows | feature: image grows to fill, larger title, tool tags |
+| XpertOnline, Water | 2 each, stacked beside DOCTO | standard |
+| Plant, Dental | 3 each | wide (2:1 image at lg) |
+| Password Generator, Jumblefix | 3 each | compact (horizontal: image 2/5, text 3/5 at lg) |
+
+- At sm (2 columns), DOCTO spans both columns and the rest pair up. On mobile everything is one column.
+- The bento layout applies to "All work" only. A filtered subset uses the uniform 3-column grid, so no gaps appear.
+- Cards are one shared `ProjectCard` component with a `variant` prop (7 uses). Image `sizes` are set per variant.
+- Fixed during the visual check: the feature tile first showed an empty band under its text, because both the image and the text block had `flex-1`. Now only the image grows in the feature variant.
+
+**Check results** (real output)
+- `npm run build`: exit 0. `npm run typecheck`: exit 0. `npx eslint .`: exit 0.
+- Browser:
+  - At 1440, tile sizes are DOCTO 763×844, XpertOnline and Water 373 wide (stacked), Plant and Dental 568×455, compact tiles 568×192. At 768 DOCTO is 705 wide and the others 345. At 375 all tiles are 343 wide.
+  - All 7 images load at each width, with no horizontal scroll.
+  - Filtered to "UI/UX & Product Design": 3 uniform tiles at opacity 1.
+  - Keyboard: the first card (DOCTO) takes focus with a visible outline, and Enter opens its case study.
+  - axe: 0 violations in dark and light.
