@@ -404,3 +404,46 @@ No gaps found that needed a code change in this chunk. Chunk 9 covers the keyboa
 - **Test-environment artifact (not a site defect):** the first light-mode axe run reported 40 contrast failures. The automated tab produced 0 animation frames, so colour transitions never finished. After `Page.bringToFront`, rAF ran at about 101 frames per second, the link colour settled on `#4d4d4d`, and axe reported 0 violations.
 - **Fix:** the mobile menu stayed open after choosing a link. Added `src/components/MobileMenu.tsx` (client) wrapping the native `<details>`: it closes when a link or button in the panel is chosen, and on Escape (focus returns to the summary). Re-tested: closes after a link, on Escape, and when the CV opens. No overflow at 375. Build, tsc, and eslint exit 0.
 - **Not run:** screen reader pass, Lighthouse, physical devices (see report §8).
+
+---
+
+### Follow-up after Chunk 9 (2026-09-30)
+
+Awanish's instruction: "Stick to UI/UX Designer, and rest do as you see fit."
+
+**Role**
+- The single role title is `profile.title = "UI/UX Designer"`. It is used by the hero h1, header and footer taglines, CV, meta title, site name, and OG/icon alt.
+- Removed "Senior Lead", "Lead", and "Design Systems Architect" from the profile, long bio, and metadata.
+- Dropped the keywords "design systems architect", "lead product designer", and "senior UX designer".
+- Job titles in the experience history (for example "Senior UI/UX Designer" at Acadlog) are unchanged, because they are employment history, not the site's role title.
+
+**Decisions taken ("as you see fit")**
+- **Project images:** all 14 Unsplash stock URLs were replaced with Awanish's own work, self-hosted in `public/images/projects/`:
+  - Behance crops for XpertOnline, Water, Plant, and DOCTO (sources in HERO_IMAGE.md §2)
+  - desktop screenshots (1440×900, taken 2026-09-30) of the three live sites
+  - each gallery image has descriptive alt text
+  - Unsplash `remotePatterns` removed from `next.config.ts`
+  - Assumption: Awanish may publish his public Behance work, the same basis as the hero.
+- **Unsupported metrics removed:** the project `impactMetric` values (+60%, 4.8★/+40%, 100% positive, 65%, sub-millisecond, sub-10ms) are gone. Academy of Dental Excellence keeps a verifiable outcome, "Live production website." (the site returns 200). The CV "Impact:" lines were removed. Cards now show the project tagline. Experience achievement percentages were kept: they are employment claims from Awanish's own CV and cannot be checked against Behance.
+- **XpertOnline team credit:** the case study shows "Team: Group project with Jyotirmoy Goswami, Sphoorthy Gowda, and Mukesh Gupta." The names are from Behance slide 1.
+- **Boilerplate removed:** the identical "Design foundations" and "Quality bar" boxes that appeared on every case study.
+- **Skills copy:** eyebrow "Craft & capability" → "Skills". Heading "Design systems thinking, end to end." → "Design, frontend, video, and data tools." Intro → "8 years of UI/UX design, from user research to design systems, plus the tools I use for frontend, video, and data work."
+- **Hero on mobile:** art direction with `<picture>` and `getImageProps` (per the docs "Art direction" example). Below 640px it shows the OTP and doctor-home screens (`docto-hi-fi-screens-mobile.jpg`, 858×826). Otherwise it shows all four. The `<source>` has width/height to avoid layout shift. It uses `fetchPriority="high"` instead of `preload`, so both variants aren't preloaded. The alt text now fits both crops.
+- **Favicon:** `icon.png`/`apple-icon.png` replaced with generated `icon.tsx`/`apple-icon.tsx`: white "AV" on `#171717`, matching the header mark and the neutral palette. The manifest points to `/icon` and `/apple-icon`.
+- **Developer fixes:**
+  - `themeStorageKey` constant shared by the layout script, ThemeToggle, and global-error
+  - `npm run typecheck` (`next typegen && tsc --noEmit`) works on a fresh clone
+  - `.gitignore` rewritten without duplicates
+
+**Content gap:** the live Academy of Dental Excellence site's mobile navigation overflows at 390px (seen while taking screenshots). It's a defect on that external site, not this portfolio.
+
+**Check results** (real output)
+- `npm run build`: exit 0 (routes include `/icon` and `/apple-icon`). `npm run typecheck`: exit 0. `npx eslint .`: exit 0.
+- Browser (production):
+  - hero uses the mobile crop at 375 and the desktop crop at 1440; h1 "Awanish Verma / UI/UX Designer"
+  - no horizontal scroll at either width
+  - all 7 cover images load
+  - XpertOnline shows the team credit, and Dental shows its outcome
+  - gallery images load with descriptive alt text
+  - the CV shows no "Impact" lines and the title "UI/UX Designer"
+- axe: 0 violations in dark and light.

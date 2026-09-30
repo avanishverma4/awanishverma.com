@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { profile, siteUrl, ui } from "@/content/site";
+import { profile, siteUrl, themeStorageKey, ui } from "@/content/site";
 import "./globals.css";
 
 const geistSans = Geist({ subsets: ["latin"], variable: "--font-geist-sans" });
@@ -48,7 +48,7 @@ export const viewport: Viewport = {
 };
 
 // Runs before first paint: saved choice wins, otherwise follow the OS setting.
-const themeScript = `(function(){try{var t=localStorage.getItem("av_portfolio_theme");var d=t?t==="dark":matchMedia("(prefers-color-scheme: dark)").matches;document.documentElement.classList.toggle("dark",d)}catch(e){}})()`;
+const themeScript = `(function(){try{var t=localStorage.getItem(${JSON.stringify(themeStorageKey)});var d=t?t==="dark":matchMedia("(prefers-color-scheme: dark)").matches;document.documentElement.classList.toggle("dark",d)}catch(e){}})()`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (

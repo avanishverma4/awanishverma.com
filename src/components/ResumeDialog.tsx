@@ -5,7 +5,6 @@ import { button, iconButton, textLink } from "./ui";
 const heading = "border-b border-line pb-1 font-mono text-label-12 uppercase tracking-widest text-fg-secondary";
 const link = `${textLink} underline`;
 const bare = (url: string) => url.replace(/^https?:\/\//, "").replace(/\/$/, "");
-const noEmoji = (s: string) => s.replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{2190}-\u{21FF}]/gu, "").trim();
 
 // Server-rendered CV. ResumeButton opens it with showModal(); the close button uses the
 // native form method="dialog", so only opening and printing need JavaScript.
@@ -104,9 +103,6 @@ export function ResumeDialog() {
                     )}
                   </p>
                   <p>{p.tagline}</p>
-                  <p>
-                    <strong className="font-medium text-fg">{t.impact}</strong> {noEmoji(p.impactMetric)}
-                  </p>
                   <p>
                     <strong className="font-medium text-fg">{t.tools}</strong> {p.techStack.join(", ")}
                   </p>

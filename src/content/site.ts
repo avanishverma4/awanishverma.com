@@ -12,14 +12,18 @@
 export const totalExperience = "11 years";
 export const uiuxExperience = "8 years";
 
+export type ProjectImage = { src: string; width: number; height: number; alt: string };
+
 export type Project = {
   id: string;
   title: string;
   tagline: string;
   category: string;
-  coverImage: string;
-  galleryImages: string[];
-  impactMetric: string;
+  cover: ProjectImage;
+  gallery: ProjectImage[];
+  // Only verifiable outcomes; unsupported metrics from the original site were removed.
+  outcome?: string;
+  team?: string;
   description: string;
   overview: string;
   architecture: string;
@@ -46,8 +50,8 @@ export type SkillGroup = { name: string; scope: string; skills: Skill[] };
 
 export const profile = {
   "name": "Awanish Verma",
-  "title": "Senior Lead UI/UX Designer & Design Systems Architect",
-  "longBio": `I am a Lead UI/UX Designer and Design Systems Architect. I turn complex problems into clear, human-centered digital products. My ${totalExperience} of professional experience include ${uiuxExperience} in UI/UX design, spanning user research, interaction design, design token architecture, visual design systems, and frontend implementation.`,
+  "title": "UI/UX Designer",
+  "longBio": `I am a UI/UX Designer. I turn complex problems into clear, human-centered digital products. My ${totalExperience} of professional experience include ${uiuxExperience} in UI/UX design, spanning user research, interaction design, design token architecture, visual design systems, and frontend implementation.`,
   "location": "Bengaluru, India / Remote Worldwide",
   "availability": "Available for product design contracts and design system advisory.",
   "email": "avanishverma4@gmail.com",
@@ -63,12 +67,9 @@ export const projects: Project[] = [
     "title": "XpertOnline Chatbot",
     "tagline": "AI-powered conversational assistant UI/UX design with intuitive chat flow and smart intent architecture.",
     "category": "UI/UX & Product Design",
-    "coverImage": "https://images.unsplash.com/photo-1762330465857-07e4c81c0dfa?auto=format&fit=crop&w=1200&q=80",
-    "galleryImages": [
-      "https://images.unsplash.com/photo-1762330465857-07e4c81c0dfa?auto=format&fit=crop&w=1200&q=80",
-      "https://images.unsplash.com/photo-1762328862557-e0a36587cd3c?auto=format&fit=crop&w=1200&q=80"
-    ],
-    "impactMetric": "🤖 +60% increase in user engagement & conversational task completion",
+    "cover": {"src": "/images/projects/xpertonline-qualitative-analysis.jpg", "width": 1400, "height": 788, "alt": "Usability report slide pairing test findings with two dark-mode chatbot screens."},
+    "gallery": [{"src": "/images/projects/xpertonline-qualitative-analysis.jpg", "width": 1400, "height": 788, "alt": "Qualitative analysis slide: conversation steps and findings beside two XpertOnline chatbot screens."}, {"src": "/images/projects/xpertonline-refined-wireframes.jpg", "width": 1400, "height": 788, "alt": "Refined wireframes slide: before and after chatbot screens with the justification for each change."}],
+    "team": "Group project with Jyotirmoy Goswami, Sphoorthy Gowda, and Mukesh Gupta.",
     "description": "End-to-end UI/UX design case study for an intelligent conversational AI chatbot interface, optimizing response legibility, prompt quick-actions, and multi-turn dialogue UX.",
     "overview": "Designed and prototyped XpertOnline Chatbot to streamline automated support and AI assistance. Focused on reducing friction in complex workflows, designing visual state indicators for streaming responses, and creating intuitive follow-up prompts.",
     "architecture": "User Flow Mapping, Figma Interactive Components, Conversation UI Patterns, Design Tokens, Accessibility Contrast Validation.",
@@ -92,12 +93,8 @@ export const projects: Project[] = [
     "title": "Water Drink Reminder App",
     "tagline": "Intuitive hydration tracking mobile UI/UX with habit-forming visual micro-interactions and smart goals.",
     "category": "Mobile & Web Apps",
-    "coverImage": "https://images.unsplash.com/photo-1548780607-46c78f38182d?auto=format&fit=crop&w=1200&q=80",
-    "galleryImages": [
-      "https://images.unsplash.com/photo-1548780607-46c78f38182d?auto=format&fit=crop&w=1200&q=80",
-      "https://images.unsplash.com/photo-1529079337819-f6d0024bd364?auto=format&fit=crop&w=1200&q=80"
-    ],
-    "impactMetric": "💧 4.8★ user satisfaction with +40% daily hydration consistency",
+    "cover": {"src": "/images/projects/water-cover.jpg", "width": 1398, "height": 860, "alt": "Drops Water Tracker cover: home screen with daily water goal and progress gauge, plus analysis and profile screens."},
+    "gallery": [{"src": "/images/projects/water-cover.jpg", "width": 1398, "height": 860, "alt": "Drops Water Tracker cover: home screen with daily water goal and progress gauge, plus analysis and profile screens."}, {"src": "/images/projects/water-screens.jpg", "width": 1398, "height": 640, "alt": "Four app screens: home, daily stats for water, walk, calories, sleep and heart, goal setup, and glass tracker."}],
     "description": "A user-centric mobile app design focused on daily hydration tracking, subtle gamification, liquid progress animations, and timely notification ergonomics.",
     "overview": "Designed to help users keep healthy hydration habits with minimal effort. Features fluid wave animations, daily goals based on personal metrics, and one-tap logging shortcuts.",
     "architecture": "Mobile First UX, Figma Smart Animate, Habit Loop Psychology, Custom Iconography & Liquid Wave UI Animations.",
@@ -121,12 +118,8 @@ export const projects: Project[] = [
     "title": "Plant App UX Design Process",
     "tagline": "Comprehensive end-to-end UX research, wireframing, and UI design process for plant care & identification.",
     "category": "UI/UX & Product Design",
-    "coverImage": "https://images.unsplash.com/photo-1637311252429-634d760e08b2?auto=format&fit=crop&w=1200&q=80",
-    "galleryImages": [
-      "https://images.unsplash.com/photo-1637311252429-634d760e08b2?auto=format&fit=crop&w=1200&q=80",
-      "https://images.unsplash.com/photo-1592150621744-aca64f48394a?auto=format&fit=crop&w=1200&q=80"
-    ],
-    "impactMetric": "🌱 Complete UX case study with 100% positive user usability feedback",
+    "cover": {"src": "/images/projects/plant-cover.jpg", "width": 1398, "height": 740, "alt": "Gecare plant shop app cover: plant list and plant detail screens."},
+    "gallery": [{"src": "/images/projects/plant-cover.jpg", "width": 1398, "height": 740, "alt": "Gecare plant shop app cover: plant list and plant detail screens."}, {"src": "/images/projects/plant-checkout.jpg", "width": 760, "height": 660, "alt": "Order details screen with cart, delivery, payment and totals, and an order accepted confirmation."}],
     "description": "A deep-dive product design case study detailing user interviews, competitive analysis, persona creation, wireframing, and visual UI design for plant enthusiasts.",
     "overview": "Documented the complete UX design lifecycle for a plant care assistant app. From discovering user pain points around over-watering to building plant diagnosis visual flows and tailored sunlight schedules.",
     "architecture": "User Research, Empathy Maps, Persona Mapping, Low-Fi & High-Fi Wireframes, Figma Interactive Prototypes, Design System.",
@@ -150,12 +143,8 @@ export const projects: Project[] = [
     "title": "Doctor-Patient Management App",
     "tagline": "Healthcare platform UI/UX connecting doctors and patients with streamlined appointment booking & EHR.",
     "category": "UI/UX & Product Design",
-    "coverImage": "https://images.unsplash.com/photo-1758691463620-188ca7c1a04f?auto=format&fit=crop&w=1200&q=80",
-    "galleryImages": [
-      "https://images.unsplash.com/photo-1758691463620-188ca7c1a04f?auto=format&fit=crop&w=1200&q=80",
-      "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&q=80"
-    ],
-    "impactMetric": "🩺 Reduced appointment booking time by 65% across clinical tests",
+    "cover": {"src": "/images/projects/docto-screens.jpg", "width": 1398, "height": 620, "alt": "DOCTO doctor screens: missed and today's appointments, edit patient form, and a cancel appointment dialog."},
+    "gallery": [{"src": "/images/projects/docto-screens.jpg", "width": 1398, "height": 620, "alt": "DOCTO doctor screens: missed and today's appointments, edit patient form, and a cancel appointment dialog."}, {"src": "/images/projects/docto-design-system.jpg", "width": 1398, "height": 820, "alt": "DOCTO design system page: primary blue, secondary red, grey, and alert colour scales with hex values."}],
     "description": "A comprehensive healthcare UI/UX case study featuring dual-role interfaces for medical professionals and patients, electronic health record (EHR) management, and telehealth consultations.",
     "overview": "Designed to bridge communication between healthcare providers and patients. Focused on high legibility, HIPAA-compliant design patterns, empathetic color palettes, and clear appointment scheduling workflows.",
     "architecture": "Healthcare UX Patterns, Figma Wireframing, Dual Persona Architecture, Accessible Medical Dashboards.",
@@ -179,12 +168,9 @@ export const projects: Project[] = [
     "title": "Academy of Dental Excellence",
     "tagline": "Dental education web platform with course enrollment, clinical masterclasses, and a student portal.",
     "category": "Mobile & Web Apps",
-    "coverImage": "https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=1200&q=80",
-    "galleryImages": [
-      "https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=1200&q=80",
-      "https://images.unsplash.com/photo-1606811971618-4486d14f3f99?auto=format&fit=crop&w=1200&q=80"
-    ],
-    "impactMetric": "🎓 Live production platform powering advanced dental masterclasses worldwide",
+    "cover": {"src": "/images/projects/dental-home.jpg", "width": 1440, "height": 900, "alt": "Academy of Dental Excellence home page: navigation and a Diploma and Master's programme hero."},
+    "gallery": [{"src": "/images/projects/dental-home.jpg", "width": 1440, "height": 900, "alt": "Academy of Dental Excellence home page: navigation and a Diploma and Master's programme hero."}],
+    "outcome": "Live production website.",
     "description": "A production web platform designed for dental practitioners offering advanced hands-on workshops, online certification courses, and clinical resource downloads.",
     "overview": "Designed and developed the digital presence for Academy of Dental Excellence. Created a high-trust visual style, responsive course catalogs, and a simple event registration flow.",
     "architecture": "Web Architecture, UI/UX Design, Responsive Layouts, SEO Optimization, Conversion Design.",
@@ -208,12 +194,8 @@ export const projects: Project[] = [
     "title": "Password Generator",
     "tagline": "Sleek, customizable strong password generator tool with real-time entropy calculation and instant copy.",
     "category": "Interactive Prototypes",
-    "coverImage": "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?auto=format&fit=crop&w=1200&q=80",
-    "galleryImages": [
-      "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?auto=format&fit=crop&w=1200&q=80",
-      "https://images.unsplash.com/photo-1614064548237-096f735f344f?auto=format&fit=crop&w=1200&q=80"
-    ],
-    "impactMetric": "🔐 Instant sub-millisecond cryptographic password generation",
+    "cover": {"src": "/images/projects/password-generator.jpg", "width": 1440, "height": 900, "alt": "Password generator in dark mode: length slider, character options, strength meter, and Generate button."},
+    "gallery": [{"src": "/images/projects/password-generator.jpg", "width": 1440, "height": 900, "alt": "Password generator in dark mode: length slider, character options, strength meter, and Generate button."}],
     "description": "A modern web application utility designed for maximum privacy, live password strength analytics, custom character parameters, and copy-to-clipboard interactions.",
     "overview": "Built to demonstrate micro-interaction polish, accessible control elements, dark mode visual aesthetic, and client-side cryptographic security.",
     "architecture": "React, TypeScript, Web Crypto API, Tailwind CSS, Motion animations.",
@@ -237,12 +219,8 @@ export const projects: Project[] = [
     "title": "Jumblefix",
     "tagline": "Fast, interactive web tool for solving and unjumbling word puzzles with clean, responsive UI.",
     "category": "Interactive Prototypes",
-    "coverImage": "https://images.unsplash.com/photo-1642406415849-a410b5d01a94?auto=format&fit=crop&w=1200&q=80",
-    "galleryImages": [
-      "https://images.unsplash.com/photo-1642406415849-a410b5d01a94?auto=format&fit=crop&w=1200&q=80",
-      "https://images.unsplash.com/photo-1583334648584-6c2ba1fb41cd?auto=format&fit=crop&w=1200&q=80"
-    ],
-    "impactMetric": "⚡ Sub-10ms instant anagram solving algorithm",
+    "cover": {"src": "/images/projects/jumblefix-home.jpg", "width": 1425, "height": 900, "alt": "Jumblefix home page: letter tiles for TRAINED, an Unscramble button, and results grouped by word length."},
+    "gallery": [{"src": "/images/projects/jumblefix-home.jpg", "width": 1425, "height": 900, "alt": "Jumblefix home page: letter tiles for TRAINED, an Unscramble button, and results grouped by word length."}],
     "description": "A lightweight, highly performant web application for solving anagrams, jumbled words, and word puzzles with a clean, minimal interface.",
     "overview": "Designed and built Jumblefix as a minimal, fast utility app. Features immediate keyboard focus, real-time query filtering, and smooth UI layout transitions.",
     "architecture": "Next.js, TypeScript, Trie / Anagram Algorithm, Tailwind CSS, Vercel.",
@@ -444,6 +422,9 @@ export const testimonials = [
 
 export const siteUrl = "https://awanishverma.com";
 
+// localStorage key for the saved theme (read by the pre-paint script, ThemeToggle, and global-error).
+export const themeStorageKey = "av_portfolio_theme";
+
 export const nav = [
   { href: "#projects", label: "Work" },
   { href: "#experience", label: "Experience" },
@@ -464,7 +445,7 @@ export const ui = {
   header: {
     monogram: "AV",
     status: "Available for contract and senior roles",
-    tagline: "Design Systems",
+    tagline: profile.title,
     brandLabel: "Awanish Verma — back to top",
     navLabel: "Section navigation",
     mobileNavLabel: "Mobile section navigation",
@@ -477,7 +458,7 @@ export const ui = {
   },
   hero: {
     status: "Open to work",
-    role: "UI/UX Designer & Design Systems Architect",
+    role: profile.title,
     // Existing site headline, used as the one line on what he designs.
     summary: "Complex problems, shaped into clear, human-centered products.",
     facts: [
@@ -489,11 +470,11 @@ export const ui = {
     primaryCta: "View selected work",
     secondaryCta: "Open Behance profile",
     connect: "Connect",
+    // Art direction: four screens from 640px up, two larger screens below it.
     image: {
-      src: "/images/docto-hi-fi-screens.jpg",
-      width: 1716,
-      height: 840,
-      alt: "Four mobile screens from the DOCTO doctor appointment app: a blue splash screen with the DOCTO wordmark, a phone-number login screen, an OTP validation screen, and a doctor home screen listing today's and missed appointments.",
+      desktop: { src: "/images/docto-hi-fi-screens.jpg", width: 1716, height: 840 },
+      mobile: { src: "/images/docto-hi-fi-screens-mobile.jpg", width: 858, height: 826 },
+      alt: "Screens from the DOCTO doctor appointment app, including OTP validation and a doctor home screen listing today's and missed appointments.",
       caption: "DOCTO, Doctor-Patient Management App: high-fidelity screens.",
     },
   },
@@ -522,10 +503,7 @@ export const ui = {
     },
     technologies: "Tools and methods",
     process: "Process",
-    foundationsTitle: "Design foundations",
-    foundations: "Token-driven theming, reusable component states, documented handoff specs.",
-    qualityTitle: "Quality bar",
-    quality: "WCAG AA contrast, keyboard-complete flows, responsive from 320px up.",
+    team: "Team",
     capabilities: "Key features",
     sourceCode: "View source code",
     viewBehance: "Open case study on Behance",
@@ -541,10 +519,10 @@ export const ui = {
   },
   skills: {
     index: "03",
-    eyebrow: "Craft & capability",
-    heading: "Design systems thinking, ",
-    headingEmphasis: "end to end",
-    intro: `${uiuxExperience} spanning user research, Figma token variable systems, interaction wireframing, and the frontend implementation that ships them.`,
+    eyebrow: "Skills",
+    heading: "Design, frontend, video, and ",
+    headingEmphasis: "data tools",
+    intro: `${uiuxExperience} of UI/UX design, from user research to design systems, plus the tools I use for frontend, video, and data work.`,
   },
   testimonials: {
     index: "04",
@@ -581,7 +559,7 @@ export const ui = {
   },
   footer: {
     heading: "Site footer",
-    tagline: "UI/UX & Design Systems",
+    tagline: profile.title,
     index: "Sections",
     elsewhere: "Profiles",
     copyright: "© 2026 Awanish Verma",
@@ -596,7 +574,6 @@ export const ui = {
     experience: "Experience",
     skillsLabel: "Skills:",
     projects: "Selected projects",
-    impact: "Impact:",
     tools: "Tools:",
     coreSkills: "Core skills",
     education: "Education",
@@ -645,11 +622,11 @@ export const ui = {
     body: "The site failed to load.",
   },
   meta: {
-    title: "UI/UX Designer & Design Systems Architect — Awanish Verma",
-    description: `UI/UX designer and design systems architect in Bengaluru, available worldwide. ${totalExperience} of professional experience, ${uiuxExperience} in UI/UX design: product case studies, design tokens, and interaction design.`,
-    siteName: "Awanish Verma — UI/UX Designer & Design Systems Architect",
-    imageAlt: "Awanish Verma, UI/UX Designer & Design Systems Architect",
+    title: `${profile.title} — Awanish Verma`,
+    description: `UI/UX designer in Bengaluru, available worldwide. ${totalExperience} of professional experience, ${uiuxExperience} in UI/UX design: product case studies, design tokens, and interaction design.`,
+    siteName: `Awanish Verma — ${profile.title}`,
+    imageAlt: `Awanish Verma, ${profile.title}`,
     twitter: "@awanishverma",
-    keywords: ["Awanish Verma", "Awanish Verma designer", "Awanish Verma portfolio", "Awanish Verma UI UX", "UI/UX designer", "UI UX designer", "UX designer", "UI designer", "product designer", "design systems architect", "lead product designer", "senior UX designer", "interaction designer", "UI UX designer Bengaluru", "UX designer Bangalore", "product designer Bengaluru", "UI UX designer India", "freelance UI UX designer India", "remote product designer", "design system consultant", "design tokens consultant", "design token architecture", "multi-brand design system", "Figma design system", "design system audit", "UX case study portfolio", "design engineer portfolio", "accessibility WCAG audit", "user research and usability testing"],
+    keywords: ["Awanish Verma", "Awanish Verma designer", "Awanish Verma portfolio", "Awanish Verma UI UX", "UI/UX designer", "UI UX designer", "UX designer", "UI designer", "product designer", "interaction designer", "UI UX designer Bengaluru", "UX designer Bangalore", "product designer Bengaluru", "UI UX designer India", "freelance UI UX designer India", "remote product designer", "design system consultant", "design tokens consultant", "design token architecture", "multi-brand design system", "Figma design system", "design system audit", "UX case study portfolio", "design engineer portfolio", "accessibility WCAG audit", "user research and usability testing"],
   },
 };

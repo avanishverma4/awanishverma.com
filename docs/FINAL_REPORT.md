@@ -140,3 +140,28 @@ Two notes on the test setup:
 6. **OG image colours duplicate the tokens as literals** (`src/app/opengraph-image.tsx`) and will drift if the palette changes.
 7. **No automated tests or CI.** Verification is manual. The pinned TypeScript 6 / ESLint 9 need a revisit when typescript-eslint supports TS 7 and the React/import/jsx-a11y plugins support ESLint 10.
 8. **`.gitignore` has duplicated entries** (a hand-written block plus the create-next-app block), and `next.config.ts` keeps an Unsplash `remotePatterns` entry that exists only for the stock images.
+
+---
+
+## Addendum: follow-up (2026-09-30)
+
+Awanish chose **"UI/UX Designer"** as the only role title and left the rest to judgement. Changes (details in PROJECT_STATE, "Follow-up after Chunk 9"):
+
+- **Role:** "UI/UX Designer" everywhere, from a single constant (`profile.title`). This resolves the role inconsistency (report §10, employer review #6).
+- **Project images:** all stock photos replaced with Awanish's own Behance work and screenshots of his live sites, self-hosted with descriptive alt text. Resolves blocker 2 and employer review #1.
+- **Metrics:** unsupported project metrics removed, and the CV "Impact" lines dropped. Resolves blocker 3 for projects; the experience achievement percentages remain for Awanish to confirm.
+- **XpertOnline:** team credit added. Resolves blocker 4.
+- **Case studies:** the boilerplate boxes were removed (employer review #3, partly: the case studies are still short).
+- **Skills:** eyebrow and heading now describe all four groups (employer review #5, §10).
+- **Hero on mobile:** a two-screen crop below 640px (employer review #4).
+- **Favicon:** regenerated in the new palette (§10).
+- **Developer clean-ups:** `typecheck` script (developer review #1), shared theme key (#5), `.gitignore` cleaned (#8, and the Unsplash config is removed).
+
+**Still open:**
+1. The domain `awanishverma.com` is still parked. Connect it before going live.
+2. Awanish should confirm the experience achievement percentages.
+3. Case studies are still short on the site and rely on Behance for depth.
+4. Content file style and types (developer review #2) and the section file layout (#3) are unchanged.
+5. Class helpers still aren't merged with tailwind-merge (#4). OG and icon colours are still literal values (#6).
+6. No tests or CI (#7).
+7. The live Dental site has a mobile navigation overflow; worth fixing on that project.

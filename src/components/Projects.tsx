@@ -61,19 +61,19 @@ export function ProjectGrid() {
                 }}
                 className={`${interactiveCard} flex h-full w-full flex-col overflow-hidden text-left`}
               >
-                <span className="relative block aspect-[16/10] w-full overflow-hidden border-b border-line">
+                <span className="relative block aspect-[16/10] w-full overflow-hidden border-b border-line bg-media">
                   <Image
-                    src={project.coverImage}
+                    src={project.cover.src}
                     alt=""
                     fill
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    className="object-cover"
+                    className="object-cover object-top"
                   />
                 </span>
                 <span className="flex flex-1 flex-col gap-2 p-5">
                   <span className="font-mono text-label-12 text-fg-secondary">{String(projects.indexOf(project) + 1).padStart(2, "0")}</span>
                   <span className="text-heading-20">{project.title}</span>
-                  {project.impactMetric && <span className="text-copy-14 text-fg-secondary">{project.impactMetric}</span>}
+                  <span className="text-copy-14 text-fg-secondary">{project.tagline}</span>
                   <span className="mt-auto pt-2 font-mono text-label-12 text-fg-secondary">{project.category}</span>
                 </span>
               </button>
@@ -128,11 +128,21 @@ function CaseStudy({ project, onClose }: { project: Project; onClose: () => void
       </div>
 
       <div className="space-y-6 p-6">
-        {project.impactMetric && (
-          <div className="rounded-md border border-line-subtle bg-subtle p-4">
-            <p className="font-mono text-label-12 uppercase tracking-widest text-fg-secondary">{t.outcome}</p>
-            <p className="mt-1 text-label-14 font-medium">{project.impactMetric}</p>
-          </div>
+        {(project.outcome || project.team) && (
+          <dl className="grid gap-4 rounded-md border border-line-subtle bg-subtle p-4 sm:grid-cols-2">
+            {project.outcome && (
+              <div>
+                <dt className="font-mono text-label-12 uppercase tracking-widest text-fg-secondary">{t.outcome}</dt>
+                <dd className="mt-1 text-label-14 font-medium">{project.outcome}</dd>
+              </div>
+            )}
+            {project.team && (
+              <div>
+                <dt className="font-mono text-label-12 uppercase tracking-widest text-fg-secondary">{t.team}</dt>
+                <dd className="mt-1 text-label-14 font-medium">{project.team}</dd>
+              </div>
+            )}
+          </dl>
         )}
 
         <div role="tablist" aria-label={t.tabsLabel} className="flex flex-wrap gap-x-5 border-b border-line">
@@ -174,21 +184,8 @@ function CaseStudy({ project, onClose }: { project: Project; onClose: () => void
           )}
           {tab === "architecture" && (
             <>
-              <div className="rounded-md border border-line-subtle bg-subtle p-4">
-                <h3 className="text-heading-14 text-fg">{t.process}</h3>
-                <p className="mt-2">{project.architecture}</p>
-              </div>
-              <div className="grid gap-3 sm:grid-cols-2">
-                {[
-                  [t.foundationsTitle, t.foundations],
-                  [t.qualityTitle, t.quality],
-                ].map(([title, body]) => (
-                  <div key={title} className="rounded-md border border-line p-3">
-                    <p className="mb-1 text-heading-14 text-fg">{title}</p>
-                    <p className="text-copy-13">{body}</p>
-                  </div>
-                ))}
-              </div>
+              <h3 className="text-heading-14 text-fg">{t.process}</h3>
+              <p>{project.architecture}</p>
             </>
           )}
           {tab === "features" && (
@@ -202,19 +199,19 @@ function CaseStudy({ project, onClose }: { project: Project; onClose: () => void
             </>
           )}
           {tab === "gallery" && (
-            <div className="grid gap-4 sm:grid-cols-2">
-              {project.galleryImages.map((src, i) => (
-                <div key={src} className="relative h-48 overflow-hidden rounded-md border border-line">
-                  <Image
-                    src={src}
-                    alt={`${project.title} — ${project.category} case study visual ${i + 1}`}
-                    fill
-                    sizes="(max-width: 640px) 100vw, 50vw"
-                    // Lazy loading never triggers inside the modal <dialog>; the tab only renders on demand anyway.
-                    loading="eager"
-                    className="object-cover"
-                  />
-                </div>
+            <div className="space-y-4">
+              {project.gallery.map((img) => (
+                <Image
+                  key={img.src}
+                  src={img.src}
+                  width={img.width}
+                  height={img.height}
+                  alt={img.alt}
+                  sizes="(min-width: 800px) 720px, calc(100vw - 80px)"
+                  // Lazy loading never triggers inside the modal <dialog>; the tab only renders on demand anyway.
+                  loading="eager"
+                  className="h-auto w-full rounded-md border border-line bg-media"
+                />
               ))}
             </div>
           )}

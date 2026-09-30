@@ -1,9 +1,14 @@
-import Image from "next/image";
+import { getImageProps } from "next/image";
 import { profile, ui } from "@/content/site";
 import { button, container, eyebrow } from "./ui";
 
 export function Hero() {
   const t = ui.hero;
+  const common = { alt: t.image.alt, sizes: "(min-width: 1200px) 1152px, calc(100vw - 32px)" };
+  const { props: desktop } = getImageProps({ ...common, ...t.image.desktop });
+  const {
+    props: { srcSet: mobileSrcSet, ...img },
+  } = getImageProps({ ...common, ...t.image.mobile, fetchPriority: "high" });
   return (
     <section id="hero" aria-labelledby="hero-heading" className={`${container} pb-20 pt-16 sm:pb-24 sm:pt-24`}>
       <div className="max-w-3xl">
@@ -58,15 +63,11 @@ export function Hero() {
 
       <figure className="mt-12 sm:mt-16">
         <div className="overflow-hidden rounded-lg border border-line bg-media">
-          <Image
-            src={t.image.src}
-            width={t.image.width}
-            height={t.image.height}
-            alt={t.image.alt}
-            sizes="(min-width: 1200px) 1152px, calc(100vw - 32px)"
-            preload
-            className="h-auto w-full"
-          />
+          <picture>
+            <source media="(min-width: 640px)" srcSet={desktop.srcSet} sizes={desktop.sizes} width={desktop.width} height={desktop.height} />
+            {/* eslint-disable-next-line jsx-a11y/alt-text -- alt comes from getImageProps */}
+            <img {...img} srcSet={mobileSrcSet} className="h-auto w-full" />
+          </picture>
         </div>
         <figcaption className="mt-3 text-label-13 text-fg-secondary">{t.image.caption}</figcaption>
       </figure>

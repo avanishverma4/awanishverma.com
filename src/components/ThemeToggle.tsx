@@ -1,7 +1,7 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-import { ui } from "@/content/site";
+import { themeStorageKey, ui } from "@/content/site";
 import { iconButton } from "./ui";
 
 function subscribe(onChange: () => void) {
@@ -24,7 +24,7 @@ export function ThemeToggle() {
       onClick={() => {
         document.documentElement.classList.toggle("dark", !dark);
         try {
-          localStorage.setItem("av_portfolio_theme", next);
+          localStorage.setItem(themeStorageKey, next);
         } catch {}
       }}
       className={iconButton}

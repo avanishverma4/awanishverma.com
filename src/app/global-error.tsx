@@ -3,7 +3,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import { useSyncExternalStore } from "react";
 import { button, eyebrow } from "@/components/ui";
-import { ui } from "@/content/site";
+import { themeStorageKey, ui } from "@/content/site";
 import "./globals.css";
 
 const geistSans = Geist({ subsets: ["latin"], variable: "--font-geist-sans" });
@@ -12,7 +12,7 @@ const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono"
 // Same rule as the theme script in layout.tsx, which does not run here.
 function prefersDark() {
   try {
-    const saved = localStorage.getItem("av_portfolio_theme");
+    const saved = localStorage.getItem(themeStorageKey);
     return saved ? saved === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
   } catch {
     return false;
