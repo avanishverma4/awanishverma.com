@@ -538,3 +538,24 @@ Awanish shared the DOCTO Figma file (`I2TEEIduzi3JNLliGhMMwF`, in his Drafts). N
 - Browser: at 1440, all 4 frames load (natural width 207); at 375, 2 frames load and 2 are hidden by design. No horizontal scroll. Screenshots checked.
 - axe: 0 violations in dark and light.
 - axe note: the first light-mode run reported 41 contrast results on the header links. That was the known test artifact: the tab was in the background, so colour transitions never finished. Re-run with the tab in front (101 frames/s): nav link colour `#4d4d4d`, light theme **0 violations**.
+
+### Project images from Figma (2026-09-30)
+
+Awanish said "Proceed" to replacing Behance-based case study images with Figma exports. The files were read through the Figma plugin API in his signed-in Chrome; nothing in the files was modified (only `loadAsync`, reads, and `exportAsync`).
+
+**Figma files found** in his recents: "Doctor-Patient Management App" (design), "XpertOnline AI chatbot" (a Figma **Slides** deck), and "Water Tracker App | Water Drink Reminder App | UI Design" (design). No Plant App file was found, only an unrelated Community file ("Planty"), so Plant keeps its Behance images. Dental, Password Generator, and Jumblefix keep their live-site screenshots.
+
+| Project | Cover | Gallery | Source nodes |
+|---|---|---|---|
+| DOCTO | `docto-cover.jpg` (1260×750, Figma "Behance cover" 1:4238) | cover; `docto-screens.jpg` (four 2× frames in a row: Todays appointment 1:1173, Patient information 1:1126, Missed appointment 1:1188, Search Results 1:1111); `docto-colors.jpg` (Design System "Colors" 1:642) | DOCTO file |
+| Water Tracker | `water-cover.jpg` (1600×800, "Thumbnail" 1:3705) | cover; `water-screens.jpg` (2× frames 11 1:1548, 12 1:1688, 16 1:2147, 18 1:2328) | Water file |
+| XpertOnline | `xpertonline-qualitative-analysis.jpg` (slide 17, 1:2068, 1600×900) | that slide; `xpertonline-refined-wireframes.jpg` (slide 27, 1:2663) | Slides deck (1920×1080 slides, sharper than the 1400px Behance versions) |
+
+- The screen rows were composed locally: frames on `#f5f5f5` with 32px gaps and a Geist small shadow, captured at 2× and resized to 1600px wide. The layout is new; every screen is Awanish's own export.
+- Removed `docto-design-system.jpg`. The files reused by name (`docto-screens`, `water-cover`, `water-screens`, `xpertonline-*`) now hold the Figma versions. All images in `public/images/projects/` are referenced (checked by search).
+- Alt text was rewritten for every new image.
+- **Test-server note:** the DOCTO card image failed to load at first. The image optimizer on the long-running local server had a stuck request for that URL: WebP requests hung, plain requests returned JPEG, and the server was at 0% CPU. After restarting with `.next/cache/images` cleared, every size returned WebP in under 40ms and the card loaded. This was a local server state issue, not a site defect.
+
+**Check results** (real output)
+- `npm run build`: exit 0. `npm run typecheck`: exit 0. `npx eslint .`: exit 0.
+- Browser (fresh server): all 7 project cards load; the DOCTO (3), Water (2), and XpertOnline (2) gallery images load. Screenshot checked.
