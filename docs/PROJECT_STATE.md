@@ -537,3 +537,4 @@ Awanish shared the DOCTO Figma file (`I2TEEIduzi3JNLliGhMMwF`, in his Drafts). N
 - `npm run build`: exit 0. `npm run typecheck`: exit 0. `npx eslint .`: exit 0.
 - Browser: at 1440, all 4 frames load (natural width 207); at 375, 2 frames load and 2 are hidden by design. No horizontal scroll. Screenshots checked.
 - axe: 0 violations in dark and light.
+- axe note: the first light-mode run reported 41 contrast results on the header links. That was the known test artifact: the tab was in the background, so colour transitions never finished. Re-run with the tab in front (101 frames/s): nav link colour `#4d4d4d`, light theme **0 violations**.
