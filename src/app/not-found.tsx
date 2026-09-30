@@ -1,11 +1,11 @@
 import Link from "next/link";
-import { button, container, eyebrow } from "@/components/ui";
+import { button, eyebrow } from "@/components/ui";
 import { nav, profile, ui } from "@/content/site";
 
 export default function NotFound() {
   const t = ui.notFound;
   return (
-    <main id="main-content" className={`${container} flex min-h-screen max-w-3xl flex-col justify-center py-16`}>
+    <main id="main-content" className="mx-auto flex min-h-screen w-full max-w-3xl flex-col justify-center px-4 py-16 sm:px-6">
       <p className="text-label-14 text-fg-secondary">
         {profile.name} · {ui.footer.tagline}
       </p>

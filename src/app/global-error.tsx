@@ -1,18 +1,34 @@
 "use client";
 
-import { button, container, eyebrow } from "@/components/ui";
+import { Geist, Geist_Mono } from "next/font/google";
+import { useSyncExternalStore } from "react";
+import { button, eyebrow } from "@/components/ui";
 import { ui } from "@/content/site";
 import "./globals.css";
 
-// Replaces the root layout, so it renders its own <html> and <body> and imports styles itself.
-// It follows the OS colour scheme because the theme script in layout.tsx does not run here.
+const geistSans = Geist({ subsets: ["latin"], variable: "--font-geist-sans" });
+const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });
+
+// Same rule as the theme script in layout.tsx, which does not run here.
+function prefersDark() {
+  try {
+    const saved = localStorage.getItem("av_portfolio_theme");
+    return saved ? saved === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  } catch {
+    return false;
+  }
+}
+
+// Replaces the root layout when it fails, so it renders its own <html> and <body>,
+// imports the global stylesheet, and loads its own fonts.
 export default function GlobalError({ retry }: { error: Error & { digest?: string }; retry: () => void }) {
   const t = ui.globalError;
+  const dark = useSyncExternalStore(() => () => {}, prefersDark, () => false);
   return (
-    <html lang="en">
+    <html lang="en" className={`${dark ? "dark" : ""} ${geistSans.variable} ${geistMono.variable}`}>
       <body className="font-sans antialiased">
         <title>{t.title}</title>
-        <main className={`${container} flex min-h-screen max-w-3xl flex-col justify-center py-16`}>
+        <main className="mx-auto flex min-h-screen w-full max-w-3xl flex-col justify-center px-4 py-16 sm:px-6">
           <p className={eyebrow}>{t.code}</p>
           <h1 className="mt-3 text-heading-32 sm:text-heading-40">{t.heading}</h1>
           <p className="mt-4 text-copy-16 text-fg-secondary">{t.body}</p>

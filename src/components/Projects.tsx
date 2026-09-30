@@ -231,7 +231,7 @@ function CaseStudy({ project, onClose }: { project: Project; onClose: () => void
           )}
           {project.liveUrl && (
             <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className={button("primary")}>
-              {t.viewLive}
+              {project.liveUrl.includes("behance.net") ? t.viewBehance : t.viewLive}
               <span className="sr-only">{ui.newTab}</span>
             </a>
           )}

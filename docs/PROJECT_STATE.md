@@ -259,3 +259,87 @@ New tools: Video Editing (DaVinci Resolve, Adobe After Effects, Adobe Premiere P
 - `npm run build`: exit 0. `npx tsc --noEmit`: exit 0. `npx eslint .`: exit 0.
 - `grep -rnE "yrs|\.level|experienceYears|disciplines" src`: no matches.
 - Browser: four groups with 9/3/3/4 items. Page width 1425/1425 at 1440 and 375/375 at 375. Screenshot checked.
+
+---
+
+### Chunk 7: copy pass and error pages (2026-09-30)
+
+**Part A: copy.** Every changed string is below (46 changes, all in `src/content/site.ts`). The "before" values come from the audit and live data.
+
+| Where | Before | After |
+|---|---|---|
+| Header: CV button title | `resumeTitle: "View formatted curriculum vitae"` | `resumeTitle: "View CV"` |
+| Header: CV button | `resume: "CV / Resume"` | `resume: "View CV"` |
+| Header: mobile CV button | `resumeMobile: "View CV / Resume"` | `resumeMobile: "View CV"` |
+| Projects: index | `index: "02", eyebrow: "Selected case studies"` | `index: "01", eyebrow: "Selected work"` |
+| Projects: heading | `heading: "Crafted for user delight, accessibility, and ", headingEmphasis: "design clarity"` | `heading: "Product, mobile, and web ", headingEmphasis: "case studies"` |
+| Case study: label | `label: "Case Study"` | `label: "Case study"` |
+| Case study: outcome label | `outcome: "Key business / product outcome"` | `outcome: "Outcome"` |
+| Case study: tab 1 | `overview: "Overview & Scope"` | `overview: "Overview"` |
+| Case study: tab 2 | `architecture: "Architecture & Tech"` | `architecture: "Process and tools"` |
+| Case study: tab 3 | `features: "Key Features"` | `features: "Features"` |
+| Case study: tab 4 | `gallery: "Visual Gallery"` | `gallery: "Gallery"` |
+| Case study: tools heading | `technologies: "Technologies & frameworks"` | `technologies: "Tools and methods"` |
+| Case study: process heading | `process: "Process & system overview"` | `process: "Process"` |
+| Case study: features heading | `capabilities: "Key capabilities"` | `capabilities: "Key features"` |
+| Case study: source link | `sourceCode: "Source code"` | `sourceCode: "View source code"` |
+| Case study: external link | `viewLive: "View live case study",` | `viewBehance: "Open case study on Behance", viewLive: "Open live site",` |
+| Experience: index | `index: "03", eyebrow: "Career history"` | `index: "02", eyebrow: "Experience"` |
+| Experience: heading | `heading: "Professional journey & ", headingEmphasis: "impact"` | `heading: "Roles and ", headingEmphasis: "outcomes"` |
+| Skills: index (numbering only) | `index: "04", eyebrow: "Craft & capability"` | `index: "03", eyebrow: "Craft & capability"` |
+| Testimonials: index and label | `index: "05", eyebrow: "Endorsements & peer reviews"` | `index: "04", eyebrow: "Testimonials"` |
+| Testimonials: heading | `heading: "Trusted by founders & ", headingEmphasis: "engineering leaders"` | `heading: "Feedback from company ", headingEmphasis: "leaders"` |
+| Contact: index and label | `index: "06", eyebrow: "Availability & contact"` | `index: "05", eyebrow: "Contact"` |
+| Contact: heading | `heading: "Let's discuss your ", headingEmphasis: "next digital product"` | `heading: "Email me about your ", headingEmphasis: "project"` |
+| Contact: intro | `"I take on work where design decisions still matter — early product vision, systems that need structure, teams that need direction. Tell me what you're building and where it's stuck; a paragraph is plenty to start."` | `"I take on work where design decisions still matter: early product vision, systems that need structure, and teams that need direction. Tell me what you're building and where it's stuck. A paragraph is enough to start."` |
+| Contact: email title | `emailTitle: "Direct email"` | `emailTitle: "Email"` |
+| Contact: email note | `emailNote: "No forms"` | `emailNote: "No contact form"` |
+| Profile: availability (contact, footer) | `"availability": "Available for Product Design Contracts & UI/UX Design System Advisory"` | `"availability": "Available for product design contracts and design system advisory."` |
+| Footer: nav heading | `index: "Index", elsewhere: "Elsewhere"` | `index: "Sections", elsewhere: "Profiles"` |
+| Footer: back to top | `top: "Top", topLabel: "Scroll back to top of page"` | `top: "Back to top", topLabel: "Back to top"` |
+| CV: dialog title | `title: "Curriculum Vitae"` | `title: "CV"` |
+| CV: print button | `print: "Print / Save PDF"` | `print: "Print or save as PDF"` |
+| CV: summary heading | `summary: "Professional Summary"` | `summary: "Summary"` |
+| CV: experience heading | `experience: "Professional Experience"` | `experience: "Experience"` |
+| CV: projects heading | `projects: "Selected Projects"` | `projects: "Selected projects"` |
+| CV: skills heading | `coreSkills: "Core Skills"` | `coreSkills: "Core skills"` |
+| 404: body | `"The link may be outdated, or the address slightly off. Everything — case studies, experience, skills — lives on a single page, one link away."` | `"The link may be out of date, or the address may be mistyped. All content is on the home page."` |
+| 404: home link | `home: "Back to the portfolio", work: "Selected work"` | `home: "Go to home page", work: "View selected work"` |
+| Error: body (new) and home link | `heading: "Something went wrong", retry: "Try again", home: "Reload the portfolio"` | `heading: "Something went wrong", body: "This page failed to load. Try again, or go to the home page.", retry: "Try again", home: "Go to home page"` |
+| Global error: heading | `heading: "Application error"` | `heading: "Something went wrong"` |
+| Project: Water app overview | `"Crafted to help users maintain healthy hydration habits through minimal interaction effort. Features fluid wave animations, customizable daily goals based on personal metrics, and seamless logging with one-tap shortcuts."` | `"Designed to help users keep healthy hydration habits with minimal effort. Features fluid wave animations, daily goals based on personal metrics, and one-tap logging shortcuts."` |
+| Project: Dental tagline | `"Premier dental education web platform featuring course enrollment, clinical masterclasses, and student portal."` | `"Dental education web platform with course enrollment, clinical masterclasses, and a student portal."` |
+| Project: Dental overview | `Created an elegant, high-trust visual aesthetic, responsive course catalogs, and seamless event registration.` | `Created a high-trust visual style, responsive course catalogs, and a simple event registration flow.` |
+| Project: Dental feature | `"Seamless workshop registration and secure payment checkout integration"` | `"Workshop registration with secure payment checkout"` |
+| Project: Jumblefix description | `with an ultra-clean user interface.` | `with a clean, minimal interface.` |
+| Project: Jumblefix overview | `as a minimal, lightning-fast utility app.` | `as a minimal, fast utility app.` |
+| Profile: long bio (CV summary) | `"longBio": "I am a Lead UI/UX Designer & Design Systems Architect passionate about transforming complex problem spaces into elegant, intuitive, and human-centered digital products. With over 7 years of experience spanning user research, interaction design, design token architectures, visual design systems, and frontend implementation, I craft end-to-end solutions that delight users and drive measurable business metrics."` | `"longBio": `I am a Lead UI/UX Designer and Design Systems Architect. I turn complex problems into clear, human-centered digital products. My ${totalExperience} of professional experience include ${uiuxExperience} in UI/UX design, spanning user research, interaction design, design token architecture, visual design systems, and frontend implementation.`` |
+
+**Decisions (copy)**
+- **Testimonial quotes unchanged.** They are attributed to real people, and rewording would misquote them. Note: they contain "elegant", "pixel-perfect", and "effortless".
+- Experience descriptions and achievements unchanged: already specific. Rewriting metrics-heavy lines risks changing claims. "student learning journey" is kept as a UX domain term, as are "User Journeys" and "Journey Mapping".
+- Removed unsupported or cliché phrases:
+  - "drive measurable business metrics" (long bio), "Premier", "seamless", "elegant", "ultra-clean", "lightning-fast", "Crafted", and "passionate"
+  - "engineering leaders" (neither testimonial author is described as an engineer)
+- Fixed facts: the CV long bio now uses `totalExperience`/`uiuxExperience` ("My 11 years of professional experience include 8 years in UI/UX design…") instead of "over 7 years".
+- Section numbering restarts at 01 (Work) because the hero no longer carries "01". This touched the skills index ("04" → "03") for numbering only; its wording is Chunk 6 territory and was not changed.
+- The case-study external link now says what it opens: "Open case study on Behance" for behance.net URLs, "Open live site" otherwise (logic in `Projects.tsx`).
+- New copy (neutral, no claims): the error page body "This page failed to load. Try again, or go to the home page."
+- **Content gap:** the skills eyebrow "Craft & capability" (Chunk 6 scope, excluded from this pass) still uses "craft". Flagged for Awanish.
+- **Content gap:** the case-study "Design foundations" and "Quality bar" boxes show the same boilerplate on every project, including Jumblefix and Password Generator. It is existing live copy, kept as is. Awanish should confirm it applies to all projects or drop it.
+
+**Part B: error and loading pages** (docs read: `node_modules/next/dist/docs/01-app/03-api-reference/03-file-conventions/error.md` and `not-found.md`)
+- `src/app/not-found.tsx`: message, "Go to home page", "View selected work", section links. One h1. Returns HTTP 404.
+- `src/app/error.tsx`: client component using the Next 16 `retry` prop. Message, "Try again", and a link home. Never renders `error.message` or the digest.
+- `src/app/global-error.tsx`: renders its own `<html>`/`<body>`, imports `globals.css`, loads Geist and Geist Mono itself with `next/font`, and applies the saved or OS theme with `useSyncExternalStore` (the layout's theme script does not run there). It uses a React `<title>` because `metadata` is unsupported in global-error (per the docs).
+- Fixed a Chunk 4 class conflict on all three pages: `container` (max-w-page) combined with `max-w-3xl` left the content off-centre. Replaced with a single `max-w-3xl` wrapper.
+- `src/app/loading.tsx`: **not added**. The audit (§11) found the site fully static, with no data fetching, request data, or suspense. `/` is prerendered (`○ (Static)` in the build output), so no route can suspend.
+
+**Testing** (production: `next build` then `next start -p 3100`)
+- `/does-not-exist`: HTTP 404, custom page, h1 "This page isn't part of the portfolio.", no leak.
+- `error.tsx`: a temporary client component threw when `?throw=page` was set, inside `page.tsx`. The boundary rendered "Something went wrong" with "Try again" (button) and "Go to home page" (`/`). The error text "TEMP test error" was not shown.
+- `global-error.tsx`: the same helper threw from the root layout (`?throw=global`). It rendered "500 / Something went wrong / The site failed to load." with Geist fonts and the dark theme, with no leak.
+- Temporary code removed: `src/components/TempThrow.tsx` deleted and the imports removed from `page.tsx` and `layout.tsx`. `grep -rnE "TempThrow|TEMP test|throw=" src` returns no matches. No test routes shipped.
+
+**Check results** (real output, after removing the test code)
+- `npm run build`: exit 0. `npx tsc --noEmit`: exit 0. `npx eslint .`: exit 0.
