@@ -51,7 +51,7 @@ export type SkillGroup = { name: string; scope: string; skills: Skill[] };
 export const profile = {
   "name": "Awanish Verma",
   "title": "UI/UX Designer",
-  "longBio": `I am a UI/UX Designer. I turn complex problems into clear, human-centered digital products. My ${totalExperience} of professional experience include ${uiuxExperience} in UI/UX design, spanning user research, interaction design, design token architecture, visual design systems, and frontend implementation.`,
+  "longBio": `UI/UX Designer with ${totalExperience} of professional experience, including ${uiuxExperience} in UI/UX design. I turn complex problems into clear, human-centered digital products. Skilled in user research, usability testing, interaction design, information architecture, wireframing, prototyping, design systems and design tokens in Figma, accessibility (WCAG 2.1 AA), and frontend implementation with React and Tailwind CSS.`,
   "location": "Bengaluru, India / Remote Worldwide",
   "availability": "Available for product design contracts and design system advisory.",
   "email": "avanishverma4@gmail.com",
@@ -251,10 +251,10 @@ export const experiences: Experience[] = [
     "current": true,
     "description": "Lead product design across a portfolio of EdTech learning platforms, owning UX research, information architecture, design systems, and design-to-code handoff for web and mobile.",
     "achievements": [
-      "Architected a multi-brand design token system in Figma powering 3 education platforms, cutting new-screen design time by 45% and eliminating handoff inconsistencies between design and engineering.",
-      "Led end-to-end UX for the student learning journey — from discovery research through high-fidelity interactive prototypes — increasing course completion rates by 28%.",
-      "Conducted 60+ moderated usability sessions and translated findings into interface changes that reduced onboarding drop-off by 35%.",
-      "Shipped a WCAG 2.1 AA accessible component library with engineering in React and Tailwind CSS, resolving 100% of critical accessibility audit issues before launch."
+      "Built a multi-brand design token system in Figma used across 3 education platforms, reducing new-screen design time and handoff inconsistencies between design and engineering.",
+      "Led end-to-end UX for the student learning experience, from discovery research and user flows to high-fidelity interactive prototypes, to improve course completion.",
+      "Ran 60+ moderated usability testing sessions and turned the findings into interface changes that reduced onboarding drop-off.",
+      "Delivered a WCAG 2.1 AA accessible component library with engineering in React and Tailwind CSS, resolving critical accessibility audit issues before launch."
     ],
     "skills": [
       "UI/UX Design",
@@ -275,10 +275,10 @@ export const experiences: Experience[] = [
     "current": false,
     "description": "Owned visual design and UI production for telemedicine and healthtech products, spanning brand identity, patient-facing interfaces, clinical dashboards, and marketing systems.",
     "achievements": [
-      "Designed 500+ digital and print assets across patient apps, clinical dashboards, and campaigns while sustaining brand consistency at scale.",
-      "Rebuilt the product visual identity and UI kit, lifting engagement on core patient-facing screens by 30%.",
-      "Standardized reusable UI components and layout templates that cut design turnaround on recurring requests by 50%.",
-      "Partnered with clinicians and product managers to translate care workflows into high-legibility, accessible healthcare interfaces."
+      "Designed 500+ digital and print assets for patient apps, clinical dashboards, and marketing campaigns, keeping the brand consistent across products.",
+      "Rebuilt the product visual identity and UI kit, improving engagement on core patient-facing screens.",
+      "Standardized reusable UI components and layout templates, speeding up design turnaround on recurring requests.",
+      "Worked with clinicians and product managers to turn care workflows into legible, accessible healthcare interfaces."
     ],
     "skills": [
       "Visual Design",
@@ -298,9 +298,9 @@ export const experiences: Experience[] = [
     "current": false,
     "description": "Delivered end-to-end UI/UX and brand design engagements for startup and SMB clients across web and mobile products.",
     "achievements": [
-      "Delivered 15+ end-to-end design engagements spanning web, mobile, and brand identity for startup and SMB clients.",
-      "Produced high-fidelity interactive prototypes that let clients validate concepts before development, shortening build cycles.",
-      "Maintained a 100% on-time delivery record and a majority repeat-client rate through rapid iteration and structured design reviews."
+      "Delivered 15+ UI/UX and brand identity projects for startup and SMB clients across web and mobile.",
+      "Built high-fidelity interactive prototypes so clients could validate concepts before development, shortening build cycles.",
+      "Delivered projects on schedule and earned repeat clients through rapid iteration and structured design reviews."
     ],
     "skills": [
       "UI/UX Design",
@@ -319,9 +319,9 @@ export const experiences: Experience[] = [
     "current": false,
     "description": "Executed branding and communication design for enterprise clients, from concept development through print-ready and digital production.",
     "achievements": [
-      "Executed end-to-end branding and communication campaigns for enterprise clients across 50+ projects.",
-      "Streamlined creative workflows with reusable templates and shared asset libraries, reducing project turnaround time by 40%.",
-      "Produced print and digital collateral to pixel-accurate brand specifications, earning repeat enterprise engagements."
+      "Designed branding and communication campaigns for enterprise clients across 50+ projects, from concept to print-ready and digital production.",
+      "Streamlined creative workflows with reusable templates and shared asset libraries, reducing project turnaround time.",
+      "Produced print and digital collateral to precise brand specifications, earning repeat enterprise engagements."
     ],
     "skills": [
       "Visual Design",
@@ -573,9 +573,9 @@ export const ui = {
     summary: "Summary",
     experience: "Experience",
     skillsLabel: "Skills:",
-    projects: "Selected projects",
+    projects: "Projects",
     tools: "Tools:",
-    coreSkills: "Core skills",
+    coreSkills: "Skills",
     education: "Education",
     certifications: "Certifications",
     coreSkillGroups: [

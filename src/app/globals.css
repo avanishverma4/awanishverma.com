@@ -188,11 +188,31 @@ dialog::backdrop {
   body > *:not(#resume-dialog) {
     display: none !important;
   }
+  html,
+  body {
+    background: #fff !important;
+  }
+  /* PrintButton reopens the CV as a non-modal dialog for printing, so it can flow in the page. */
   #resume-dialog {
     position: static;
+    inset: auto;
+    margin: 0;
+    width: 100%;
+    max-width: none;
     max-height: none;
+    overflow: visible;
     border: 0;
+    border-radius: 0;
     box-shadow: none;
+    /* ATS-safe system fonts in the printed PDF; some parsers split words set in web fonts. */
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  #resume-dialog * {
+    font-family: inherit;
+  }
+  /* Arial has no 500 weight; the synthesized medium face breaks PDF text extraction. */
+  #resume-dialog .font-medium {
+    font-weight: 700;
   }
   .print-hide {
     display: none !important;

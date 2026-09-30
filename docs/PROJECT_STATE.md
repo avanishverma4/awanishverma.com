@@ -449,3 +449,36 @@ Awanish's instruction: "Stick to UI/UX Designer, and rest do as you see fit."
 - axe: 0 violations in dark and light.
 
 - 2026-09-30: Awanish: leave the domain connection for now. `siteUrl` stays `https://awanishverma.com`; canonical/OG links point to the parked page until the domain is connected.
+
+### Experience rewrite and ATS CV (2026-09-30)
+
+Awanish's decisions: the Dental site's mobile menu stays as it is (he will fix it himself). The experience bullets are rewritten without percentages, and the CV is made ATS-friendly.
+
+**Experience bullets** (`experiences[].achievements`, shown in both the Experience section and the CV)
+- Removed every percentage: 45%, 28%, 35%, 100% of audit issues, 30%, 50%, 100% on-time, and 40%.
+- Kept the counts that aren't percentages: 3 platforms, 60+ sessions, 500+ assets, 15+ projects, and 50+ projects.
+- Each bullet starts with an action verb, keeps its original claim without the number, and adds no new claims.
+- Keywords kept for ATS: Figma, design tokens, usability testing, prototyping, WCAG 2.1 AA, React, Tailwind CSS, UI kit, and so on.
+
+**CV summary** (`profile.longBio`): "UI/UX Designer with 11 years of professional experience, including 8 years in UI/UX design…". It is followed by a keyword sentence listing skills already on the site.
+
+**CV structure** (`ResumeDialog.tsx`)
+- Single column, with standard headings in the conventional order: Summary, Skills, Experience, Projects, Education, Certifications.
+- Plain `|` separators. Each role has a title line and a "Company | Location | Dates" line.
+- Projects are listed in one column, not a two-column grid.
+- Skills now also include Video Editing and Data Analytics, derived from `skillGroups` so the data isn't duplicated.
+- Headings use normal letter-spacing, because wide tracking can split words when text is extracted.
+- Label and value are one text node ("Skills: …", "Tools: …"), because PDF extraction dropped the space after a bold label ("Skills:UI/UX").
+
+**Print fixes** (found by printing to PDF and extracting the text with macOS PDFKit)
+1. **Clipped to one page.** A modal `<dialog>` sits in the top layer, which prints as a single absolutely positioned page: its top was cut off by vertical centring, and everything past page 1 was lost.
+   - Fix: `PrintButton` listens for `beforeprint`/`afterprint`, so it covers both the button and Cmd/Ctrl+P. It reopens the CV as a non-modal dialog, which flows across pages, then restores the modal.
+   - The print CSS sets it to `position: static` with a white page background.
+   - Repeated print events can't lose the restore flag.
+2. **Garbled words.** Geist in the PDF extracted as "SM B" and "M AAC". Print now uses Arial/Helvetica, and the 500 weight is mapped to 700 (Arial has no medium face).
+
+**Check results** (real output)
+- `npm run build`: exit 0. `npm run typecheck`: exit 0. `npx eslint .`: exit 0.
+- PDF via `Page.printToPDF` (which fires the real print events): 3 pages, 92 extracted lines. They read in order from "Awanish Verma / UI/UX Designer / contact" through "Certifications…", with no garbled or missing text.
+- After printing, the dialog is back in modal mode (`open=true`, `:modal=true`).
+- Screen view checked in the dark theme.
