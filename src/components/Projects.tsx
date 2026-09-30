@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useRef, useState, type KeyboardEvent } from "react";
 import { projects, ui, type Project } from "@/content/site";
+import { MOTION_OK, dialogIn, gsap, reducedMotion, useGSAP } from "./motion";
 import { badge, button, card, iconButton, interactiveCard } from "./ui";
 
 const categories = [...new Set(projects.map((p) => p.category))];
@@ -14,7 +15,28 @@ export function ProjectGrid() {
   const [filter, setFilter] = useState<string | null>(null);
   const [open, setOpen] = useState<Project | null>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const grid = useRef<HTMLUListElement>(null);
+  const filtered = useRef(false);
   const shown = filter ? projects.filter((p) => p.category === filter) : projects;
+
+  // After a filter change, stagger the visible cards in. Skipped on first render (ScrollReveal handles that).
+  useGSAP(
+    () => {
+      if (!filtered.current) {
+        filtered.current = true;
+        return;
+      }
+      gsap.matchMedia().add(MOTION_OK, () => {
+        if (!grid.current) return;
+        gsap.fromTo(
+          grid.current.children,
+          { opacity: 0, y: 16 },
+          { opacity: 1, y: 0, duration: 0.4, stagger: 0.05, ease: "power2.out", overwrite: true },
+        );
+      });
+    },
+    { dependencies: [filter] },
+  );
 
   const filters: [string | null, string, number][] = [
     [null, t.allWork, projects.length],
@@ -48,9 +70,9 @@ export function ProjectGrid() {
           </button>
         </div>
       ) : (
-        <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <ul ref={grid} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {shown.map((project) => (
-            <li key={project.id}>
+            <li key={project.id} data-reveal>
               <button
                 type="button"
                 aria-label={`${t.openCaseStudy}${project.title}`}
@@ -58,8 +80,9 @@ export function ProjectGrid() {
                 onClick={() => {
                   setOpen(project);
                   dialogRef.current?.showModal();
+                  dialogIn(dialogRef.current);
                 }}
-                className={`${interactiveCard} flex h-full w-full flex-col overflow-hidden text-left`}
+                className={`${interactiveCard} group flex h-full w-full flex-col overflow-hidden text-left`}
               >
                 <span className="relative block aspect-[16/10] w-full overflow-hidden border-b border-line bg-media">
                   <Image
@@ -67,7 +90,7 @@ export function ProjectGrid() {
                     alt=""
                     fill
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    className="object-cover object-top"
+                    className="object-cover object-top transition-transform duration-500 ease-out motion-safe:group-hover:scale-105"
                   />
                 </span>
                 <span className="flex flex-1 flex-col gap-2 p-5">
@@ -98,6 +121,21 @@ function CaseStudy({ project, onClose }: { project: Project; onClose: () => void
   const t = ui.caseStudy;
   const [tab, setTab] = useState<TabKey>("overview");
   const tabRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const panel = useRef<HTMLDivElement>(null);
+  const switched = useRef(false);
+
+  // Crossfade the panel when the tab changes (not on first open; the dialog itself animates then).
+  useGSAP(
+    () => {
+      if (!switched.current) {
+        switched.current = true;
+        return;
+      }
+      if (reducedMotion() || !panel.current) return;
+      gsap.fromTo(panel.current, { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.22, ease: "power1.out", clearProps: "opacity,transform" });
+    },
+    { dependencies: [tab] },
+  );
 
   // Arrow keys move between tabs, per the WAI-ARIA tabs pattern.
   const onKeyDown = (e: KeyboardEvent, i: number) => {
@@ -167,7 +205,7 @@ function CaseStudy({ project, onClose }: { project: Project; onClose: () => void
           ))}
         </div>
 
-        <div role="tabpanel" id={`panel-${tab}`} aria-labelledby={`tab-${tab}`} tabIndex={0} className="space-y-4 rounded-md text-copy-14 text-fg-secondary">
+        <div ref={panel} role="tabpanel" id={`panel-${tab}`} aria-labelledby={`tab-${tab}`} tabIndex={0} className="space-y-4 rounded-md text-copy-14 text-fg-secondary">
           {tab === "overview" && (
             <>
               <p>{project.overview}</p>

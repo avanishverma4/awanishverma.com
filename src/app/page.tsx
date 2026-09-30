@@ -2,6 +2,7 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
 import { ResumeDialog } from "@/components/ResumeDialog";
+import { ScrollReveal } from "@/components/ScrollReveal";
 import {
   ContactSection,
   ExperienceSection,
@@ -32,6 +33,7 @@ export default function Home() {
       </main>
       <Footer />
       <ResumeDialog />
+      <ScrollReveal />
     </>
   );
 }

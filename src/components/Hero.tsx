@@ -1,8 +1,6 @@
-import Image from "next/image";
 import { profile, ui } from "@/content/site";
-import { button, container, eyebrow } from "./ui";
-
-const socialLink = "inline-flex min-h-11 items-center text-label-14 text-fg-secondary transition-colors hover:text-fg";
+import { HeroCanvas } from "./HeroCanvas";
+import { button, container, eyebrow, subtleLink } from "./ui";
 
 // Geist-style grid: one 1px-bordered frame split into cells.
 // Mobile stacks the cells; from lg the intro takes 8 of 12 columns and the facts column the rest.
@@ -60,7 +58,7 @@ export function Hero() {
               ["GitHub", profile.github],
               ["LinkedIn", profile.linkedin],
             ].map(([label, href]) => (
-              <a key={href} href={href} target="_blank" rel="noopener noreferrer" className={socialLink}>
+              <a key={href} href={href} target="_blank" rel="noopener noreferrer" className={subtleLink}>
                 {label}
                 <span className="sr-only">{ui.newTab}</span>
               </a>
@@ -68,71 +66,9 @@ export function Hero() {
           </div>
         </div>
 
-        <ScreenCanvas />
+        <HeroCanvas />
       </div>
     </section>
   );
 }
 
-// Vertical stagger per frame, like frames placed by hand on a canvas. Only OTP and Doctor home show below sm.
-const frameLayout = ["hidden sm:block", "hidden sm:block sm:mt-12", "sm:mt-4", "mt-10 sm:mt-16"];
-
-// Frames exported from the DOCTO Figma file, shown as on the Figma canvas: frame name above,
-// selection box and size badge on the selected frame. Light theme in both modes (.theme-light).
-function ScreenCanvas() {
-  const c = ui.hero.canvas;
-  return (
-    <figure className="border-t border-line lg:col-span-12">
-      <div className="theme-light design-canvas overflow-hidden px-6 pb-12 pt-5 sm:px-10 sm:pb-16">
-        <p className="font-mono text-label-12 text-fg-secondary">{c.page}</p>
-        <ul className="mx-auto mt-8 grid max-w-4xl grid-cols-2 items-start gap-6 sm:grid-cols-4 sm:gap-8">
-          {c.frames.map((frame, i) => (
-            <li key={frame.name} className={`group ${frameLayout[i]}`}>
-              <p
-                className={`mb-2 truncate text-label-12 transition-colors motion-reduce:transition-none ${
-                  frame.selected ? "text-accent-text" : "text-fg-secondary group-hover:text-accent-text"
-                }`}
-              >
-                {frame.name}
-              </p>
-              <div className="relative">
-                <Image
-                  src={frame.src}
-                  width={c.frameSize.width}
-                  height={c.frameSize.height}
-                  alt={frame.alt}
-                  sizes="(min-width: 1024px) 208px, (min-width: 640px) 22vw, 42vw"
-                  loading="eager"
-                  className="h-auto w-full shadow-small"
-                />
-                {/* Selection box with corner handles, as in a design tool. Decorative. */}
-                <span
-                  aria-hidden="true"
-                  className={`pointer-events-none absolute -inset-px border border-accent transition-opacity motion-reduce:transition-none ${
-                    frame.selected ? "opacity-100" : "opacity-0 group-hover:opacity-100"
-                  }`}
-                >
-                  {["-left-1 -top-1", "-right-1 -top-1", "-bottom-1 -left-1", "-bottom-1 -right-1"].map((pos) => (
-                    <span key={pos} className={`absolute size-2 border border-accent bg-card ${pos}`} />
-                  ))}
-                </span>
-              </div>
-              {frame.selected && (
-                <p className="mt-3 flex justify-center">
-                  <span className="rounded-sm bg-accent px-1.5 py-0.5 font-mono text-label-12 text-on-accent">{c.selectedBadge}</span>
-                </p>
-              )}
-            </li>
-          ))}
-        </ul>
-      </div>
-      <figcaption className="flex flex-wrap items-center justify-between gap-x-4 border-t border-line px-6 py-2 sm:px-8">
-        <span className="py-2 text-label-13 text-fg-secondary">{c.caption}</span>
-        <a href={c.href} target="_blank" rel="noopener noreferrer" className={socialLink}>
-          {c.linkLabel} <span aria-hidden="true">↗</span>
-          <span className="sr-only">{ui.newTab}</span>
-        </a>
-      </figcaption>
-    </figure>
-  );
-}

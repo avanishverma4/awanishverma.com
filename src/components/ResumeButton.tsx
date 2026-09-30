@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, type ReactNode } from "react";
+import { dialogIn } from "./motion";
 
 // Opens the single <dialog id="resume-dialog"> rendered by ResumeDialog.
 export function ResumeButton({ className, title, children }: { className: string; title?: string; children: ReactNode }) {
@@ -9,7 +10,11 @@ export function ResumeButton({ className, title, children }: { className: string
       type="button"
       title={title}
       aria-haspopup="dialog"
-      onClick={() => (document.getElementById("resume-dialog") as HTMLDialogElement | null)?.showModal()}
+      onClick={() => {
+        const dialog = document.getElementById("resume-dialog") as HTMLDialogElement | null;
+        dialog?.showModal();
+        dialogIn(dialog);
+      }}
       className={className}
     >
       {children}

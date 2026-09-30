@@ -16,7 +16,7 @@ function SkillItem({ skill }: { skill: Skill }) {
 function SkillGroupCard({ group, className = "" }: { group: SkillGroup; className?: string }) {
   const id = `skills-${slug(group.name)}`;
   return (
-    <section aria-labelledby={id} className={`${card} p-5 ${className}`}>
+    <section data-reveal aria-labelledby={id} className={`${card} p-5 ${className}`}>
       <h3 id={id} className="text-heading-16">
         {group.name}
       </h3>
@@ -35,7 +35,7 @@ export function SkillsSection() {
   return (
     <section id="skills" aria-labelledby="skills-heading" className={`${container} py-20 sm:py-24`}>
       <SectionHeader id="skills-heading" index={t.index} label={t.eyebrow} heading={t.heading} emphasis={t.headingEmphasis} />
-      <p className="max-w-2xl text-copy-16 text-fg-secondary">{t.intro}</p>
+      <p data-reveal className="max-w-2xl text-copy-16 text-fg-secondary">{t.intro}</p>
       <div className="mt-10 grid items-start gap-4 md:grid-cols-2">
         {/* The first (largest) group spans the left column; the rest stack beside it. */}
         {skillGroups.map((group, i) => (

@@ -14,7 +14,7 @@ export function SectionHeader({
   emphasis: string;
 }) {
   return (
-    <div className="mb-10 space-y-3">
+    <div data-reveal className="mb-10 space-y-3">
       <p className={eyebrow}>
         <span className="text-accent-text">{index}</span> {label}
       </p>

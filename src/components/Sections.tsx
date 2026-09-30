@@ -23,7 +23,7 @@ export function ExperienceSection() {
       <SectionHeader id="experience-heading" index={t.index} label={t.eyebrow} heading={t.heading} emphasis={t.headingEmphasis} />
       <ol className="divide-y divide-line border-y border-line">
         {experiences.map((exp, i) => (
-          <li key={exp.id}>
+          <li key={exp.id} data-reveal>
             {/* Native disclosure replaces the live site's JS accordion; the first role starts open. */}
             <details id={`experience-panel-${exp.id}`} open={i === 0} className="py-5">
               <summary className="flex min-h-11 cursor-pointer list-none flex-wrap items-baseline gap-x-4 gap-y-1 rounded-md [&::-webkit-details-marker]:hidden">
@@ -69,7 +69,7 @@ export function TestimonialsSection() {
       <SectionHeader id="testimonials-heading" index={t.index} label={t.eyebrow} heading={t.heading} emphasis={t.headingEmphasis} />
       <ul className="grid gap-4 md:grid-cols-2">
         {testimonials.map((item) => (
-          <li key={item.id}>
+          <li key={item.id} data-reveal>
             <figure className={`${card} h-full p-6`}>
               <blockquote className="text-copy-16 text-fg">“{item.quote}”</blockquote>
               <figcaption className="mt-4 text-label-14">
@@ -93,7 +93,7 @@ export function ContactSection() {
     <section id="contact" aria-labelledby="contact-heading" className={section}>
       <SectionHeader id="contact-heading" index={t.index} label={t.eyebrow} heading={t.heading} emphasis={t.headingEmphasis} />
       <div className="grid gap-10 lg:grid-cols-2">
-        <div className="space-y-6">
+        <div data-reveal className="space-y-6">
           <p className="max-w-xl text-copy-16 text-fg-secondary">{t.intro}</p>
           <div className={`${card} p-5`}>
             <h3 className="text-heading-14">
@@ -115,7 +115,7 @@ export function ContactSection() {
           </div>
           <p className="text-copy-14 text-fg-secondary">{profile.availability}</p>
         </div>
-        <div className="space-y-6">
+        <div data-reveal className="space-y-6">
           <ol className="space-y-4">
             {t.services.map((s, i) => (
               <li key={s.title} className="flex gap-4">

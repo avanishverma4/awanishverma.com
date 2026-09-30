@@ -559,3 +559,44 @@ Awanish said "Proceed" to replacing Behance-based case study images with Figma e
 **Check results** (real output)
 - `npm run build`: exit 0. `npm run typecheck`: exit 0. `npx eslint .`: exit 0.
 - Browser (fresh server): all 7 project cards load; the DOCTO (3), Water (2), and XpertOnline (2) gallery images load. Screenshot checked.
+
+### Micro-interactions and animation with GSAP (2026-09-30)
+
+Awanish asked for micro-interactions and animation where needed, using GSAP.
+
+**Dependencies:** `gsap` 3.15.0 and `@gsap/react` 2.1.2, pinned exact. API usage was checked against the installed `@gsap/react` README and `gsap/types` (`matchMedia`, `quickTo`, `ScrollTrigger.batch`). The chunk that includes GSAP and ScrollTrigger is 145 KB raw, 54 KB gzipped (measured in `.next/static/chunks`). It is loaded by the client components that use it.
+
+**Rules applied** (from the original prompt):
+- `useGSAP` for component effects.
+- Every animation is inside `gsap.matchMedia("(prefers-reduced-motion: no-preference)")` or checks `reducedMotion()` first.
+- Content stays visible without JavaScript: the server HTML contains no `opacity:0` or `visibility:hidden` inline styles (checked with curl, 0 matches).
+- No layout shift: CLS measured at 0 after load and scroll.
+- No opacity animation on the h1 or hero images.
+- Reveals animate `opacity` (not `autoAlpha`), so waiting content stays in the accessibility tree.
+
+| Where | Interaction | File |
+|---|---|---|
+| Sections | Scroll reveal: `[data-reveal]` elements (section headers, project cards, experience roles, skills intro and groups, testimonials, contact columns) ease up 24px as they enter. Only elements below the fold at load are prepared, so nothing on screen flickers. `ScrollTrigger.batch`, `once` | `ScrollReveal.tsx` (renders nothing, mounted once in `page.tsx`) |
+| Hero canvas | One selection box and "360 × 800" badge glide to the hovered frame and back to Homescreen on leave; the frame label turns accent. Under reduced motion the box jumps instantly (it is feedback, not motion). Without JavaScript, the per-frame server boxes and CSS hover still work | `HeroCanvas.tsx` (new client component, split from `Hero.tsx`) |
+| Hero canvas | Pointer parallax: the frame layer pans up to ±8/±6px with the cursor, like a design tool. Only for `(pointer: fine)` and no reduced motion; returns to rest on leave. `gsap.quickTo` | `HeroCanvas.tsx` |
+| Case study and CV dialogs | Panel eases in (opacity, 12px, scale 0.98) after `showModal()`; `clearProps` afterwards | `motion.ts` `dialogIn`, `Projects.tsx`, `ResumeButton.tsx` |
+| Case study tabs | Panel crossfades on tab change (not on first open) | `Projects.tsx` |
+| Project filter | Cards re-stagger in after a filter change (not on first render) | `Projects.tsx` |
+| Theme toggle | New icon rotates and scales in after each switch | `ThemeToggle.tsx` |
+| Mobile menu | Panel eases down on open (the `<details>` toggle event) | `MobileMenu.tsx` |
+| Project cards (CSS) | Cover image zooms to 105% on hover (`motion-safe:`) | `Projects.tsx` |
+| Buttons (CSS) | Press feedback `motion-safe:active:scale-95` | `ui.ts` `button()` |
+
+Shared setup is in `src/components/motion.ts`: plugin registration, `MOTION_OK`, `reducedMotion()`, `dialogIn()`. One-shot tweens triggered by clicks (`dialogIn`, the mobile-menu open) call `gsap` directly: they finish in under 0.3s and need no cleanup. Longer-lived work (ScrollTriggers, `quickTo`, and listeners) lives inside `useGSAP` contexts. HeroCanvas wraps hover tweens in `contextSafe` at event time (the react-hooks `refs` lint rule rejects wrapping during render).
+
+**Check results** (real output)
+- `npm run build`: exit 0. `npm run typecheck`: exit 0. `npx eslint .`: exit 0 (after moving the `contextSafe` call to event time).
+- Browser, production server, tab in front (see note), 1440px:
+  - The selection box starts on Homescreen (offset −1px, the border). On a real mouse hover over `splash` it moves exactly onto the frame and the label turns `#0064e2`. On leave it returns to Homescreen.
+  - The parallax layer moved to `translate(-4.8px, -0.3px)` under the pointer and returned to identity on leave.
+  - Scroll reveal: 25 targets, all at opacity 1 after scrolling. CLS 0.
+  - Case-study dialog and tab panel end at opacity 1 with no transform. Filter (3 cards, then 7) ends at opacity 1. The theme icon ends at the identity transform. The mobile menu ends at opacity 1.
+  - No console errors or warnings captured.
+- Reduced motion (`prefers-reduced-motion: reduce` emulated): 0 targets hidden at load. The selection box jumps instantly. No parallax transform.
+- axe: 0 violations in dark and light.
+- **Test note:** CDP input events and GSAP's ticker both need the tab to render frames. The automated tab sometimes rendered 0 frames per second in the background: tool calls timed out and tweens looked frozen mid-way. Every result above was taken after `Page.bringToFront`, with a frame-rate probe (31–51 frames/s).

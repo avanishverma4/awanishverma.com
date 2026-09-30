@@ -1,7 +1,8 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
+import { useRef, useSyncExternalStore } from "react";
 import { themeStorageKey, ui } from "@/content/site";
+import { reducedMotion, gsap, useGSAP } from "./motion";
 import { iconButton } from "./ui";
 
 function subscribe(onChange: () => void) {
@@ -16,9 +17,26 @@ export function ThemeToggle() {
   // Server snapshot matches the SSR default (dark) so hydration never mismatches.
   const dark = useSyncExternalStore(subscribe, isDark, () => true);
   const next = dark ? "light" : "dark";
+  const button = useRef<HTMLButtonElement>(null);
+  const toggled = useRef(false);
+
+  // Rotate the new icon in after each switch; not on first render or under reduced motion.
+  useGSAP(
+    () => {
+      if (!toggled.current) {
+        toggled.current = true;
+        return;
+      }
+      const icon = button.current?.querySelector("svg");
+      if (!icon || reducedMotion()) return;
+      gsap.fromTo(icon, { rotate: -90, scale: 0.6 }, { rotate: 0, scale: 1, duration: 0.45, ease: "back.out(2)" });
+    },
+    { dependencies: [dark] },
+  );
 
   return (
     <button
+      ref={button}
       type="button"
       aria-label={`${ui.header.switchTo}${next} mode`}
       onClick={() => {

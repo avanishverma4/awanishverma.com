@@ -2,7 +2,7 @@
 // Class strings instead of wrapper components, so markup keeps its native element.
 
 const buttonBase =
-  "inline-flex min-h-11 items-center justify-center gap-2 rounded-md px-4 text-button-14 transition-colors sm:min-h-10 disabled:pointer-events-none disabled:opacity-50";
+  "inline-flex min-h-11 items-center justify-center gap-2 rounded-md px-4 text-button-14 transition-[color,background-color,border-color,opacity,transform] motion-safe:active:scale-95 sm:min-h-10 disabled:pointer-events-none disabled:opacity-50";
 
 const buttonVariants = {
   primary: "bg-inverse text-on-inverse hover:opacity-85",
@@ -28,3 +28,6 @@ export const eyebrow = "font-mono text-label-12 uppercase tracking-widest text-f
 export const container = "mx-auto w-full max-w-page px-4 sm:px-6";
 
 export const textLink = "text-accent-text underline-offset-4 hover:underline";
+
+// Quiet secondary link with a 44px touch target (hero links, captions).
+export const subtleLink = "inline-flex min-h-11 items-center text-label-14 text-fg-secondary transition-colors hover:text-fg";
