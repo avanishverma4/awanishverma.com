@@ -447,3 +447,5 @@ Awanish's instruction: "Stick to UI/UX Designer, and rest do as you see fit."
   - gallery images load with descriptive alt text
   - the CV shows no "Impact" lines and the title "UI/UX Designer"
 - axe: 0 violations in dark and light.
+
+- 2026-09-30: Awanish: leave the domain connection for now. `siteUrl` stays `https://awanishverma.com`; canonical/OG links point to the parked page until the domain is connected.
