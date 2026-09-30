@@ -1,0 +1,61 @@
+import type { Metadata, Viewport } from "next";
+import { Google_Sans } from "next/font/google";
+import { profile, siteUrl, ui } from "@/content/site";
+import "./globals.css";
+
+const googleSans = Google_Sans({ subsets: ["latin"], variable: "--font-google-sans" });
+
+export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
+  title: ui.meta.title,
+  description: ui.meta.description,
+  applicationName: profile.name,
+  authors: [{ name: profile.name, url: siteUrl }],
+  creator: profile.name,
+  publisher: profile.name,
+  keywords: ui.meta.keywords,
+  category: "Design",
+  alternates: { canonical: "/" },
+  robots: { index: true, follow: true },
+  formatDetection: { telephone: false, address: false, email: false },
+  openGraph: {
+    type: "profile",
+    title: ui.meta.title,
+    description: ui.meta.description,
+    url: "/",
+    siteName: ui.meta.siteName,
+    locale: "en_US",
+    firstName: "Awanish",
+    lastName: "Verma",
+    username: "awanishverma",
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: ui.meta.twitter,
+    creator: ui.meta.twitter,
+    title: ui.meta.title,
+    description: ui.meta.description,
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#fafafa" },
+    { media: "(prefers-color-scheme: dark)", color: "#050505" },
+  ],
+  colorScheme: "dark light",
+};
+
+// Runs before first paint: saved choice wins, otherwise follow the OS setting.
+const themeScript = `(function(){try{var t=localStorage.getItem("av_portfolio_theme");var d=t?t==="dark":matchMedia("(prefers-color-scheme: dark)").matches;document.documentElement.classList.toggle("dark",d)}catch(e){}})()`;
+
+export default function RootLayout({ children }: LayoutProps<"/">) {
+  return (
+    <html lang="en" className={`dark ${googleSans.variable}`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
+      <body className="min-h-screen font-sans antialiased">{children}</body>
+    </html>
+  );
+}

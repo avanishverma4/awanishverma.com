@@ -225,3 +225,37 @@ Not comparable: there is no repository. The Astro folder differs from the live s
 - **No repository** (resolved: Awanish chose a rebuild, Chunk 1R).
 - **Domain not live:** `https://awanishverma.com` currently serves a parked page that redirects to `/lander`, and `www` returns an empty 200. The live site's canonical is `https://www.awanishverma.com` (with `www`), while this redesign targets `https://awanishverma.com`.
 - Node v25.9.0 is a current release, not LTS. Recorded for Chunk 3.
+
+---
+
+## Rebuild (2026-09-30, Chunk 1R)
+
+A fresh Next.js app was created with `create-next-app@16.3.7` (App Router, TypeScript, Tailwind, ESLint, `src/` directory, npm). The live site was recreated from the content in this audit and `docs/live-site-data.json`. File map:
+
+| Live section | Anchor | File |
+|---|---|---|
+| Skip link, page composition | `#main-content` | `src/app/page.tsx` |
+| Header + nav + theme toggle + CV button | `#main-header` | `src/components/Header.tsx`, `ThemeToggle.tsx`, `ResumeButton.tsx` |
+| Hero | `#hero`, `#hero-heading` | `src/components/Hero.tsx` |
+| Projects + case study dialog | `#projects`, `#projects-heading` | `src/components/Sections.tsx` (`ProjectsSection`), `src/components/Projects.tsx` |
+| Experience | `#experience`, `#experience-heading` | `Sections.tsx` (`ExperienceSection`) |
+| Skills | `#skills`, `#skills-heading`, the three group IDs unchanged | `Sections.tsx` (`SkillsSection`) |
+| Testimonials | `#testimonials`, `#testimonials-heading` | `Sections.tsx` (`TestimonialsSection`) |
+| Contact | `#contact`, `#contact-heading` | `Sections.tsx` (`ContactSection`) |
+| Footer | `#footer-heading` | `src/components/Footer.tsx` |
+| CV dialog | `#resume-dialog`, `#resume-modal-title` | `src/components/ResumeDialog.tsx` |
+| Shared section heading | — | `src/components/SectionIntro.tsx` |
+| 404 / error / global error | — | `src/app/not-found.tsx`, `error.tsx`, `global-error.tsx` |
+| Metadata, icons, OG, manifest, robots, sitemap | — | `src/app/layout.tsx`, `icon.png`, `apple-icon.png`, `opengraph-image.png`, `twitter-image.png` (+ `.alt.txt`), `manifest.ts`, `robots.ts`, `sitemap.ts` |
+
+Content location: `src/content/site.ts`. All copy lives there.
+
+Not recreated (see Removals in PROJECT_STATE):
+
+- the token sandbox
+- Lenis smooth scrolling
+- the scroll progress bar
+- Motion animations
+- the skill filter and search
+- the image lightbox
+- the "Reference" digest on error pages
