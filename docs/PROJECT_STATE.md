@@ -89,3 +89,54 @@ Audit: [docs/AUDIT.md](./AUDIT.md). Live site data snapshot: [docs/live-site-dat
 
 **Check results**
 - No build check in this chunk (docs only).
+
+---
+
+### Awanish's decisions (2026-09-30, between chunks 2 and 3)
+
+- Hero image: the DOCTO hi-fi screens (recommended crop in HERO_IMAGE.md). I take the choice as confirmation that he may publish them.
+- Token sandbox: remove completely. Verified with `grep -rniE "sandbox|token-|av_portfolio_tokens|accent_cache|Design System Generator" src/ next.config.ts README.md`: no sandbox code or keys remain. The only hit is unrelated case-study copy ("Token-driven theming…"). The 404 copy no longer mentions it (changed in 1R). AUDIT.md still describes the live sandbox as a historical record, since it is read-only.
+
+### Chunk 3: foundation (2026-09-30)
+
+**Versions** (pinned exact in package.json, checked with `npm view` on 2026-09-30)
+
+| Package | Latest on npm | Installed | Note |
+|---|---|---|---|
+| next | 16.3.7 | 16.3.7 | |
+| react / react-dom | 19.3.0 | 19.3.0 | next peer `^19.0.0` |
+| typescript | 7.0.2 | **6.0.3** | see Decisions |
+| @types/react / @types/react-dom | 19.3.0 | 19.3.0 | |
+| @types/node | 26.6.3 | **24.19.0** | matches Vercel's default Node 24 LTS |
+| tailwindcss / @tailwindcss/postcss | 4.3.3 | 4.3.3 | |
+| eslint | 10.11.0 | **9.39.5** | see Decisions |
+| eslint-config-next | 16.3.7 | 16.3.7 | |
+| gsap / @gsap/react | 3.15.0 / 2.1.2 | not installed | Chunk 5 decides |
+
+Node: local v25.9.0. Next 16.3.7 requires `>=20.9.0`, so the requirement is met.
+
+**Decisions**
+- TypeScript 6.0.3, not 7.0.2. Next 16.3.7 supports TS 7 through its default CLI checker (`node_modules/next/dist/docs/01-app/03-api-reference/05-config/01-next-config-js/useTypeScriptCli.md`). But `eslint-config-next/typescript` depends on typescript-eslint, whose peer range is `typescript >=4.8.4 <6.1.0`, and TS 7 ships no JavaScript API (its `package.json` main export is only `lib/version.cjs`). 6.0.3 is the newest version all tools support. Revisit when typescript-eslint supports 7.
+- ESLint 9.39.5, not 10.11.0. `eslint-plugin-react` (peer up to `^9.7`), `eslint-plugin-import` (up to `^9`), and `eslint-plugin-jsx-a11y` (up to `^9`) are bundled by eslint-config-next and do not declare ESLint 10 support.
+- No major version of Next.js or Tailwind was crossed (already 16 and 4), so no upgrade guide or codemod applied. The React bump was a minor release (19.2.8 → 19.3.0). TS 5 → 6: the tsconfig uses `moduleResolution: bundler` and `target: ES2017`, and nothing needed changing (tsc passes).
+- **Tokens:** `src/app/globals.css`.
+  - Layer 1 holds the raw Geist scales per theme (`:root` light, `.dark`). The values were read from vercel.com/geist/colors CSS: gray 100–1000, background 100/200, blue 700/900.
+  - Layer 2 holds the semantic Tailwind tokens in `@theme inline`: `page`, `subtle`, `card`, `card-hover`, `card-active`, `nav`, `line`, `line-subtle`, `line-hover`, `line-strong`, `fg`, `fg-secondary`, `fg-muted`, `accent`, `accent-text`, `accent-contrast`, `inverse`, `on-inverse`.
+  - Type scale: Geist heading 56–14, copy 20–13, label 14–12, and button 14 as `text-*` utilities (values from the Geist typography CSS).
+  - Radius: 4/6/12/16px (Geist material 6px base, 12px raised).
+  - Shadows: `shadow-small`, `-medium`, `-menu`, `-modal`.
+  - Spacing: Tailwind's 4px unit, plus `--container-page: 75rem`.
+  - Focus: a 2px accent outline, offset 2px.
+- Existing class names (`bg-page`, `text-fg`, `border-line`…) were kept as the semantic token names. The whole site therefore switched to the Geist palette with no markup changes.
+- Adaptation, not a copy: dark `--background-100` is `#0a0a0a` (Geist uses `#000`), for slightly softer contrast against gray-100 surfaces. Text only uses gray-900 and gray-1000, since gray-800 (`#7d7d7d`) on white is about 4.1:1, below AA.
+  - Contrast (computed): gray-900 `#4d4d4d` on `#fff` is about 8.4:1 and `#a0a0a0` on `#0a0a0a` about 7.9:1. Accent text `#0064e2` on `#fff` is about 5.3:1 and `#50a8ff` on `#0a0a0a` about 7.9:1. White on `#0070f7` is about 4.6:1.
+- Fonts: Geist and Geist_Mono through `next/font/google` (variables `--font-geist-sans`/`--font-geist-mono`). This removes the Google Sans fallback warning.
+- Theme behavior kept: light and dark with the toggle, following the OS by default.
+- Content constants added to `src/content/site.ts`: `totalExperience = "11 years"` and `uiuxExperience = "8 years"`.
+- Unused dependency removal: none. All installed packages are used (next/react, and TypeScript/ESLint/Tailwind tooling). The audit had no removable list.
+- The build warns that Next.js ignored `/Users/awanishverma/package-lock.json`, a lockfile in the home folder outside this repo. Left untouched because it is not part of this project. Awanish may delete it if it's stale.
+
+**Check results** (real output)
+- `npm run build`: exit 0, `✓ Compiled successfully`, 10 static routes. Only warning: the home-directory lockfile note above.
+- `npx tsc --noEmit`: exit 0.
+- `npx eslint .`: exit 0, no output.

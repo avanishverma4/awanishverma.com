@@ -1,58 +1,158 @@
 @import "tailwindcss";
 
+/*
+ * Design tokens, adapted from Vercel Geist (vercel.com/geist, values read 2026-09-30).
+ *
+ * Layer 1: raw Geist scales (--gray-*, --background-*, --blue-*), redefined per theme.
+ * Layer 2: semantic Tailwind tokens in @theme (bg-page, text-fg, border-line, text-heading-48 …).
+ * Components use layer 2 only.
+ *
+ * Geist gray roles: 100–300 component backgrounds (default, hover, active),
+ * 400–600 borders (default, hover, active), 700–800 high-contrast fills, 900–1000 text.
+ * Only 900 and 1000 are used for text: they pass WCAG AA on both backgrounds.
+ */
+
 /* Theme is a `dark` class on <html>, set before paint by the inline script in layout.tsx. */
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Colour values copied from the live site's stylesheet. */
 :root {
-  --bg-page: #fafafa;
-  --bg-card: #fff;
-  --bg-card-hover: #f4f4f5;
-  --bg-subtle: #f4f4f5;
-  --border-main: #e4e4e7;
-  --border-subtle: #ececee;
-  --text-primary: #09090b;
-  --text-secondary: #52525b;
-  --text-muted: #64646d;
-  --accent: #3b82f6;
-  --accent-text: #1469f4;
-  --accent-solid: #1e6ff5;
-  --accent-contrast: #fff;
-  --nav-surface: #fafafad9;
+  --background-100: #fff;
+  --background-200: #fafafa;
+  --gray-100: #f2f2f2;
+  --gray-200: #ebebeb;
+  --gray-300: #e6e6e6;
+  --gray-400: #eaeaea;
+  --gray-500: #c9c9c9;
+  --gray-600: #a8a8a8;
+  --gray-900: #4d4d4d;
+  --gray-1000: #171717;
+  --blue-700: #0070f7;
+  --blue-900: #0064e2;
+  --shadow-color: #0000000a;
   color-scheme: light;
 }
 
 .dark {
-  --bg-page: #050505;
-  --bg-card: #080808;
-  --bg-card-hover: #121212;
-  --bg-subtle: #0c0c0c;
-  --border-main: #ffffff1f;
-  --border-subtle: #ffffff12;
-  --text-primary: #f5f5f5;
-  --text-secondary: #a9a9a9;
-  --text-muted: #8b8b8b;
-  --accent-text: #3b82f6;
-  --nav-surface: #0a0a0cd9;
+  --background-100: #0a0a0a;
+  --background-200: #000;
+  --gray-100: #1a1a1a;
+  --gray-200: #1f1f1f;
+  --gray-300: #292929;
+  --gray-400: #2e2e2e;
+  --gray-500: #454545;
+  --gray-600: #878787;
+  --gray-900: #a0a0a0;
+  --gray-1000: #ededed;
+  --blue-700: #0071f6;
+  --blue-900: #50a8ff;
+  --shadow-color: #00000066;
   color-scheme: dark;
 }
 
 @theme inline {
-  --font-sans: var(--font-google-sans), system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --color-page: var(--bg-page);
-  --color-card: var(--bg-card);
-  --color-card-hover: var(--bg-card-hover);
-  --color-subtle: var(--bg-subtle);
-  --color-line: var(--border-main);
-  --color-line-subtle: var(--border-subtle);
-  --color-fg: var(--text-primary);
-  --color-fg-secondary: var(--text-secondary);
-  --color-fg-muted: var(--text-muted);
-  --color-accent: var(--accent);
-  --color-accent-text: var(--accent-text);
-  --color-accent-solid: var(--accent-solid);
-  --color-accent-contrast: var(--accent-contrast);
-  --color-nav: var(--nav-surface);
+  /* Fonts: Geist Sans and Geist Mono, loaded with next/font in layout.tsx. */
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Surfaces */
+  --color-page: var(--background-100);
+  --color-subtle: var(--background-200);
+  --color-card: var(--background-100);
+  --color-card-hover: var(--gray-100);
+  --color-card-active: var(--gray-200);
+  --color-nav: color-mix(in srgb, var(--background-100) 85%, transparent);
+
+  /* Borders (1px everywhere) */
+  --color-line: var(--gray-400);
+  --color-line-subtle: var(--gray-300);
+  --color-line-hover: var(--gray-500);
+  --color-line-strong: var(--gray-600);
+
+  /* Text */
+  --color-fg: var(--gray-1000);
+  --color-fg-secondary: var(--gray-900);
+  --color-fg-muted: var(--gray-900);
+
+  /* Accent: blue-700 for fills and focus, blue-900 for text on the page background */
+  --color-accent: var(--blue-700);
+  --color-accent-solid: var(--blue-700);
+  --color-accent-text: var(--blue-900);
+  --color-accent-contrast: #fff;
+
+  /* Inverted high-contrast fill for primary actions (Geist primary button) */
+  --color-inverse: var(--gray-1000);
+  --color-on-inverse: var(--background-100);
+}
+
+@theme {
+  /* Spacing: Tailwind's 4px base unit (p-1 = 4px), matching Geist's 4px grid. */
+  --spacing: 0.25rem;
+  --container-page: 75rem;
+
+  /* Radius: Geist material-base 6px, material-medium 12px, fullscreen 16px. */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+
+  /* Shadows: Geist small / medium / menu / modal, kept minimal. */
+  --shadow-small: 0 2px 2px var(--shadow-color);
+  --shadow-medium: 0 2px 2px var(--shadow-color), 0 8px 8px -8px var(--shadow-color);
+  --shadow-menu: 0 1px 1px var(--shadow-color), 0 4px 8px -4px var(--shadow-color), 0 16px 24px -8px var(--shadow-color);
+  --shadow-modal: 0 1px 1px var(--shadow-color), 0 8px 16px -4px var(--shadow-color), 0 24px 32px -8px var(--shadow-color);
+
+  /* Type scale: Geist heading / copy / label / button styles as text-* utilities. */
+  --text-heading-56: 56px;
+  --text-heading-56--line-height: 56px;
+  --text-heading-56--letter-spacing: -3.36px;
+  --text-heading-56--font-weight: 600;
+  --text-heading-48: 48px;
+  --text-heading-48--line-height: 56px;
+  --text-heading-48--letter-spacing: -2.88px;
+  --text-heading-48--font-weight: 600;
+  --text-heading-40: 40px;
+  --text-heading-40--line-height: 48px;
+  --text-heading-40--letter-spacing: -2.4px;
+  --text-heading-40--font-weight: 600;
+  --text-heading-32: 32px;
+  --text-heading-32--line-height: 40px;
+  --text-heading-32--letter-spacing: -1.28px;
+  --text-heading-32--font-weight: 600;
+  --text-heading-24: 24px;
+  --text-heading-24--line-height: 32px;
+  --text-heading-24--letter-spacing: -0.96px;
+  --text-heading-24--font-weight: 600;
+  --text-heading-20: 20px;
+  --text-heading-20--line-height: 26px;
+  --text-heading-20--letter-spacing: -0.4px;
+  --text-heading-20--font-weight: 600;
+  --text-heading-16: 16px;
+  --text-heading-16--line-height: 24px;
+  --text-heading-16--letter-spacing: -0.32px;
+  --text-heading-16--font-weight: 600;
+  --text-heading-14: 14px;
+  --text-heading-14--line-height: 20px;
+  --text-heading-14--letter-spacing: -0.28px;
+  --text-heading-14--font-weight: 600;
+  --text-copy-20: 20px;
+  --text-copy-20--line-height: 36px;
+  --text-copy-18: 18px;
+  --text-copy-18--line-height: 28px;
+  --text-copy-16: 16px;
+  --text-copy-16--line-height: 24px;
+  --text-copy-14: 14px;
+  --text-copy-14--line-height: 20px;
+  --text-copy-13: 13px;
+  --text-copy-13--line-height: 18px;
+  --text-label-14: 14px;
+  --text-label-14--line-height: 20px;
+  --text-label-13: 13px;
+  --text-label-13--line-height: 16px;
+  --text-label-12: 12px;
+  --text-label-12--line-height: 16px;
+  --text-button-14: 14px;
+  --text-button-14--line-height: 20px;
+  --text-button-14--font-weight: 500;
 }
 
 html {
@@ -67,17 +167,18 @@ html {
 }
 
 body {
-  background: var(--bg-page);
-  color: var(--text-primary);
+  background: var(--background-100);
+  color: var(--gray-1000);
 }
 
+/* Focus: Geist-style 2px ring in the accent colour, offset from the element. */
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--blue-700);
   outline-offset: 2px;
 }
 
 dialog::backdrop {
-  background: rgb(0 0 0 / 0.7);
+  background: rgb(0 0 0 / 0.6);
 }
 
 /* Printing the CV: show only the open resume dialog. */

@@ -1,6 +1,10 @@
 // Site content, rebuilt verbatim from the live site's data module (docs/live-site-data.json).
 // Every visible string on the site lives here; components only read from it.
 
+// Fixed facts supplied by Awanish. Updated by hand; never state any other experience length.
+export const totalExperience = "11 years";
+export const uiuxExperience = "8 years";
+
 export type Project = {
   id: string;
   title: string;

@@ -1,9 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Google_Sans } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import { profile, siteUrl, ui } from "@/content/site";
 import "./globals.css";
 
-const googleSans = Google_Sans({ subsets: ["latin"], variable: "--font-google-sans" });
+const geistSans = Geist({ subsets: ["latin"], variable: "--font-geist-sans" });
+const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -40,8 +41,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#fafafa" },
-    { media: "(prefers-color-scheme: dark)", color: "#050505" },
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
   ],
   colorScheme: "dark light",
 };
@@ -51,7 +52,7 @@ const themeScript = `(function(){try{var t=localStorage.getItem("av_portfolio_th
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`dark ${googleSans.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`dark ${geistSans.variable} ${geistMono.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
