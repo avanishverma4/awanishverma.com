@@ -71,3 +71,21 @@ Audit: [docs/AUDIT.md](./AUDIT.md). Live site data snapshot: [docs/live-site-dat
   - gallery images load
   - no horizontal scroll at 1905px or 375px
   - 768/1440 not checked, keyboard walkthrough not run (Chunk 9 covers both)
+
+---
+
+### Chunk 2: hero image (2026-09-30)
+
+**Decisions**
+- Behance project pages return 403 to curl, so they were read with Chrome (browser-harness). The images were fetched to the scratchpad only.
+- Recommended hero: the first row of the DOCTO (Doctor-Patient Management App) hi-fi screens. Details are in [HERO_IMAGE.md](./HERO_IMAGE.md).
+
+**Content gaps**
+- No desktop dashboard exists in the linked Behance projects. All UI is mobile.
+- XpertOnline was a four-person group project related to Apollo Hospital. Awanish needs to confirm how to present it.
+- The Plant App boards use lorem ipsum.
+- The live impact metrics are not backed by the Behance content reviewed.
+- Waiting on Awanish: the image choice and publishing permission.
+
+**Check results**
+- No build check in this chunk (docs only).
