@@ -470,11 +470,17 @@ export const ui = {
     primaryCta: "View selected work",
     secondaryCta: "Open Behance profile",
     connect: "Connect",
-    // Art direction: four screens from 640px up, two larger screens below it.
-    image: {
-      desktop: { src: "/images/docto-hi-fi-screens.jpg", width: 1716, height: 840 },
-      mobile: { src: "/images/docto-hi-fi-screens-mobile.jpg", width: 858, height: 826 },
-      alt: "Screens from the DOCTO doctor appointment app, including OTP validation and a doctor home screen listing today's and missed appointments.",
+    // Hero canvas: the DOCTO screens laid out as named frames, like a design file.
+    canvas: {
+      page: "DOCTO / High-fidelity screens",
+      frameSize: { width: 348, height: 734 },
+      selectedBadge: "Hi-fi",
+      frames: [
+        { name: "Splash", src: "/images/docto/splash.jpg", alt: "DOCTO splash screen: the app wordmark and a doctor illustration on blue." },
+        { name: "Login", src: "/images/docto/login.jpg", alt: "Login screen with a 10-digit mobile number field, a Continue button, and Google, Facebook, and Twitter sign-in." },
+        { name: "OTP validation", src: "/images/docto/otp.jpg", alt: "OTP validation screen with six code boxes and a Validate OTP button." },
+        { name: "Doctor home", src: "/images/docto/home.jpg", alt: "Doctor home screen: a greeting, 12 of 26 appointments, today's appointment cards, and a missed appointments list.", selected: true },
+      ],
       caption: "DOCTO, Doctor-Patient Management App: high-fidelity screens.",
       linkLabel: "View case study",
       href: projects.find((p) => p.id === "project-4")?.liveUrl ?? profile.behance,

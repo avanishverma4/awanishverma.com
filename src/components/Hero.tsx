@@ -1,4 +1,4 @@
-import { getImageProps } from "next/image";
+import Image from "next/image";
 import { profile, ui } from "@/content/site";
 import { button, container, eyebrow } from "./ui";
 
@@ -8,11 +8,6 @@ const socialLink = "inline-flex min-h-11 items-center text-label-14 text-fg-seco
 // Mobile stacks the cells; from lg the intro takes 8 of 12 columns and the facts column the rest.
 export function Hero() {
   const t = ui.hero;
-  const common = { alt: t.image.alt, sizes: "(min-width: 1200px) 1150px, calc(100vw - 34px)" };
-  const { props: desktop } = getImageProps({ ...common, ...t.image.desktop });
-  const {
-    props: { srcSet: mobileSrcSet, ...img },
-  } = getImageProps({ ...common, ...t.image.mobile, loading: "eager", fetchPriority: "high" });
 
   return (
     <section id="hero" aria-labelledby="hero-heading" className={`${container} pb-20 pt-10 sm:pb-24 sm:pt-16`}>
@@ -73,23 +68,71 @@ export function Hero() {
           </div>
         </div>
 
-        <figure className="border-t border-line lg:col-span-12">
-          <div className="bg-media">
-            <picture>
-              <source media="(min-width: 640px)" srcSet={desktop.srcSet} sizes={desktop.sizes} width={desktop.width} height={desktop.height} />
-              {/* eslint-disable-next-line jsx-a11y/alt-text -- alt comes from getImageProps */}
-              <img {...img} srcSet={mobileSrcSet} className="h-auto w-full" />
-            </picture>
-          </div>
-          <figcaption className="flex flex-wrap items-center justify-between gap-x-4 border-t border-line px-6 py-2 sm:px-8">
-            <span className="py-2 text-label-13 text-fg-secondary">{t.image.caption}</span>
-            <a href={t.image.href} target="_blank" rel="noopener noreferrer" className={socialLink}>
-              {t.image.linkLabel} <span aria-hidden="true">↗</span>
-              <span className="sr-only">{ui.newTab}</span>
-            </a>
-          </figcaption>
-        </figure>
+        <ScreenCanvas />
       </div>
     </section>
+  );
+}
+
+// Vertical stagger per frame, like frames placed by hand on a canvas. Only OTP and Doctor home show below sm.
+const frameLayout = ["hidden sm:block", "hidden sm:block sm:mt-12", "sm:mt-4", "mt-10 sm:mt-16"];
+
+// The DOCTO screens as named frames on a dot-grid canvas, with one frame shown as selected.
+// The canvas keeps the light theme in both modes (.theme-light), because the screens are light UI.
+function ScreenCanvas() {
+  const c = ui.hero.canvas;
+  return (
+    <figure className="border-t border-line lg:col-span-12">
+      <div className="theme-light design-canvas overflow-hidden px-6 pb-12 pt-5 sm:px-10 sm:pb-16">
+        <p className="font-mono text-label-12 text-fg-secondary">{c.page}</p>
+        <ul className="mx-auto mt-8 grid max-w-4xl grid-cols-2 items-start gap-6 sm:grid-cols-4 sm:gap-8">
+          {c.frames.map((frame, i) => (
+            <li key={frame.name} className={`group ${frameLayout[i]}`}>
+              <p
+                className={`mb-2 truncate text-label-12 transition-colors motion-reduce:transition-none ${
+                  frame.selected ? "text-accent-text" : "text-fg-secondary group-hover:text-accent-text"
+                }`}
+              >
+                {frame.name}
+              </p>
+              <div className="relative">
+                <Image
+                  src={frame.src}
+                  width={c.frameSize.width}
+                  height={c.frameSize.height}
+                  alt={frame.alt}
+                  sizes="(min-width: 1024px) 200px, (min-width: 640px) 22vw, 42vw"
+                  loading="eager"
+                  className="device-clip h-auto w-full shadow-medium"
+                />
+                {/* Selection box with corner handles, as in a design tool. Decorative. */}
+                <span
+                  aria-hidden="true"
+                  className={`pointer-events-none absolute -inset-2 border border-accent transition-opacity motion-reduce:transition-none ${
+                    frame.selected ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+                  }`}
+                >
+                  {["-left-1 -top-1", "-right-1 -top-1", "-bottom-1 -left-1", "-bottom-1 -right-1"].map((pos) => (
+                    <span key={pos} className={`absolute size-2 border border-accent bg-card ${pos}`} />
+                  ))}
+                </span>
+              </div>
+              {frame.selected && (
+                <p className="mt-4 flex justify-center">
+                  <span className="rounded-sm bg-accent px-1.5 py-0.5 font-mono text-label-12 text-on-accent">{c.selectedBadge}</span>
+                </p>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <figcaption className="flex flex-wrap items-center justify-between gap-x-4 border-t border-line px-6 py-2 sm:px-8">
+        <span className="py-2 text-label-13 text-fg-secondary">{c.caption}</span>
+        <a href={c.href} target="_blank" rel="noopener noreferrer" className={socialLink}>
+          {c.linkLabel} <span aria-hidden="true">↗</span>
+          <span className="sr-only">{ui.newTab}</span>
+        </a>
+      </figcaption>
+    </figure>
   );
 }

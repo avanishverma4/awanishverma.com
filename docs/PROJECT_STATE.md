@@ -498,3 +498,21 @@ Awanish asked for a redesign of the hero. `src/components/Hero.tsx` now uses a G
 - `npm run build`: exit 0. `npm run typecheck`: exit 0. `npx eslint .`: exit 0.
 - Browser: no horizontal scroll at 375/768/1440, one h1. The image loads at 375 (mobile crop, w=384) and 1440 (desktop crop, w=1200). Screenshots checked at all three widths.
 - axe: 0 violations in dark and light.
+
+### Hero image redesign: design canvas (2026-09-30)
+
+Awanish asked for a more creative hero image. The flat screenshot strip is replaced by `ScreenCanvas` (in `src/components/Hero.tsx`), which presents the DOCTO screens the way a designer lays them out in a design file:
+
+- **Canvas:** dot-grid background (`.design-canvas` in globals.css) with a page label ("DOCTO / High-fidelity screens"). It keeps the light theme in both modes (`.theme-light`), because the screens are light UI.
+- **Frames:** four separate frames, each labelled with the screen's own name (Splash, Login, OTP validation, Doctor home) and staggered vertically, as if placed by hand.
+- **Selection:** "Doctor home" is shown selected, with an accent selection box, corner handles, and a "Hi-fi" badge. The other frames show the same selection box on hover (CSS only, no JavaScript; transitions are off under reduced motion). The selection box is decorative (`aria-hidden`).
+- **Mobile:** below 640px only OTP validation and Doctor home show, so they stay legible.
+- **Images:** four phone crops cut from the existing DOCTO crop at measured bezel bounds (348×734 each, found by a pixel scan). Saved as `public/images/docto/{splash,login,otp,home}.jpg`. Corners are clipped with `.device-clip` (12% / 5.7% radius). Behance's largest version is 1720px wide, so 348px per phone is the maximum available; frames display at about 200px (roughly 1.7× density).
+- **Alt text:** each frame has its own alt text describing that screen.
+- **Tokens:** added `--color-on-accent` (white on blue-700, about 4.6:1).
+- **Removed:** the old `docto-hi-fi-screens.jpg` and `-mobile.jpg` (no longer used). README updated.
+
+**Check results** (real output)
+- `npm run build`: exit 0. `npm run typecheck`: exit 0. `npx eslint .`: exit 0.
+- Browser: no horizontal scroll at 1440/768/375. All visible frame images load (4 at 1440 and 768; 2 at 375, with the other 2 hidden). The hover selection was seen working in the 1440 capture.
+- axe: 0 violations in dark and light.

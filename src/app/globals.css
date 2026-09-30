@@ -77,6 +77,7 @@
   /* Accent: blue-700 for fills and focus, blue-900 for text on the page background */
   --color-accent: var(--blue-700);
   --color-accent-text: var(--blue-900);
+  --color-on-accent: #fff;
 
   /* Fixed white backing for screenshots exported on white, in both themes */
   --color-media: #fff;
@@ -177,6 +178,18 @@ body {
 :focus-visible {
   outline: 2px solid var(--blue-700);
   outline-offset: 2px;
+}
+
+/* Hero design canvas: a light dot grid like a design tool's canvas. Used inside .theme-light. */
+.design-canvas {
+  background-color: var(--background-100);
+  background-image: radial-gradient(circle, var(--gray-500) 1px, transparent 1.25px);
+  background-size: 20px 20px;
+}
+
+/* Clips a phone screenshot to its bezel corners (about 40px radius on a 348×734 crop). */
+.device-clip {
+  border-radius: 12% / 5.7%;
 }
 
 dialog::backdrop {

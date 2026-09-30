@@ -26,7 +26,7 @@ npm run dev    # http://localhost:3000
 - **Content:** `src/content/site.ts`. Every visible string, the projects, experience, skills, and metadata copy. Edit text here, not in components. The experience facts (`totalExperience`, `uiuxExperience`) are updated by hand.
 - **Design tokens:** `src/app/globals.css`. Geist-based colour scales per theme, then semantic Tailwind tokens (`bg-page`, `text-fg`, `border-line`, `text-heading-32` …).
 - **Shared styles:** `src/components/ui.ts` (button, card, badge, container).
-- **Hero image:** `public/images/docto-hi-fi-screens.jpg`, cropped from the DOCTO case study on Behance.
+- **Hero canvas:** `public/images/docto/` (four DOCTO screens cropped from the Behance case study), laid out by `ScreenCanvas` in `src/components/Hero.tsx`.
 - **Project notes:** `docs/`: audit of the original site, decisions log (`PROJECT_STATE.md`), hero image research, final report.
 
 ## Theme
