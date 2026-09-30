@@ -476,6 +476,8 @@ export const ui = {
       mobile: { src: "/images/docto-hi-fi-screens-mobile.jpg", width: 858, height: 826 },
       alt: "Screens from the DOCTO doctor appointment app, including OTP validation and a doctor home screen listing today's and missed appointments.",
       caption: "DOCTO, Doctor-Patient Management App: high-fidelity screens.",
+      linkLabel: "View case study",
+      href: projects.find((p) => p.id === "project-4")?.liveUrl ?? profile.behance,
     },
   },
   projects: {

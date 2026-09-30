@@ -482,3 +482,19 @@ Awanish's decisions: the Dental site's mobile menu stays as it is (he will fix i
 - PDF via `Page.printToPDF` (which fires the real print events): 3 pages, 92 extracted lines. They read in order from "Awanish Verma / UI/UX Designer / contact" through "Certifications…", with no garbled or missing text.
 - After printing, the dialog is back in modal mode (`open=true`, `:modal=true`).
 - Screen view checked in the dark theme.
+
+### Hero redesign (2026-09-30)
+
+Awanish asked for a redesign of the hero. `src/components/Hero.tsx` now uses a Geist-style grid: one 1px-bordered, rounded frame split into cells.
+
+- **Intro cell** (8 of 12 columns from `lg`): "Open to work" status pill, h1 (name and "UI/UX Designer"), the summary (`text-pretty` to avoid an orphaned word), and both actions pinned to the bottom of the cell.
+- **Side column** (4 of 12): the two fixed facts as large figures, the focus areas as chips, and the GitHub/LinkedIn links. Below `lg` the facts sit side by side and the cells stack.
+- **Image cell** (full width): the DOCTO screens on the white media surface, with a caption bar and a new "View case study ↗" link to the DOCTO Behance project. The href is looked up from the project data, and the label is in the content file.
+- **Content:** unchanged apart from the new link label.
+- **Accessibility:** "Focus areas" and "Connect" are now plain labels, not h2s, to keep the heading outline clean. The list is labelled by its caption.
+- **Image loading:** the image now loads eagerly (`loading: "eager"` with `fetchPriority: "high"`). `getImageProps` defaults to lazy, and the mobile crop didn't load in testing.
+
+**Check results** (real output)
+- `npm run build`: exit 0. `npm run typecheck`: exit 0. `npx eslint .`: exit 0.
+- Browser: no horizontal scroll at 375/768/1440, one h1. The image loads at 375 (mobile crop, w=384) and 1440 (desktop crop, w=1200). Screenshots checked at all three widths.
+- axe: 0 violations in dark and light.
