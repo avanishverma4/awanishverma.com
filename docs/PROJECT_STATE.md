@@ -516,3 +516,24 @@ Awanish asked for a more creative hero image. The flat screenshot strip is repla
 - `npm run build`: exit 0. `npm run typecheck`: exit 0. `npx eslint .`: exit 0.
 - Browser: no horizontal scroll at 1440/768/375. All visible frame images load (4 at 1440 and 768; 2 at 375, with the other 2 hidden). The hover selection was seen working in the 1440 capture.
 - axe: 0 violations in dark and light.
+
+### Hero canvas from the Figma source (2026-09-30)
+
+Awanish shared the DOCTO Figma file (`I2TEEIduzi3JNLliGhMMwF`, in his Drafts). No Figma connector was available, so the file was opened in his signed-in Chrome, and frames were read and exported through the Figma plugin API exposed in the editor page (`figma.getNodeByIdAsync(...).exportAsync`). Nothing in the file was changed.
+
+- **File structure:** pages Design System (1:285), Wireframe / App Design (1:883), and Case Study (1:2788). App screens are 360×800 frames. Text styles use Rubik (Headline, Title, Body, Label) and Roboto (Material theme). The colour styles' primary scale is indigo (`#3F51B5` family).
+- **Exported at 2×** (720×1600 PNG): `splash` (1:1679), `Login with Mobile` (1:1695), `OTP Validation` (1:1736), and `Homescreen` (1:1085). Saved to `public/images/docto/{splash,login,otp,home}.png`, replacing the Behance-cropped phone JPEGs. The Figma version is newer than the Behance board: indigo palette, varied patient names, "Submit" on OTP.
+- **Canvas now mirrors Figma:**
+  - square frames, no device bezel (`.device-clip` removed)
+  - exact Figma frame names as labels
+  - the canvas label is the file and page name ("Doctor-Patient Management App / Wireframe / App Design")
+  - a light grey page (`--gray-100`, close to the file's `#F5F5F5` page colour) with a faint dot grid
+  - the selected Homescreen has an edge-aligned selection box and the real "360 × 800" size badge
+  - frames display at about 208px, roughly 3.5× density from the 720px exports, so text is sharp on retina screens
+- **Alt text** was rewritten to match the Figma exports: primary button on Login, "Submit" on OTP.
+- **Not used:** a colour swatch panel from the file's styles. The primary style scale (indigo) doesn't exactly match every screen, and it would add decoration without a clear purpose.
+
+**Check results** (real output)
+- `npm run build`: exit 0. `npm run typecheck`: exit 0. `npx eslint .`: exit 0.
+- Browser: at 1440, all 4 frames load (natural width 207); at 375, 2 frames load and 2 are hidden by design. No horizontal scroll. Screenshots checked.
+- axe: 0 violations in dark and light.

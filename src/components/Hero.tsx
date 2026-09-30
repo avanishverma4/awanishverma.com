@@ -77,8 +77,8 @@ export function Hero() {
 // Vertical stagger per frame, like frames placed by hand on a canvas. Only OTP and Doctor home show below sm.
 const frameLayout = ["hidden sm:block", "hidden sm:block sm:mt-12", "sm:mt-4", "mt-10 sm:mt-16"];
 
-// The DOCTO screens as named frames on a dot-grid canvas, with one frame shown as selected.
-// The canvas keeps the light theme in both modes (.theme-light), because the screens are light UI.
+// Frames exported from the DOCTO Figma file, shown as on the Figma canvas: frame name above,
+// selection box and size badge on the selected frame. Light theme in both modes (.theme-light).
 function ScreenCanvas() {
   const c = ui.hero.canvas;
   return (
@@ -101,14 +101,14 @@ function ScreenCanvas() {
                   width={c.frameSize.width}
                   height={c.frameSize.height}
                   alt={frame.alt}
-                  sizes="(min-width: 1024px) 200px, (min-width: 640px) 22vw, 42vw"
+                  sizes="(min-width: 1024px) 208px, (min-width: 640px) 22vw, 42vw"
                   loading="eager"
-                  className="device-clip h-auto w-full shadow-medium"
+                  className="h-auto w-full shadow-small"
                 />
                 {/* Selection box with corner handles, as in a design tool. Decorative. */}
                 <span
                   aria-hidden="true"
-                  className={`pointer-events-none absolute -inset-2 border border-accent transition-opacity motion-reduce:transition-none ${
+                  className={`pointer-events-none absolute -inset-px border border-accent transition-opacity motion-reduce:transition-none ${
                     frame.selected ? "opacity-100" : "opacity-0 group-hover:opacity-100"
                   }`}
                 >
@@ -118,7 +118,7 @@ function ScreenCanvas() {
                 </span>
               </div>
               {frame.selected && (
-                <p className="mt-4 flex justify-center">
+                <p className="mt-3 flex justify-center">
                   <span className="rounded-sm bg-accent px-1.5 py-0.5 font-mono text-label-12 text-on-accent">{c.selectedBadge}</span>
                 </p>
               )}

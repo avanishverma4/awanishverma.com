@@ -470,16 +470,17 @@ export const ui = {
     primaryCta: "View selected work",
     secondaryCta: "Open Behance profile",
     connect: "Connect",
-    // Hero canvas: the DOCTO screens laid out as named frames, like a design file.
+    // Hero canvas: frames exported at 2x from Awanish's Figma file (page "Wireframe / App Design"),
+    // shown with their Figma frame names and size, like the file's canvas.
     canvas: {
-      page: "DOCTO / High-fidelity screens",
-      frameSize: { width: 348, height: 734 },
-      selectedBadge: "Hi-fi",
+      page: "Doctor-Patient Management App / Wireframe / App Design",
+      frameSize: { width: 720, height: 1600 },
+      selectedBadge: "360 × 800",
       frames: [
-        { name: "Splash", src: "/images/docto/splash.jpg", alt: "DOCTO splash screen: the app wordmark and a doctor illustration on blue." },
-        { name: "Login", src: "/images/docto/login.jpg", alt: "Login screen with a 10-digit mobile number field, a Continue button, and Google, Facebook, and Twitter sign-in." },
-        { name: "OTP validation", src: "/images/docto/otp.jpg", alt: "OTP validation screen with six code boxes and a Validate OTP button." },
-        { name: "Doctor home", src: "/images/docto/home.jpg", alt: "Doctor home screen: a greeting, 12 of 26 appointments, today's appointment cards, and a missed appointments list.", selected: true },
+        { name: "splash", src: "/images/docto/splash.png", alt: "DOCTO splash screen: the app wordmark and a doctor illustration on indigo." },
+        { name: "Login with Mobile", src: "/images/docto/login.png", alt: "Login screen with a phone number field, a primary button, and Google, Facebook, and Twitter sign-in." },
+        { name: "OTP Validation", src: "/images/docto/otp.png", alt: "OTP validation screen with six code boxes and a Submit button." },
+        { name: "Homescreen", src: "/images/docto/home.png", alt: "Doctor home screen: a greeting, 12 of 26 appointments, today's appointment cards, and a missed appointments list.", selected: true },
       ],
       caption: "DOCTO, Doctor-Patient Management App: high-fidelity screens.",
       linkLabel: "View case study",

@@ -180,16 +180,11 @@ body {
   outline-offset: 2px;
 }
 
-/* Hero design canvas: a light dot grid like a design tool's canvas. Used inside .theme-light. */
+/* Hero design canvas: Figma-like light grey page with a faint dot grid. Used inside .theme-light. */
 .design-canvas {
-  background-color: var(--background-100);
+  background-color: var(--gray-100);
   background-image: radial-gradient(circle, var(--gray-500) 1px, transparent 1.25px);
   background-size: 20px 20px;
-}
-
-/* Clips a phone screenshot to its bezel corners (about 40px radius on a 348×734 crop). */
-.device-clip {
-  border-radius: 12% / 5.7%;
 }
 
 dialog::backdrop {
