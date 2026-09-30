@@ -1,4 +1,4 @@
-import { experiences, profile, skillCategories, socials, testimonials, ui } from "@/content/site";
+import { experiences, profile, socials, testimonials, ui } from "@/content/site";
 import { ProjectGrid } from "./Projects";
 import { SectionHeader } from "./SectionHeader";
 import { badge, card, container, interactiveCard, textLink } from "./ui";
@@ -58,51 +58,6 @@ export function ExperienceSection() {
           </li>
         ))}
       </ol>
-    </section>
-  );
-}
-
-export function SkillsSection() {
-  const t = ui.skills;
-  return (
-    <section id="skills" aria-labelledby="skills-heading" className={section}>
-      <SectionHeader id="skills-heading" index={t.index} label={t.eyebrow} heading={t.heading} emphasis={t.headingEmphasis} />
-      <p className="max-w-2xl text-copy-16 text-fg-secondary">{t.intro}</p>
-      <dl className="mt-6 flex flex-wrap gap-8">
-        {t.stats.map((s) => (
-          <div key={s.label}>
-            <dt className="text-label-13 text-fg-secondary">{s.label}</dt>
-            <dd className="text-heading-24">{s.value}</dd>
-          </div>
-        ))}
-      </dl>
-      <div className="mt-10 grid gap-4 lg:grid-cols-3">
-        {skillCategories.map((cat, i) => {
-          const id = `skills-${cat.category.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
-          return (
-            <section key={cat.category} aria-labelledby={id} className={`${card} p-5`}>
-              <p className="font-mono text-label-12 text-fg-secondary">{index(i)}</p>
-              <h3 id={id} className="mt-1 text-heading-16">
-                {cat.category}
-              </h3>
-              <p className="text-label-13 text-fg-secondary">{t.disciplines(cat.skills.length)}</p>
-              <ul className="mt-4 space-y-4">
-                {cat.skills.map((skill) => (
-                  <li key={skill.name}>
-                    <p className="flex justify-between gap-2 text-label-14 font-medium">
-                      {skill.name}
-                      <span className="font-mono text-label-12 text-fg-secondary">
-                        {t.years(skill.experienceYears)} · {skill.level}
-                      </span>
-                    </p>
-                    <p className="text-copy-13 text-fg-secondary">{skill.highlight}</p>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          );
-        })}
-      </div>
     </section>
   );
 }

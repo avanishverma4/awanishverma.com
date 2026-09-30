@@ -6,9 +6,9 @@ import {
   ContactSection,
   ExperienceSection,
   ProjectsSection,
-  SkillsSection,
   TestimonialsSection,
 } from "@/components/Sections";
+import { SkillsSection } from "@/components/Skills";
 import { button } from "@/components/ui";
 import { ui } from "@/content/site";
 

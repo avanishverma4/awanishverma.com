@@ -36,8 +36,8 @@ export type Experience = {
   skills: string[];
 };
 
-export type Skill = { name: string; level: number; experienceYears: number; highlight: string };
-export type SkillCategory = { category: string; iconName: string; skills: Skill[] };
+export type Skill = { name: string; detail?: string };
+export type SkillGroup = { name: string; scope: string; skills: Skill[] };
 
 export const profile = {
   "name": "Awanish Verma",
@@ -414,97 +414,43 @@ export const certifications = [
   }
 ];
 
-export const skillCategories: SkillCategory[] = [
+// Skills grouped by what the tools are used for. No levels or years per tool, by design.
+// Existing skills keep the live site's names and detail lines; new tools have no detail.
+export const skillGroups: SkillGroup[] = [
   {
-    "category": "UI/UX & Product Design",
-    "iconName": "Palette",
-    "skills": [
-      {
-        "name": "Figma & Design Systems",
-        "level": 98,
-        "experienceYears": 7,
-        "highlight": "Auto-Layout, Variables, Component Libraries, Tokens"
-      },
-      {
-        "name": "User Research & Testing",
-        "level": 94,
-        "experienceYears": 6,
-        "highlight": "User Journeys, Personas, Usability Audits, A/B Testing"
-      },
-      {
-        "name": "Interaction Design & Wireframes",
-        "level": 96,
-        "experienceYears": 7,
-        "highlight": "Information Architecture, User Flow, Low/High-Fi Prototypes"
-      },
-      {
-        "name": "Visual Design & Typography",
-        "level": 98,
-        "experienceYears": 7,
-        "highlight": "Fluid Scales, Grid Systems, Color Theory, Editorial Layouts"
-      },
-      {
-        "name": "Micro-Interactions & Motion",
-        "level": 92,
-        "experienceYears": 5,
-        "highlight": "Framer, Motion Specs, Interactive States, Micro-animations"
-      }
-    ]
+    name: "UI/UX Design",
+    scope: "Research, interaction design, visual design, and design systems for digital products.",
+    skills: [
+      { name: "Figma & Design Systems", detail: "Auto-Layout, Variables, Component Libraries, Tokens" },
+      { name: "User Research & Testing", detail: "User Journeys, Personas, Usability Audits, A/B Testing" },
+      { name: "Interaction Design & Wireframes", detail: "Information Architecture, User Flow, Low/High-Fi Prototypes" },
+      { name: "Visual Design & Typography", detail: "Fluid Scales, Grid Systems, Color Theory, Editorial Layouts" },
+      { name: "Micro-Interactions & Motion", detail: "Framer, Motion Specs, Interactive States, Micro-animations" },
+      { name: "Design Token Specification", detail: "W3C Token Standard, Figma Tokens, Multi-Brand Scaling" },
+      { name: "Component Library Specs", detail: "Headless UI, Accessible Primitives, Storybook Specs" },
+      { name: "Accessibility (WCAG 2.1 AA/AAA)", detail: "Color Contrast, Focus Management, Screen Reader Testing" },
+      { name: "Design-to-Code Pipeline", detail: "Figma API, Automated Sync, Token Export, Style Dictionary" },
+    ],
   },
   {
-    "category": "Design Systems & Token Architecture",
-    "iconName": "Layout",
-    "skills": [
-      {
-        "name": "Design Token Specification",
-        "level": 96,
-        "experienceYears": 6,
-        "highlight": "W3C Token Standard, Figma Tokens, Multi-Brand Scaling"
-      },
-      {
-        "name": "Component Library Specs",
-        "level": 95,
-        "experienceYears": 6,
-        "highlight": "Headless UI, Accessible Primitives, Storybook Specs"
-      },
-      {
-        "name": "Accessibility (WCAG 2.1 AA/AAA)",
-        "level": 95,
-        "experienceYears": 6,
-        "highlight": "Color Contrast, Focus Management, Screen Reader Testing"
-      },
-      {
-        "name": "Design-to-Code Pipeline",
-        "level": 94,
-        "experienceYears": 5,
-        "highlight": "Figma API, Automated Sync, Token Export, Style Dictionary"
-      }
-    ]
+    name: "Frontend Development",
+    scope: "Building and prototyping interfaces in code.",
+    skills: [
+      { name: "React 19 / Next.js 15", detail: "App Router, Interactive UI Components, Responsive Layouts" },
+      { name: "Tailwind CSS v4 & Modern CSS", detail: "CSS Variables, Container Queries, 8pt Grid Systems" },
+      { name: "TypeScript & UI State", detail: "Typed Component Props, Clean State Architecture" },
+    ],
   },
   {
-    "category": "Frontend Implementation (Design-Led)",
-    "iconName": "Code2",
-    "skills": [
-      {
-        "name": "React 19 / Next.js 15",
-        "level": 92,
-        "experienceYears": 6,
-        "highlight": "App Router, Interactive UI Components, Responsive Layouts"
-      },
-      {
-        "name": "Tailwind CSS v4 & Modern CSS",
-        "level": 98,
-        "experienceYears": 5,
-        "highlight": "CSS Variables, Container Queries, 8pt Grid Systems"
-      },
-      {
-        "name": "TypeScript & UI State",
-        "level": 90,
-        "experienceYears": 5,
-        "highlight": "Typed Component Props, Clean State Architecture"
-      }
-    ]
-  }
+    name: "Video Editing",
+    scope: "Editing footage, colour grading, and motion graphics.",
+    skills: [{ name: "DaVinci Resolve" }, { name: "Adobe After Effects" }, { name: "Adobe Premiere Pro" }],
+  },
+  {
+    name: "Data Analytics",
+    scope: "Cleaning, querying, analysing, and visualising data.",
+    skills: [{ name: "Microsoft Excel" }, { name: "Power BI" }, { name: "SQL" }, { name: "Python" }],
+  },
 ];
 
 export const testimonials = [
@@ -625,15 +571,7 @@ export const ui = {
     eyebrow: "Craft & capability",
     heading: "Design systems thinking, ",
     headingEmphasis: "end to end",
-    intro:
-      "7+ years spanning user research, Figma token variable systems, interaction wireframing, and the frontend implementation that ships them.",
-    stats: [
-      { label: "Disciplines", value: "12" },
-      { label: "Practice areas", value: "3" },
-      { label: "Years hands-on", value: "7+" },
-    ],
-    disciplines: (n: number) => `${n} disciplines`,
-    years: (n: number) => `${n} yrs`,
+    intro: `${uiuxExperience} spanning user research, Figma token variable systems, interaction wireframing, and the frontend implementation that ships them.`,
   },
   testimonials: {
     index: "05",

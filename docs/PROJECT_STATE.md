@@ -217,3 +217,45 @@ Node: local v25.9.0. Next 16.3.7 requires `>=20.9.0`, so the requirement is met.
 | 1440 | 1425/1425 | 1 | yes (w=1200) |
 
 No horizontal scroll at any width. Screenshots checked at 375 and 1440.
+
+---
+
+### Chunk 6: skills (2026-09-30)
+
+**Placement of every original skill** (names quoted from AUDIT §10)
+
+| Original skill (live group) | New group |
+|---|---|
+| Figma & Design Systems (UI/UX & Product Design) | UI/UX Design |
+| User Research & Testing (UI/UX & Product Design) | UI/UX Design |
+| Interaction Design & Wireframes (UI/UX & Product Design) | UI/UX Design |
+| Visual Design & Typography (UI/UX & Product Design) | UI/UX Design |
+| Micro-Interactions & Motion (UI/UX & Product Design) | UI/UX Design |
+| Design Token Specification (Design Systems & Token Architecture) | UI/UX Design |
+| Component Library Specs (Design Systems & Token Architecture) | UI/UX Design |
+| Accessibility (WCAG 2.1 AA/AAA) (Design Systems & Token Architecture) | UI/UX Design |
+| Design-to-Code Pipeline (Design Systems & Token Architecture) | UI/UX Design |
+| React 19 / Next.js 15 (Frontend Implementation) | Frontend Development (4th group) |
+| Tailwind CSS v4 & Modern CSS (Frontend Implementation) | Frontend Development (4th group) |
+| TypeScript & UI State (Frontend Implementation) | Frontend Development (4th group) |
+
+New tools: Video Editing (DaVinci Resolve, Adobe After Effects, Adobe Premiere Pro) and Data Analytics (Microsoft Excel, Power BI, SQL, Python).
+
+**Decisions**
+- The three frontend skills fit none of the three required groups, so they went into a fourth group per the Rules ("add a fourth group… rather than forcing it into a wrong group"). It is named **"Frontend Development"** rather than the placeholder "Other tools", because the Copy rules require headings that state a section's purpose. Logged as a naming choice.
+- Duplicates: none in the skills section. "Adobe Creative Suite (Photoshop, Illustrator, After Effects)" appears only in the CV's Core Skills keyword line (a separate list, unchanged), so no skill was merged.
+- Each existing skill keeps its live name and its detail line (the live "highlight" text). New tools have no detail line, to avoid inventing claims.
+- One-line scope per group describes what the tools are for, with no claims about projects or levels.
+- **Removed** proficiency numbers (98, 94…) and per-tool years ("7 yrs"…), as the chunk rules require.
+- **Removed** the stats row ("Disciplines 12", "Practice areas 3", "Years hands-on 7+"): the counts were wrong after regrouping, and "Years hands-on 7+" conflicted with the fixed facts.
+- **Removed** the "{n} disciplines" labels and the group index numbers.
+- Intro copy: "7+ years spanning…" became `${uiuxExperience} spanning…` ("8 years spanning…"). The sentence is about design work, so it uses the UI/UX constant.
+- Data: `skillGroups` in `src/content/site.ts` (type `SkillGroup { name, scope, skills: { name, detail? }[] }`). The old `skillCategories` with level/years was deleted from the content file. The live values remain in `docs/live-site-data.json` for reference.
+- Components: `src/components/Skills.tsx` has one shared `SkillItem`, one shared `SkillGroupCard`, and `SkillsSection`. It was removed from `Sections.tsx`.
+- Layout: the first group spans three rows on `md+`, and the other three stack beside it (avoids a large gap). Single column on mobile.
+- Anchors: the section keeps `#skills` and `#skills-heading` (h2). The group h3 IDs changed to `skills-ui-ux-design`, `skills-frontend-development`, `skills-video-editing`, and `skills-data-analytics`. Nothing linked to the old group IDs (AUDIT §4).
+
+**Check results** (real output)
+- `npm run build`: exit 0. `npx tsc --noEmit`: exit 0. `npx eslint .`: exit 0.
+- `grep -rnE "yrs|\.level|experienceYears|disciplines" src`: no matches.
+- Browser: four groups with 9/3/3/4 items. Page width 1425/1425 at 1440 and 375/375 at 375. Screenshot checked.
