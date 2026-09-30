@@ -1,5 +1,12 @@
-// Site content, rebuilt verbatim from the live site's data module (docs/live-site-data.json).
-// Every visible string on the site lives here; components only read from it.
+// All site content. Components only read from this file.
+//
+// Structure:
+//   facts          totalExperience, uiuxExperience (the only experience lengths the site may state)
+//   data           profile, projects, experiences, education, certifications, skillGroups, testimonials
+//   navigation     siteUrl, nav, socials
+//   ui             UI copy grouped by section (header, hero, projects, caseStudy, …, meta)
+//
+// Data started as a verbatim copy of the original site (docs/live-site-data.json).
 
 // Fixed facts supplied by Awanish. Updated by hand; never state any other experience length.
 export const totalExperience = "11 years";
@@ -8,10 +15,8 @@ export const uiuxExperience = "8 years";
 export type Project = {
   id: string;
   title: string;
-  slug: string;
   tagline: string;
   category: string;
-  featured: boolean;
   coverImage: string;
   galleryImages: string[];
   impactMetric: string;
@@ -42,7 +47,6 @@ export type SkillGroup = { name: string; scope: string; skills: Skill[] };
 export const profile = {
   "name": "Awanish Verma",
   "title": "Senior Lead UI/UX Designer & Design Systems Architect",
-  "shortBio": "Crafting intuitive product experiences, pixel-perfect design systems, user-centric interfaces, and high-fidelity interactive prototypes.",
   "longBio": `I am a Lead UI/UX Designer and Design Systems Architect. I turn complex problems into clear, human-centered digital products. My ${totalExperience} of professional experience include ${uiuxExperience} in UI/UX design, spanning user research, interaction design, design token architecture, visual design systems, and frontend implementation.`,
   "location": "Bengaluru, India / Remote Worldwide",
   "availability": "Available for product design contracts and design system advisory.",
@@ -50,35 +54,15 @@ export const profile = {
   "github": "https://github.com/avanishverma4",
   "linkedin": "https://linkedin.com/in/awanish-verma",
   "behance": "https://behance.net/avanishverma4",
-  "instagram": "https://www.instagram.com/avanishverma4",
-  "stats": [
-    {
-      "label": "Years Experience",
-      "value": "7+"
-    },
-    {
-      "label": "UI/UX & Systems Built",
-      "value": "24+"
-    },
-    {
-      "label": "User Testing Studies",
-      "value": "150+"
-    },
-    {
-      "label": "Design Token Systems",
-      "value": "14+"
-    }
-  ]
+  "instagram": "https://www.instagram.com/avanishverma4"
 };
 
 export const projects: Project[] = [
   {
     "id": "project-1",
     "title": "XpertOnline Chatbot",
-    "slug": "xpertonline-chatbot",
     "tagline": "AI-powered conversational assistant UI/UX design with intuitive chat flow and smart intent architecture.",
     "category": "UI/UX & Product Design",
-    "featured": true,
     "coverImage": "https://images.unsplash.com/photo-1762330465857-07e4c81c0dfa?auto=format&fit=crop&w=1200&q=80",
     "galleryImages": [
       "https://images.unsplash.com/photo-1762330465857-07e4c81c0dfa?auto=format&fit=crop&w=1200&q=80",
@@ -106,10 +90,8 @@ export const projects: Project[] = [
   {
     "id": "project-2",
     "title": "Water Drink Reminder App",
-    "slug": "water-drink-reminder-app",
     "tagline": "Intuitive hydration tracking mobile UI/UX with habit-forming visual micro-interactions and smart goals.",
     "category": "Mobile & Web Apps",
-    "featured": true,
     "coverImage": "https://images.unsplash.com/photo-1548780607-46c78f38182d?auto=format&fit=crop&w=1200&q=80",
     "galleryImages": [
       "https://images.unsplash.com/photo-1548780607-46c78f38182d?auto=format&fit=crop&w=1200&q=80",
@@ -137,10 +119,8 @@ export const projects: Project[] = [
   {
     "id": "project-3",
     "title": "Plant App UX Design Process",
-    "slug": "plant-app-ux-design-process",
     "tagline": "Comprehensive end-to-end UX research, wireframing, and UI design process for plant care & identification.",
     "category": "UI/UX & Product Design",
-    "featured": true,
     "coverImage": "https://images.unsplash.com/photo-1637311252429-634d760e08b2?auto=format&fit=crop&w=1200&q=80",
     "galleryImages": [
       "https://images.unsplash.com/photo-1637311252429-634d760e08b2?auto=format&fit=crop&w=1200&q=80",
@@ -168,10 +148,8 @@ export const projects: Project[] = [
   {
     "id": "project-4",
     "title": "Doctor-Patient Management App",
-    "slug": "doctor-patient-management-app",
     "tagline": "Healthcare platform UI/UX connecting doctors and patients with streamlined appointment booking & EHR.",
     "category": "UI/UX & Product Design",
-    "featured": true,
     "coverImage": "https://images.unsplash.com/photo-1758691463620-188ca7c1a04f?auto=format&fit=crop&w=1200&q=80",
     "galleryImages": [
       "https://images.unsplash.com/photo-1758691463620-188ca7c1a04f?auto=format&fit=crop&w=1200&q=80",
@@ -199,10 +177,8 @@ export const projects: Project[] = [
   {
     "id": "project-5",
     "title": "Academy of Dental Excellence",
-    "slug": "academy-of-dental-excellence",
     "tagline": "Dental education web platform with course enrollment, clinical masterclasses, and a student portal.",
     "category": "Mobile & Web Apps",
-    "featured": true,
     "coverImage": "https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=1200&q=80",
     "galleryImages": [
       "https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=1200&q=80",
@@ -230,10 +206,8 @@ export const projects: Project[] = [
   {
     "id": "project-6",
     "title": "Password Generator",
-    "slug": "password-generator",
     "tagline": "Sleek, customizable strong password generator tool with real-time entropy calculation and instant copy.",
     "category": "Interactive Prototypes",
-    "featured": false,
     "coverImage": "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?auto=format&fit=crop&w=1200&q=80",
     "galleryImages": [
       "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?auto=format&fit=crop&w=1200&q=80",
@@ -261,10 +235,8 @@ export const projects: Project[] = [
   {
     "id": "project-7",
     "title": "Jumblefix",
-    "slug": "jumblefix",
     "tagline": "Fast, interactive web tool for solving and unjumbling word puzzles with clean, responsive UI.",
     "category": "Interactive Prototypes",
-    "featured": false,
     "coverImage": "https://images.unsplash.com/photo-1642406415849-a410b5d01a94?auto=format&fit=crop&w=1200&q=80",
     "galleryImages": [
       "https://images.unsplash.com/photo-1642406415849-a410b5d01a94?auto=format&fit=crop&w=1200&q=80",
@@ -470,7 +442,7 @@ export const testimonials = [
   }
 ];
 
-export const siteUrl = "https://www.awanishverma.com";
+export const siteUrl = "https://awanishverma.com";
 
 export const nav = [
   { href: "#projects", label: "Work" },
@@ -674,10 +646,9 @@ export const ui = {
   },
   meta: {
     title: "UI/UX Designer & Design Systems Architect — Awanish Verma",
-    description:
-      "UI/UX designer and design systems architect in Bengaluru, available worldwide. 7+ years of product design case studies, design tokens and interaction design.",
+    description: `UI/UX designer and design systems architect in Bengaluru, available worldwide. ${totalExperience} of professional experience, ${uiuxExperience} in UI/UX design: product case studies, design tokens, and interaction design.`,
     siteName: "Awanish Verma — UI/UX Designer & Design Systems Architect",
-    imageAlt: "Awanish Verma — Senior Lead UI/UX Designer & Design Systems Architect",
+    imageAlt: "Awanish Verma, UI/UX Designer & Design Systems Architect",
     twitter: "@awanishverma",
     keywords: ["Awanish Verma", "Awanish Verma designer", "Awanish Verma portfolio", "Awanish Verma UI UX", "UI/UX designer", "UI UX designer", "UX designer", "UI designer", "product designer", "design systems architect", "lead product designer", "senior UX designer", "interaction designer", "UI UX designer Bengaluru", "UX designer Bangalore", "product designer Bengaluru", "UI UX designer India", "freelance UI UX designer India", "remote product designer", "design system consultant", "design tokens consultant", "design token architecture", "multi-brand design system", "Figma design system", "design system audit", "UX case study portfolio", "design engineer portfolio", "accessibility WCAG audit", "user research and usability testing"],
   },

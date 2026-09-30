@@ -343,3 +343,51 @@ New tools: Video Editing (DaVinci Resolve, Adobe After Effects, Adobe Premiere P
 
 **Check results** (real output, after removing the test code)
 - `npm run build`: exit 0. `npx tsc --noEmit`: exit 0. `npx eslint .`: exit 0.
+
+---
+
+### Chunk 8: metadata, accessibility, documentation (2026-09-30)
+
+**Metadata**
+- `siteUrl` changed to `https://awanishverma.com` (was `https://www.awanishverma.com`, as on the live site) and used as `metadataBase`. Rendered tags now include canonical `https://awanishverma.com`, og:url, og:image, twitter:image, and sitemap/robots on the same host.
+- Description (meta/OG/Twitter/manifest) is built from the constants: "UI/UX designer and design systems architect in Bengaluru, available worldwide. 11 years of professional experience, 8 years in UI/UX design: product case studies, design tokens, and interaction design." It replaces "7+ years…".
+- **OG image replaced.** The live one existed (1200×630) but showed "7+ Years Experience", unverified stats, and old copy. The new `src/app/opengraph-image.tsx` (`next/og` ImageResponse, static at build) renders name, role, summary, and the two facts from the content file. It is also used for `twitter:image` (Next emits it automatically). Removed `opengraph-image.png`, `twitter-image.png`, and their `.alt.txt` files. Alt text: "Awanish Verma, UI/UX Designer & Design Systems Architect" (dropped "Senior Lead", which conflicts with the site's h1 role).
+- The OG image uses literal colours (ImageResponse cannot read CSS variables) and the default ImageResponse font, because Geist's next/font files are woff2, which ImageResponse does not load. Logged as an exception to "no hardcoded colours".
+- Favicon: kept the existing `icon.png` (512) and `apple-icon.png` (180), per the rules. Note: they use the old blue-on-black "AV" style.
+- Manifest colours aligned to the dark token `#0a0a0a` (was `#050505`).
+- `robots.ts` and `sitemap.ts` stay a few lines each.
+- **Assumption / blocker:** canonical URLs point to `https://awanishverma.com`, which currently serves a parked page. The domain must be connected before production, or canonical and OG links will point at the parked page.
+
+**Accessibility baseline check**
+
+| Item | Status |
+|---|---|
+| `lang` on `<html>` | `lang="en"` in layout and global-error |
+| Skip link | first focusable element, targets `main#main-content` (`tabIndex=-1`) |
+| One `h1` per page | home (hero), 404, error, global-error: one each (verified in Chunks 5 and 7) |
+| Landmarks | `header`, `nav` (labelled: section, mobile, footer), `main`, `footer` |
+| Visible focus | global `:focus-visible` 2px accent outline, offset 2px |
+| Keyboard | native `<details>` (menu, experience), native `<dialog>` (Escape, focus trap, focus return), tabs with arrow keys, `aria-pressed` filters |
+| Contrast | text uses only gray-900/1000 and blue-900 (ratios in Chunk 3). Filter counts at 70% opacity are about 7:1 |
+| Alt text | hero image descriptive. Project cover images `alt=""` inside a button labelled "Open case study: …". Gallery images descriptive |
+| Touch targets | interactive controls `min-h-11`/`size-11` (44px) on mobile. Inline text links inside the CV body are exempt as inline links |
+| Reduced motion | no animations. Smooth scrolling is off under `prefers-reduced-motion` |
+
+No gaps found that needed a code change in this chunk. Chunk 9 covers the keyboard walkthrough in a real browser.
+
+**Hydration:** `grep -rnE "new Date|Date\.now|Math\.random|window\.|document\." src` found DOM access only in event handlers (`ResumeButton`, `ThemeToggle` onClick), `useSyncExternalStore` snapshots (`ThemeToggle`, `global-error`), and the pre-paint inline script. Nothing runs during render. The copyright year is a static string.
+
+**Documentation**
+- README rewritten: setup, Node version, scripts, where content, tokens, and styles live, and theme behavior.
+- Content file header now documents its structure.
+- Comments reviewed: the remaining ones explain non-obvious behavior (theme script, hydration snapshot, dialog/lazy-load workaround, tabs keyboard pattern, global-error constraints, OG colours). None restate code.
+
+**Dependencies and dead code**
+- gsap and @gsap/react: never installed (Chunk 5 added no animation). Nothing to remove. To add motion later: `npm i gsap @gsap/react`.
+- Removed dead content: `profile.shortBio`, `profile.stats` (24+/150+/14+, and the old 7+), and the project fields `slug` and `featured` (unused). **Reversible:** the original values are in `docs/live-site-data.json`.
+- `npm prune` run. Six optional WebAssembly packages (`@emnapi/*`, `@img/sharp-wasm32`, `@napi-rs/wasm-runtime`, `@tybys/wasm-util`) still show as "extraneous" in `npm ls`. They are optional platform binaries left by the scaffold copy, not in package.json or the lockfile's root dependencies. A fresh `npm ci` will not install them. No action needed.
+
+**Check results** (real output)
+- `npm run build`: exit 0. Routes: `/`, `/_not-found`, `/apple-icon.png`, `/icon.png`, `/manifest.webmanifest`, `/opengraph-image`, `/robots.txt`, `/sitemap.xml`, all static.
+- `npx tsc --noEmit`: exit 0. `npx eslint .`: exit 0.
+- Rendered `<head>` checked with curl on `next start`: title, description, canonical, OG, Twitter, icon, and manifest tags present. OG image fetched (HTTP 200) and inspected visually.

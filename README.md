@@ -1,34 +1,34 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# awanishverma.com
 
-## Getting Started
+Portfolio of Awanish Verma, UI/UX designer. Built with Next.js 16 (App Router), React 19, Tailwind CSS 4, and TypeScript. The site is fully static.
 
-First, run the development server:
+## Setup
+
+Requires Node.js 20.9 or later (Node 24 LTS recommended).
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm ci
+npm run dev    # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Scripts
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Script | What it does |
+|---|---|
+| `npm run dev` | Development server |
+| `npm run build` | Production build, including type checking |
+| `npm start` | Serve the production build |
+| `npm run lint` | ESLint |
+| `npx tsc --noEmit` | Type check. Run after a build or `npx next typegen`, which generates route types such as `LayoutProps` |
 
-## Learn More
+## Where things live
 
-To learn more about Next.js, take a look at the following resources:
+- **Content:** `src/content/site.ts`. Every visible string, the projects, experience, skills, and metadata copy. Edit text here, not in components. The experience facts (`totalExperience`, `uiuxExperience`) are updated by hand.
+- **Design tokens:** `src/app/globals.css`. Geist-based colour scales per theme, then semantic Tailwind tokens (`bg-page`, `text-fg`, `border-line`, `text-heading-32` …).
+- **Shared styles:** `src/components/ui.ts` (button, card, badge, container).
+- **Hero image:** `public/images/docto-hi-fi-screens.jpg`, cropped from the DOCTO case study on Behance.
+- **Project notes:** `docs/`: audit of the original site, decisions log (`PROJECT_STATE.md`), hero image research, final report.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Theme
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Light and dark, following the OS by default. The choice is saved in `localStorage` (`av_portfolio_theme`) and applied before first paint by an inline script in `src/app/layout.tsx`.
