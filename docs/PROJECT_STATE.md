@@ -600,3 +600,25 @@ Shared setup is in `src/components/motion.ts`: plugin registration, `MOTION_OK`,
 - Reduced motion (`prefers-reduced-motion: reduce` emulated): 0 targets hidden at load. The selection box jumps instantly. No parallax transform.
 - axe: 0 violations in dark and light.
 - **Test note:** CDP input events and GSAP's ticker both need the tab to render frames. The automated tab sometimes rendered 0 frames per second in the background: tool calls timed out and tweens looked frozen mid-way. Every result above was taken after `Page.bringToFront`, with a frame-rate probe (31–51 frames/s).
+
+### Experience section animation (2026-09-30)
+
+Awanish asked for animation in the Experience section. The role list moved from `Sections.tsx` into a new client component, `src/components/ExperienceTimeline.tsx`.
+
+- **Career timeline rail:** a 2px neutral line runs down the left, with an accent fill (`.timeline-progress`) scrubbed by scroll (ScrollTrigger `scrub: 0.4`, from "top 70%" to "bottom 60%"). Only without a reduced-motion preference; the fill is decorative, so the server HTML starts it at `scale-y-0` and the neutral rail stays visible without JavaScript.
+- **Role dots:** a dot per role fills with accent once it passes 70% of the viewport. The state is computed from real positions in one `sync()` (ScrollTrigger `onUpdate`/`onToggle`) and re-run on every ScrollTrigger `refresh`. Found while testing: per-dot `onEnter`/`onLeaveBack` callbacks fired with `scroll: 0` during a ScrollTrigger refresh (an instrumented build showed `leaveBack scroll:0` at max scroll), which cleared the dots. The position-based sync fixes it. Dots still mark progress under reduced motion (feedback, not motion; the colour transition is off there).
+- **Accordion:** roles stay native `<details>`.
+  - Opening: the body expands from height 0 with opacity, and the achievements stagger in from x −8px.
+  - Closing: the summary click is held, the body collapses, then the `<details>` closes. Inline styles are cleared afterwards.
+  - Under reduced motion, roles open and close instantly (native behaviour).
+  - A chevron rotates with the open state (CSS `group-open:rotate-180`, off under reduced motion).
+
+**Check results** (real output)
+- `npm run build`: exit 0. `npm run typecheck`: exit 0. `npx eslint .`: exit 0.
+- Browser, tab in front:
+  - The rail fill goes 0 → 0.56 → 0.96 → 1.00 while scrolling through the section.
+  - Dots fill progressively (for example `[1,0,0,0]` then `[1,1,1,1]`), stay filled at the bottom of the page and after a forced resize refresh, and clear when scrolling back above.
+  - Opening a role animates its height (147 → 224px). Closing animates (302 → 98px), then `open=false` with styles cleared.
+  - Keyboard Enter opens and closes. Under reduced motion, open and close are instant and there is no rail scrub transform.
+- Rail widened from 1px to 2px after a screenshot showed the 1px fill barely visible.
+- Test note: some earlier "stuck" results were the automated tab rendering 0 frames per second (GSAP's ticker needs frames); re-tested with a frame-rate probe.

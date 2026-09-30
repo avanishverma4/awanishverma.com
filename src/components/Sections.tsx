@@ -1,7 +1,8 @@
-import { experiences, profile, socials, testimonials, ui } from "@/content/site";
+import { profile, socials, testimonials, ui } from "@/content/site";
+import { ExperienceTimeline } from "./ExperienceTimeline";
 import { ProjectGrid } from "./Projects";
 import { SectionHeader } from "./SectionHeader";
-import { badge, card, container, interactiveCard, textLink } from "./ui";
+import { card, container, interactiveCard, textLink } from "./ui";
 
 const section = `${container} py-20 sm:py-24`;
 const index = (i: number) => String(i + 1).padStart(2, "0");
@@ -21,43 +22,7 @@ export function ExperienceSection() {
   return (
     <section id="experience" aria-labelledby="experience-heading" className={section}>
       <SectionHeader id="experience-heading" index={t.index} label={t.eyebrow} heading={t.heading} emphasis={t.headingEmphasis} />
-      <ol className="divide-y divide-line border-y border-line">
-        {experiences.map((exp, i) => (
-          <li key={exp.id} data-reveal>
-            {/* Native disclosure replaces the live site's JS accordion; the first role starts open. */}
-            <details id={`experience-panel-${exp.id}`} open={i === 0} className="py-5">
-              <summary className="flex min-h-11 cursor-pointer list-none flex-wrap items-baseline gap-x-4 gap-y-1 rounded-md [&::-webkit-details-marker]:hidden">
-                <h3 className="contents">
-                  <span className="font-mono text-label-12 text-fg-secondary">{index(i)}</span>
-                  <span className="text-heading-20">{exp.role}</span>
-                  <span className="text-label-14 text-fg-secondary">
-                    {exp.company} · {exp.location}
-                  </span>
-                </h3>
-                <span className="ml-auto font-mono text-label-12 text-fg-secondary">
-                  {exp.current && <span className="sr-only">{t.current} </span>}
-                  {exp.period}
-                </span>
-              </summary>
-              <div className="mt-4 max-w-3xl space-y-3 text-copy-14 text-fg-secondary">
-                <p>{exp.description}</p>
-                <ul className="list-disc space-y-1.5 pl-5">
-                  {exp.achievements.map((a) => (
-                    <li key={a}>{a}</li>
-                  ))}
-                </ul>
-                <ul className="flex flex-wrap gap-2 pt-1">
-                  {exp.skills.map((s) => (
-                    <li key={s} className={badge}>
-                      {s}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </details>
-          </li>
-        ))}
-      </ol>
+      <ExperienceTimeline />
     </section>
   );
 }
