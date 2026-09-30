@@ -32,7 +32,7 @@ export function Header() {
             ))}
           </ul>
           <ThemeToggle />
-          <ResumeButton title={ui.header.resumeTitle} className={`${button("primary")} hidden sm:inline-flex`}>
+          <ResumeButton title={ui.header.resumeTitle} className={button("primary")}>
             <span className="hidden lg:inline">{ui.header.resume}</span>
             <span className="lg:hidden">{ui.header.resumeShort}</span>
           </ResumeButton>

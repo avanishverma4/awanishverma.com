@@ -73,13 +73,13 @@
   /* Text */
   --color-fg: var(--gray-1000);
   --color-fg-secondary: var(--gray-900);
-  --color-fg-muted: var(--gray-900);
 
   /* Accent: blue-700 for fills and focus, blue-900 for text on the page background */
   --color-accent: var(--blue-700);
-  --color-accent-solid: var(--blue-700);
   --color-accent-text: var(--blue-900);
-  --color-accent-contrast: #fff;
+
+  /* Fixed white backing for screenshots exported on white, in both themes */
+  --color-media: #fff;
 
   /* Inverted high-contrast fill for primary actions (Geist primary button) */
   --color-inverse: var(--gray-1000);

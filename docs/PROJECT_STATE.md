@@ -173,3 +173,47 @@ Node: local v25.9.0. Next 16.3.7 requires `>=20.9.0`, so the requirement is met.
 - `npx tsc --noEmit`: exit 0.
 - `npx eslint .`: exit 0.
 - Browser at 1440px: header, hero, dark theme, and the light-scoped CV dialog render as expected (screenshots checked).
+
+---
+
+### Chunk 5: hero (2026-09-30)
+
+**Image**
+- Awanish's choice: DOCTO hi-fi screens.
+- Downloaded `https://mir-s3-cdn-cf.behance.net/project_modules/fs/6725dd221640093.67d84825d10d3.jpg` (1720×32768, 4.86 MB, HTTP 200) and cropped with `sips --cropOffset 26680 2 -c 840 1716`. The crop was checked visually: the first row of four phones, matching the crop recorded in HERO_IMAGE.md. Saved as `public/images/docto-hi-fi-screens.jpg` (1716×840, JPEG q85, 221 KB).
+- `next/image` with explicit `width`/`height` and `sizes="(min-width: 1200px) 1152px, calc(100vw - 32px)"`. `preload` is used, not the deprecated `priority` (per `node_modules/next/dist/docs/01-app/03-api-reference/02-components/image.md`: "the `priority` property has been deprecated in favor of the `preload` property"). It is a single above-the-fold LCP image, and the preload `<link>` was confirmed in the HTML.
+- The alt text describes the four screens and makes no outcome claims. The caption names the project.
+
+**Old hero inventory and what happened to each item**
+
+| Old hero item | New hero |
+|---|---|
+| "01 Open to work" eyebrow | Kept as the status eyebrow "Open to work" (the "01" index dropped: the hero is not a numbered section) |
+| sr-only h1 "Awanish Verma — UI/UX Designer & Design Systems Architect, Bengaluru" | The visible h1 now holds the name and the role "UI/UX Designer & Design Systems Architect". "Bengaluru" dropped from the h1; it is in the contact section and CV |
+| Visible heading "Complex problems, shaped into clear, human-centered products." | Kept as the one-line summary |
+| `profile.shortBio` ("Crafting intuitive product experiences…") | **Removed from the hero.** It uses the banned word "crafting" and repeats the summary. It stays in the data (used by the old OG image) |
+| Focus tags (User research, Token pipelines, Interaction architecture, Design systems) | Kept |
+| "Explore selected work" → `#projects` | Now "View selected work" → `#projects` (label per the chunk spec) |
+| "Resume" button (opens CV) | **Removed from the hero.** The header CV / Resume button opens the same dialog at every width |
+| Stat "7+ Years Experience" | **Replaced** with the fixed facts "11 years · Professional experience" and "8 years · UI/UX design" from `totalExperience`/`uiuxExperience` |
+| Stats "24+ UI/UX & Systems Built", "150+ User Testing Studies", "14+ Design Token Systems" | **Removed from the hero.** Not in the chunk spec, and not supported by the Behance work reviewed in Chunk 2. The data stays in `profile.stats`. **Awanish to confirm** whether to restore them |
+| Connect: GitHub, LinkedIn, Behance | GitHub and LinkedIn kept in the Connect row. Behance is now the secondary action "Open Behance profile" |
+| Token sandbox card | Removed (Awanish's decision, already out of the code since 1R) |
+
+**Decisions**
+- No animation (the default). gsap and @gsap/react are not installed.
+- New token `--color-media: #fff` gives the screenshot a fixed white backing in both themes, since the export has a white background. Retired `fg-muted`, `accent-solid`, and `accent-contrast` (no remaining users).
+- Header CV button: removed the conflicting `hidden sm:inline-flex` (it was showing anyway because of the class order). It fits at 375px and stays visible at every width.
+- New hero copy (labels only): "Professional experience", "UI/UX design", "Open Behance profile", "View selected work", "Focus areas" (list label), and the figure caption.
+
+**Check results** (real output)
+- `npm run build`: exit 0. `npx tsc --noEmit`: exit 0. `npx eslint .`: exit 0.
+- Browser, production server:
+
+| Width | Page width / viewport | h1 count | Image loaded (variant) |
+|---|---|---|---|
+| 375 | 375/375 | 1 | yes (w=384) |
+| 768 | 753/753 | 1 | yes (w=750) |
+| 1440 | 1425/1425 | 1 | yes (w=1200) |
+
+No horizontal scroll at any width. Screenshots checked at 375 and 1440.

@@ -1,76 +1,75 @@
+import Image from "next/image";
 import { profile, ui } from "@/content/site";
-import { ResumeButton } from "./ResumeButton";
+import { button, container, eyebrow } from "./ui";
 
 export function Hero() {
   const t = ui.hero;
   return (
-    <section id="hero" aria-labelledby="hero-heading" className="mx-auto max-w-7xl px-4 pb-20 pt-16 sm:px-6 sm:pt-24">
-      <p className="mb-6 font-mono text-xs font-bold uppercase tracking-[0.2em] text-fg-muted">
-        <span className="text-accent-text">{t.index}</span> {t.eyebrow}
-      </p>
-      <h1 id="hero-heading" className="max-w-4xl text-[2.6rem] font-bold leading-[0.98] tracking-tight sm:text-6xl">
-        <span className="sr-only">{t.srHeading} </span>
-        <span aria-hidden="true">
-          {t.headingLead}
-          <br />
-          {t.headingBefore}
-          <span className="text-accent-text">{t.headingEmphasis}</span>
-          {t.headingAfter}
-        </span>
-      </h1>
-      <p className="mt-6 max-w-2xl text-lg text-fg-secondary">{profile.shortBio}</p>
-      <ul className="mt-5 flex flex-wrap gap-x-3 gap-y-1 font-mono text-xs text-fg-muted">
-        {t.tags.map((tag, i) => (
-          <li key={tag}>
-            {i > 0 && <span aria-hidden="true">• </span>}
-            {tag}
-          </li>
-        ))}
-      </ul>
+    <section id="hero" aria-labelledby="hero-heading" className={`${container} pb-20 pt-16 sm:pb-24 sm:pt-24`}>
+      <div className="max-w-3xl">
+        <p className={`${eyebrow} flex items-center gap-2`}>
+          <span aria-hidden="true" className="size-2 rounded-full bg-accent" />
+          {t.status}
+        </p>
+        <h1 id="hero-heading" className="mt-5">
+          <span className="block text-heading-40 sm:text-heading-56">{profile.name}</span>
+          <span className="mt-2 block text-heading-20 text-fg-secondary sm:text-heading-24">{t.role}</span>
+        </h1>
+        <p className="mt-6 text-copy-18 sm:text-copy-20">{t.summary}</p>
 
-      <div className="mt-8 flex flex-wrap gap-3">
-        <a
-          href="#projects"
-          className="inline-flex min-h-11 items-center rounded-md bg-accent-solid px-5 text-sm font-medium text-accent-contrast hover:opacity-90"
-        >
-          {t.primaryCta}
-        </a>
-        <ResumeButton
-          title={ui.header.resumeTitle}
-          className="inline-flex min-h-11 items-center rounded-md border border-line bg-card px-5 text-sm font-medium hover:bg-card-hover"
-        >
-          {t.secondaryCta}
-        </ResumeButton>
-      </div>
+        <dl className="mt-8 flex flex-wrap gap-x-10 gap-y-4">
+          {t.facts.map((fact) => (
+            <div key={fact.label} className="flex flex-col-reverse">
+              <dt className="text-label-13 text-fg-secondary">{fact.label}</dt>
+              <dd className="text-heading-24">{fact.value}</dd>
+            </div>
+          ))}
+        </dl>
 
-      <dl className="mt-12 grid grid-cols-2 gap-6 sm:grid-cols-4">
-        {profile.stats.map((stat) => (
-          <div key={stat.label} className="border-t border-line pt-3.5">
-            <dt className="sr-only">{stat.label}</dt>
-            <dd className="text-3xl font-bold tracking-tight">{stat.value}</dd>
-            <dd aria-hidden="true" className="mt-1 text-xs text-fg-muted">
-              {stat.label}
-            </dd>
-          </div>
-        ))}
-      </dl>
+        <ul aria-label={t.focusLabel} className="mt-6 flex flex-wrap gap-x-4 gap-y-1 font-mono text-label-12 text-fg-secondary">
+          {t.focus.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
 
-      <p className="mt-10 flex flex-wrap items-center gap-2 text-sm">
-        <span className="font-mono text-xs uppercase tracking-[0.2em] text-fg-muted">{t.connect}</span>
-        {[
-          ["GitHub", profile.github],
-          ["LinkedIn", profile.linkedin],
-          ["Behance", profile.behance],
-        ].map(([label, href], i) => (
-          <span key={href}>
-            {i > 0 && <span aria-hidden="true" className="text-fg-muted">/ </span>}
-            <a href={href} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center text-fg-secondary underline-offset-4 hover:text-fg hover:underline">
+        <div className="mt-8 flex flex-wrap gap-3">
+          <a href="#projects" className={button("primary")}>
+            {t.primaryCta}
+          </a>
+          <a href={profile.behance} target="_blank" rel="noopener noreferrer" className={button("secondary")}>
+            {t.secondaryCta}
+            <span className="sr-only">{ui.newTab}</span>
+          </a>
+        </div>
+
+        <p className="mt-6 flex flex-wrap items-center gap-x-4 text-label-14">
+          <span className={eyebrow}>{t.connect}</span>
+          {[
+            ["GitHub", profile.github],
+            ["LinkedIn", profile.linkedin],
+          ].map(([label, href]) => (
+            <a key={href} href={href} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center text-fg-secondary transition-colors hover:text-fg">
               {label}
               <span className="sr-only">{ui.newTab}</span>
             </a>
-          </span>
-        ))}
-      </p>
+          ))}
+        </p>
+      </div>
+
+      <figure className="mt-12 sm:mt-16">
+        <div className="overflow-hidden rounded-lg border border-line bg-media">
+          <Image
+            src={t.image.src}
+            width={t.image.width}
+            height={t.image.height}
+            alt={t.image.alt}
+            sizes="(min-width: 1200px) 1152px, calc(100vw - 32px)"
+            preload
+            className="h-auto w-full"
+          />
+        </div>
+        <figcaption className="mt-3 text-label-13 text-fg-secondary">{t.image.caption}</figcaption>
+      </figure>
     </section>
   );
 }
