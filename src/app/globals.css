@@ -15,7 +15,9 @@
 /* Theme is a `dark` class on <html>, set before paint by the inline script in layout.tsx. */
 @custom-variant dark (&:where(.dark, .dark *));
 
-:root {
+/* .theme-light forces the light scale inside a dark page (used by the printable CV). */
+:root,
+.dark .theme-light {
   --background-100: #fff;
   --background-200: #fafafa;
   --gray-100: #f2f2f2;

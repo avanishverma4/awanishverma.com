@@ -9,6 +9,7 @@ import {
   SkillsSection,
   TestimonialsSection,
 } from "@/components/Sections";
+import { button } from "@/components/ui";
 import { ui } from "@/content/site";
 
 export default function Home() {
@@ -16,7 +17,7 @@ export default function Home() {
     <>
       <a
         href="#main-content"
-        className="sr-only z-50 rounded-md bg-accent-solid px-4 py-3 text-accent-contrast focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
+        className={`${button("primary")} sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50`}
       >
         {ui.skipLink}
       </a>

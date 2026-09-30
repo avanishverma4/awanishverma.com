@@ -1,5 +1,6 @@
 "use client";
 
+import { button, container, eyebrow } from "@/components/ui";
 import { ui } from "@/content/site";
 import "./globals.css";
 
@@ -11,17 +12,17 @@ export default function GlobalError({ retry }: { error: Error & { digest?: strin
     <html lang="en">
       <body className="font-sans antialiased">
         <title>{t.title}</title>
-        <main className="mx-auto flex min-h-screen max-w-3xl flex-col justify-center px-4 py-16 sm:px-6">
-          <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-accent-text">{t.code}</p>
-          <h1 className="mt-3 text-4xl font-bold tracking-tight">{t.heading}</h1>
-          <p className="mt-4 text-fg-secondary">{t.body}</p>
+        <main className={`${container} flex min-h-screen max-w-3xl flex-col justify-center py-16`}>
+          <p className={eyebrow}>{t.code}</p>
+          <h1 className="mt-3 text-heading-32 sm:text-heading-40">{t.heading}</h1>
+          <p className="mt-4 text-copy-16 text-fg-secondary">{t.body}</p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <button type="button" onClick={() => retry()} className="inline-flex min-h-11 items-center rounded-md bg-accent-solid px-5 text-sm font-medium text-accent-contrast">
+            <button type="button" onClick={() => retry()} className={button("primary")}>
               {ui.error.retry}
             </button>
             {/* Full reload on purpose: the root layout failed, so client navigation cannot recover. */}
             {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-            <a href="/" className="inline-flex min-h-11 items-center rounded-md border border-line px-5 text-sm font-medium">
+            <a href="/" className={button("secondary")}>
               {ui.error.home}
             </a>
           </div>

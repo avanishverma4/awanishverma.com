@@ -2,6 +2,7 @@
 
 import { useSyncExternalStore } from "react";
 import { ui } from "@/content/site";
+import { iconButton } from "./ui";
 
 function subscribe(onChange: () => void) {
   const observer = new MutationObserver(onChange);
@@ -26,7 +27,7 @@ export function ThemeToggle() {
           localStorage.setItem("av_portfolio_theme", next);
         } catch {}
       }}
-      className="inline-flex size-11 items-center justify-center rounded-md border border-line text-fg-secondary hover:bg-card-hover hover:text-fg"
+      className={iconButton}
     >
       {dark ? (
         <svg aria-hidden="true" viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth="2">

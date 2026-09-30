@@ -1,6 +1,7 @@
 import { nav, profile, socials, ui } from "@/content/site";
+import { container, eyebrow } from "./ui";
 
-const link = "inline-flex min-h-11 items-center text-sm text-fg-secondary hover:text-fg";
+const link = "inline-flex min-h-11 items-center text-label-14 text-fg-secondary transition-colors hover:text-fg";
 
 export function Footer() {
   const t = ui.footer;
@@ -9,32 +10,27 @@ export function Footer() {
       <h2 id="footer-heading" className="sr-only">
         {t.heading}
       </h2>
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-3">
+      <div className={`${container} grid gap-10 py-12 md:grid-cols-3`}>
         <div>
-          <p className="font-bold">
-            <span aria-hidden="true" className="mr-2 font-mono text-accent-text">
-              {ui.header.monogram}
-            </span>
-            {profile.name}
-          </p>
-          <p className="text-sm text-fg-muted">{t.tagline}</p>
-          <p className="mt-3 text-sm text-fg-secondary">{profile.availability}</p>
+          <p className="text-heading-16">{profile.name}</p>
+          <p className="text-label-14 text-fg-secondary">{t.tagline}</p>
+          <p className="mt-3 text-copy-14 text-fg-secondary">{profile.availability}</p>
         </div>
         <nav aria-label="Footer" className="contents">
           <div>
-            <h3 className="mb-2 font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-fg-muted">{t.index}</h3>
+            <h3 className={`${eyebrow} mb-2`}>{t.index}</h3>
             <ul>
               {nav.map((item) => (
                 <li key={item.href}>
                   <a href={item.href} className={link}>
-                    {item.label} <span aria-hidden="true">↓</span>
+                    {item.label}
                   </a>
                 </li>
               ))}
             </ul>
           </div>
           <div>
-            <h3 className="mb-2 font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-fg-muted">{t.elsewhere}</h3>
+            <h3 className={`${eyebrow} mb-2`}>{t.elsewhere}</h3>
             <ul>
               {socials.map((s) => (
                 <li key={s.label}>
@@ -48,9 +44,9 @@ export function Footer() {
           </div>
         </nav>
       </div>
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 pb-8 text-xs text-fg-muted sm:px-6">
+      <div className={`${container} flex items-center justify-between border-t border-line-subtle py-4 text-label-13 text-fg-secondary`}>
         <p>{t.copyright}</p>
-        <a href="#hero" aria-label={t.topLabel} className="inline-flex min-h-11 items-center hover:text-fg">
+        <a href="#hero" aria-label={t.topLabel} className="inline-flex min-h-11 items-center transition-colors hover:text-fg">
           {t.top} ↑
         </a>
       </div>

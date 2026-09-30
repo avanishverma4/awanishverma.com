@@ -140,3 +140,36 @@ Node: local v25.9.0. Next 16.3.7 requires `>=20.9.0`, so the requirement is met.
 - `npm run build`: exit 0, `✓ Compiled successfully`, 10 static routes. Only warning: the home-directory lockfile note above.
 - `npx tsc --noEmit`: exit 0.
 - `npx eslint .`: exit 0, no output.
+
+---
+
+### Chunk 4: shared components (2026-09-30)
+
+**Components**
+
+| Candidate | Result | Where |
+|---|---|---|
+| Button | **Created** as a style helper, `button("primary" \| "secondary" \| "ghost")` plus `iconButton`, in `src/components/ui.ts`. It renders on `<a>`, `<Link>`, `<button>`, `<form method=dialog>` buttons, and the client ResumeButton/PrintButton, so a class helper keeps the native element instead of wrapping it. Primary uses the Geist inverted fill (`bg-inverse`). The touch target is `min-h-11` (44px) on mobile and 40px from `sm`. | header, dialogs, filters, error and 404 pages, skip link |
+| Card | **Created** as a style helper, `card` / `interactiveCard`. It is used on `li > button`, `figure`, `a`, `section`, and `dialog`. | project cards, skill groups, testimonials, contact email, social links, mobile menu, case-study dialog |
+| Badge | **Created** as a style helper, `badge`. | experience skill tags, case-study tech stack |
+| SectionHeader | **Modified**: `SectionIntro.tsx` renamed to `SectionHeader.tsx` and restyled with `eyebrow` and `text-heading-32/40`. The emphasis word now uses `text-fg-secondary` instead of the accent, for restraint. | all five content sections |
+| Navigation | **Modified**: `Header.tsx` and `Footer.tsx` restyled with tokens and helpers. Already separate components with their own responsibility. | header, footer |
+| Also shared | `container` (page width, `max-w-page` 75rem), `eyebrow`, `textLink` in `ui.ts` | all sections |
+| Skipped | none | — |
+
+**Decisions**
+- Class helpers instead of wrapper components: the Button, Card, and Badge patterns each appear on 4–6 different element types. Wrapper components would need a polymorphic `as` prop, and helpers are simpler (KISS).
+- The CV dialog replaced its hardcoded Tailwind `zinc`/`emerald` colours with tokens. The new `.theme-light` class forces the light scale inside a dark page (`:root, .dark .theme-light` in globals.css), so the printable CV stays black on white.
+- The project filter's "pressed" state uses an inverted fill (`aria-pressed:bg-inverse`), and the active tab uses a `border-fg` underline instead of the blue accent.
+- The mobile header hides the "Available for contract and senior roles" line below `sm` (`hidden sm:block`) to fit the logo, theme toggle, and menu at 375px. The text is still in the CV and the hero. Logged as a small visibility change, not a removal.
+- Copy: no wording changed. All section copy was already in `src/content/site.ts` (moved there verbatim in 1R).
+- The hero (`Hero.tsx`) was not touched. It still uses the retired `accent-solid`/`fg-muted` classes. Chunk 5 replaces it.
+
+**Scan for hardcoded values** (`grep -rnE '#[0-9a-fA-F]{3,8}\b|zinc|emerald|text-\[|tracking-\[|p[xy]?-\[|m[xy]?-\[|gap-\[|text-(xs|sm|base|lg|xl|2xl|3xl|4xl)\b|fg-muted|accent-solid' src/components src/app`, excluding Hero.tsx and globals.css):
+- The only hits are literal theme colours in `layout.tsx` `viewport.themeColor` and `manifest.ts`, which must be literal strings for metadata. The manifest still says `#050505`; Chunk 8 aligns it.
+
+**Check results** (real output)
+- `npm run build`: exit 0.
+- `npx tsc --noEmit`: exit 0.
+- `npx eslint .`: exit 0.
+- Browser at 1440px: header, hero, dark theme, and the light-scoped CV dialog render as expected (screenshots checked).
