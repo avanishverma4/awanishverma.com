@@ -391,3 +391,16 @@ No gaps found that needed a code change in this chunk. Chunk 9 covers the keyboa
 - `npm run build`: exit 0. Routes: `/`, `/_not-found`, `/apple-icon.png`, `/icon.png`, `/manifest.webmanifest`, `/opengraph-image`, `/robots.txt`, `/sitemap.xml`, all static.
 - `npx tsc --noEmit`: exit 0. `npx eslint .`: exit 0.
 - Rendered `<head>` checked with curl on `next start`: title, description, canonical, OG, Twitter, icon, and manifest tags present. OG image fetched (HTTP 200) and inspected visually.
+
+---
+
+### Chunk 9: verification and report (2026-09-30)
+
+- Full results are in [FINAL_REPORT.md](./FINAL_REPORT.md) §8.
+- **Checks:** build, tsc, and eslint exit 0 (before and after the fix). No console errors or hydration warnings at 375/768/1440. No horizontal scroll. axe: 0 violations in dark and light.
+- **Keyboard:** skip link, dialogs (open, trap, Escape, focus return), tabs, disclosure, and focus rings all OK. Reduced motion OK.
+- **Links:** all anchors OK. External links return 200, except the four Behance galleries, which return 403 to curl (bot-blocked; they open in a browser).
+- **404 and error page** verified in production. Temporary throw removed; `grep -rnE "TempThrow|TEMP test|throw=" src` returns no matches.
+- **Test-environment artifact (not a site defect):** the first light-mode axe run reported 40 contrast failures. The automated tab produced 0 animation frames, so colour transitions never finished. After `Page.bringToFront`, rAF ran at about 101 frames per second, the link colour settled on `#4d4d4d`, and axe reported 0 violations.
+- **Fix:** the mobile menu stayed open after choosing a link. Added `src/components/MobileMenu.tsx` (client) wrapping the native `<details>`: it closes when a link or button in the panel is chosen, and on Escape (focus returns to the summary). Re-tested: closes after a link, on Escape, and when the CV opens. No overflow at 375. Build, tsc, and eslint exit 0.
+- **Not run:** screen reader pass, Lighthouse, physical devices (see report §8).

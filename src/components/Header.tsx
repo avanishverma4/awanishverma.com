@@ -1,4 +1,5 @@
 import { nav, profile, ui } from "@/content/site";
+import { MobileMenu } from "./MobileMenu";
 import { ResumeButton } from "./ResumeButton";
 import { ThemeToggle } from "./ThemeToggle";
 import { button, card, container, iconButton } from "./ui";
@@ -37,13 +38,15 @@ export function Header() {
             <span className="lg:hidden">{ui.header.resumeShort}</span>
           </ResumeButton>
 
-          {/* Mobile menu: native disclosure, works without JavaScript. */}
-          <details className="relative md:hidden">
-            <summary aria-label={ui.header.openMenu} className={`${iconButton} cursor-pointer list-none [&::-webkit-details-marker]:hidden`}>
-              <svg aria-hidden="true" viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </summary>
+          <MobileMenu
+            summary={
+              <summary aria-label={ui.header.openMenu} className={`${iconButton} cursor-pointer list-none [&::-webkit-details-marker]:hidden`}>
+                <svg aria-hidden="true" viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              </summary>
+            }
+          >
             <div id="mobile-navigation" className={`${card} absolute right-0 mt-2 w-56 p-2 shadow-menu`}>
               <ul aria-label={ui.header.mobileNavLabel}>
                 {nav.map((item) => (
@@ -56,7 +59,7 @@ export function Header() {
               </ul>
               <ResumeButton className={`${button("primary")} mt-2 w-full`}>{ui.header.resumeMobile}</ResumeButton>
             </div>
-          </details>
+          </MobileMenu>
         </nav>
       </div>
     </header>
