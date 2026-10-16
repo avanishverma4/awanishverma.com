@@ -2,7 +2,7 @@
 
 import { useRef, useSyncExternalStore } from "react";
 import { themeStorageKey, ui } from "@/content/site";
-import { reducedMotion, gsap, useGSAP } from "./motion";
+import { DURATION, EASE, reducedMotion, gsap, useGSAP } from "./motion";
 import { iconButton } from "./ui";
 
 function subscribe(onChange: () => void) {
@@ -29,7 +29,7 @@ export function ThemeToggle() {
       }
       const icon = button.current?.querySelector("svg");
       if (!icon || reducedMotion()) return;
-      gsap.fromTo(icon, { rotate: -90, scale: 0.6 }, { rotate: 0, scale: 1, duration: 0.45, ease: "back.out(2)" });
+      gsap.fromTo(icon, { rotate: -90, scale: 0.6 }, { rotate: 0, scale: 1, duration: DURATION.base, ease: EASE });
     },
     { dependencies: [dark] },
   );
@@ -40,7 +40,12 @@ export function ThemeToggle() {
       type="button"
       aria-label={`${ui.header.switchTo}${next} mode`}
       onClick={() => {
-        document.documentElement.classList.toggle("dark", !dark);
+        // Colour transitions are held for the switch (.theme-switching in globals.css) and
+        // released once the new theme has painted.
+        const root = document.documentElement;
+        root.classList.add("theme-switching");
+        root.classList.toggle("dark", !dark);
+        requestAnimationFrame(() => requestAnimationFrame(() => root.classList.remove("theme-switching")));
         try {
           localStorage.setItem(themeStorageKey, next);
         } catch {}

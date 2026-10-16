@@ -3,21 +3,30 @@
 import Image from "next/image";
 import { useRef, useState } from "react";
 import { ui } from "@/content/site";
-import { MOTION_OK, gsap, reducedMotion, useGSAP } from "./motion";
+import { DURATION, EASE, MOTION_OK, gsap, reducedMotion, useGSAP } from "./motion";
 import { subtleLink } from "./ui";
 
-// Vertical stagger per frame, like frames placed by hand on a canvas. Only OTP and Homescreen show below sm.
-const frameLayout = ["hidden sm:block", "hidden sm:block sm:mt-12", "sm:mt-4", "mt-10 sm:mt-16"];
+// The first frame leads. Below sm it is the only frame: at that width the other two would be too
+// small to read. From sm it takes two of three columns with the others stacked beside it, slightly
+// offset like hand-placed frames.
+const frameLayout = ["col-span-2 sm:row-span-2", "max-sm:hidden sm:mt-6", "max-sm:hidden"];
+const frameSizes = [
+  "(min-width: 1024px) 672px, (min-width: 640px) 62vw, 88vw",
+  "(min-width: 1024px) 320px, (min-width: 640px) 30vw, 42vw",
+  "(min-width: 1024px) 320px, (min-width: 640px) 30vw, 42vw",
+];
 const handles = ["-left-1 -top-1", "-right-1 -top-1", "-bottom-1 -left-1", "-bottom-1 -right-1"];
+
+const size = (frame: { width: number; height: number }) => `${frame.width} × ${frame.height}`;
 
 function SelectionBox({ badge }: { badge?: string }) {
   return (
     <>
       {handles.map((pos) => (
-        <span key={pos} className={`absolute size-2 border border-accent bg-card ${pos}`} />
+        <span key={pos} className={`absolute size-2 border border-fg bg-card ${pos}`} />
       ))}
       {badge && (
-        <span className="absolute left-1/2 top-full mt-3 -translate-x-1/2 whitespace-nowrap rounded-sm bg-accent px-1.5 py-0.5 font-mono text-label-12 text-on-accent">
+        <span className="selection-badge absolute left-1/2 top-full mt-3 -translate-x-1/2 whitespace-nowrap rounded-sm bg-inverse px-1.5 py-0.5 font-mono text-label-12 text-on-inverse">
           {badge}
         </span>
       )}
@@ -25,10 +34,12 @@ function SelectionBox({ badge }: { badge?: string }) {
   );
 }
 
-// Frames exported from the DOCTO Figma file, shown as on the Figma canvas.
+// Sections of the Khan Academy home page redesign, shown as frames on a design canvas.
 // Server HTML draws a selection box per frame (works without JavaScript). Once hydrated, a single
 // box glides to the hovered frame and back to the selected one, and on fine pointers the frame layer
-// pans slightly with the cursor. Light theme in both modes (.theme-light).
+// pans slightly with the cursor. On load the selection is dragged out over the lead frame, as if
+// the frame had just been drawn (the frames themselves never animate). The canvas follows the page theme (a dark canvas in dark mode,
+// as in a design tool); the frames themselves are always the light designs.
 export function HeroCanvas() {
   const c = ui.hero.canvas;
   const selected = c.frames.findIndex((f) => f.selected);
@@ -47,7 +58,8 @@ export function HeroCanvas() {
     const f = frame.getBoundingClientRect();
     const l = list.current.getBoundingClientRect();
     const vars = { x: f.left - l.left, y: f.top - l.top, width: f.width, height: f.height };
-    if (animate && !reducedMotion()) gsap.to(box.current, { ...vars, duration: 0.35, ease: "power3.out", overwrite: true });
+    // overwrite also stops the intro if it is still running, so opacity is finished here too.
+    if (animate && !reducedMotion()) gsap.to(box.current, { ...vars, opacity: 1, duration: DURATION.base, ease: EASE, overwrite: true });
     else gsap.set(box.current, vars);
   };
 
@@ -60,6 +72,20 @@ export function HeroCanvas() {
       if (list.current) resize.observe(list.current);
 
       const mm = gsap.matchMedia();
+      // Intro: the box grows from the frame's top-left corner to its full size, then the size badge
+      // appears. It re-measures at the end in case the layout changed while it ran.
+      mm.add(MOTION_OK, () => {
+        const el = box.current;
+        if (!el) return;
+        gsap
+          .timeline({ delay: 0.2, onComplete: () => place(activeRef.current, false) })
+          .fromTo(
+            el,
+            { width: 0, height: 0, opacity: 0 },
+            { width: gsap.getProperty(el, "width"), height: gsap.getProperty(el, "height"), opacity: 1, duration: DURATION.slow, ease: EASE },
+          )
+          .fromTo(el.querySelector(".selection-badge"), { opacity: 0 }, { opacity: 1, duration: DURATION.fast, ease: EASE });
+      });
       mm.add(`${MOTION_OK} and (pointer: fine)`, () => {
         const el = canvas.current;
         if (!el || !list.current) return;
@@ -95,66 +121,77 @@ export function HeroCanvas() {
       place(i, true);
     })();
 
+  // Frames and the caption link open the project on Behance in a new tab.
+  const external = { href: c.href, target: "_blank", rel: "noopener noreferrer" };
+
   return (
-    <figure className="border-t border-line lg:col-span-12">
-      <div ref={canvas} className="theme-light design-canvas overflow-hidden px-6 pb-12 pt-5 sm:px-10 sm:pb-16">
+    <figure className="order-2 border-t border-line lg:order-3 lg:col-span-12">
+      <div ref={canvas} className="design-canvas overflow-hidden px-6 pb-12 pt-5 sm:px-10 sm:pb-16">
         <p className="font-mono text-label-12 text-fg-secondary">{c.page}</p>
         <ul
           ref={list}
           onPointerLeave={() => focus(selected)}
-          className="relative mx-auto mt-8 grid max-w-4xl grid-cols-2 items-start gap-6 sm:grid-cols-4 sm:gap-8"
+          // Below sm the row gap leaves room for the size badge under the lead frame.
+          className="relative mx-auto mt-8 grid max-w-5xl grid-cols-2 items-start gap-x-6 gap-y-12 sm:grid-cols-3 sm:gap-8"
         >
           {c.frames.map((frame, i) => (
             <li key={frame.name} className={`group ${frameLayout[i]}`} onPointerEnter={() => focus(i)}>
-              <p
-                className={`mb-2 truncate text-label-12 transition-colors motion-reduce:transition-none ${
-                  (enhanced ? active === i : frame.selected) ? "text-accent-text" : "text-fg-secondary group-hover:text-accent-text"
-                }`}
-              >
-                {frame.name}
-              </p>
-              <div
-                ref={(el) => {
-                  frames.current[i] = el;
-                }}
-                className="relative"
-              >
-                <Image
-                  src={frame.src}
-                  width={c.frameSize.width}
-                  height={c.frameSize.height}
-                  alt={frame.alt}
-                  sizes="(min-width: 1024px) 208px, (min-width: 640px) 22vw, 42vw"
-                  loading="eager"
-                  className="h-auto w-full shadow-small"
-                />
-                {!enhanced && (
-                  <span
-                    aria-hidden="true"
-                    className={`pointer-events-none absolute -inset-px border border-accent ${
-                      frame.selected ? "" : "opacity-0 group-hover:opacity-100"
-                    }`}
-                  >
-                    <SelectionBox badge={frame.selected ? c.selectedBadge : undefined} />
-                  </span>
-                )}
-              </div>
+              {/* Each frame opens the project for pointer users. The caption link below is the one
+                  keyboard stop for it, so the frames stay out of the tab order and have a short name. */}
+              <a {...external} tabIndex={-1} aria-label={`${c.linkLabel}: ${c.title} (${frame.name})${ui.newTab}`} className="block">
+                <p
+                  className={`mb-2 truncate text-label-12 transition-colors motion-reduce:transition-none ${
+                    (enhanced ? active === i : frame.selected) ? "text-fg" : "text-fg-secondary group-hover:text-fg"
+                  }`}
+                >
+                  {frame.name}
+                </p>
+                <div
+                  ref={(el) => {
+                    frames.current[i] = el;
+                  }}
+                  className="relative"
+                >
+                  <Image
+                    src={frame.src}
+                    width={frame.width}
+                    height={frame.height}
+                    alt={frame.alt}
+                    sizes={frameSizes[i]}
+                    // The side frames are hidden on phones; lazy keeps them from being downloaded there.
+                    loading={i === 0 ? "eager" : "lazy"}
+                    fetchPriority={i === 0 ? "high" : undefined}
+                    // Dark theme: the white-backed frames are dimmed slightly so they do not glare.
+                    className="h-auto w-full shadow-small dark:brightness-90"
+                  />
+                  {!enhanced && (
+                    <span
+                      aria-hidden="true"
+                      className={`pointer-events-none absolute -inset-px border border-fg ${
+                        frame.selected ? "" : "opacity-0 group-hover:opacity-100"
+                      }`}
+                    >
+                      <SelectionBox badge={frame.selected ? size(frame) : undefined} />
+                    </span>
+                  )}
+                </div>
+              </a>
             </li>
           ))}
           {/* Single moving selection box, positioned by GSAP; hidden until measured. */}
           <span
             ref={box}
             aria-hidden="true"
-            className={`pointer-events-none absolute left-0 top-0 -m-px box-content border border-accent ${enhanced ? "" : "invisible"}`}
+            className={`pointer-events-none absolute left-0 top-0 -m-px box-content border border-fg ${enhanced ? "" : "invisible"}`}
           >
-            <SelectionBox badge={c.selectedBadge} />
+            <SelectionBox badge={size(c.frames[active])} />
           </span>
         </ul>
       </div>
       <figcaption className="flex flex-wrap items-center justify-between gap-x-4 border-t border-line px-6 py-2 sm:px-8">
         <span className="py-2 text-label-13 text-fg-secondary">{c.caption}</span>
-        <a href={c.href} target="_blank" rel="noopener noreferrer" className={subtleLink}>
-          {c.linkLabel} <span aria-hidden="true">↗</span>
+        <a {...external} className={`${subtleLink} gap-1`}>
+          {c.linkLabel} <span aria-hidden="true">→</span>
           <span className="sr-only">{ui.newTab}</span>
         </a>
       </figcaption>

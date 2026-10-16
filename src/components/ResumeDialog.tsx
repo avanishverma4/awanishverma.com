@@ -1,16 +1,43 @@
-import { certifications, education, experiences, profile, projects, siteUrl, skillGroups, ui } from "@/content/site";
+import { certifications, cvProjectIds, education, experiences, profile, projects, siteUrl, skillGroups, ui, type Project } from "@/content/site";
+import type { ReactNode } from "react";
 import { PrintButton } from "./ResumeButton";
 import { button, iconButton, textLink } from "./ui";
 
 // Normal letter-spacing on headings: wide tracking can split words when ATS tools extract PDF text.
 const heading = "border-b border-line pb-1 text-heading-16 text-fg";
-const link = `${textLink} underline`;
+const link = textLink;
+// Contact-row links sit side by side, so each gets 2px of padding above and below: a 24px-tall
+// target (WCAG 2.2) with no change to the line height or the printed length.
+const contactLink = `${link} py-0.5`;
+// External links open a new tab. The hint is in the accessible name only: hidden text would be
+// picked up by ATS parsers reading the printed PDF.
+const external = (href: string) => ({ href, target: "_blank", rel: "noopener noreferrer", "aria-label": `${bare(href)}${ui.newTab}` });
+const company = (p: Project) => experiences.find((e) => e.id === p.experienceId)?.company;
 const bare = (url: string) => url.replace(/^https?:\/\//, "").replace(/\/$/, "");
+
+// Contact items separated by "|". Every item carries its separator in a fixed 1.25rem slot on its
+// left, and the row is pulled left by that slot and clipped there, so a separator that wraps to the
+// start of a line is cut off instead of leading the line. The clip leaves 4px for focus outlines.
+function ContactRow({ className = "", children }: { className?: string; children: ReactNode[] }) {
+  return (
+    <p className={`-ml-5 flex flex-wrap [clip-path:inset(-4px_-4px_-4px_1rem)] ${className}`}>
+      {children.map((child, i) => (
+        <span key={i} className="flex">
+          <span aria-hidden="true" className="w-5 shrink-0 text-center">
+            {i > 0 && "|"}
+          </span>
+          {child}
+        </span>
+      ))}
+    </p>
+  );
+}
 
 // Server-rendered CV. ResumeButton opens it with showModal(); the close button uses the
 // native form method="dialog", so only opening and printing need JavaScript.
 export function ResumeDialog() {
   const t = ui.resume;
+  const cvProjects = cvProjectIds.flatMap((id) => projects.filter((p) => p.id === id));
   // CV keyword lines, plus the Video Editing and Data Analytics tools from the skills section.
   const skillLines = [
     ...t.coreSkillGroups,
@@ -22,9 +49,9 @@ export function ResumeDialog() {
     <dialog
       id="resume-dialog"
       aria-labelledby="resume-modal-title"
-      className="theme-light m-auto max-h-[90vh] w-[calc(100%-2rem)] max-w-4xl rounded-lg border border-line bg-card p-0 text-fg shadow-modal"
+      className="theme-light m-auto max-h-[90vh] w-[calc(100%-2rem)] max-w-2xl flex-col overflow-hidden rounded-lg border border-line bg-card p-0 text-fg shadow-modal open:flex print:open:block"
     >
-      <div className="print-hide sticky top-0 flex items-center justify-between gap-3 border-b border-line bg-subtle px-6 py-2">
+      <div className="print-hide flex shrink-0 items-center justify-between gap-3 border-b border-line bg-subtle px-6 py-2">
         <p className="font-mono text-label-12 text-fg-secondary">
           {t.title} <span className="hidden sm:inline">— {profile.name}</span>
         </p>
@@ -43,29 +70,30 @@ export function ResumeDialog() {
       </div>
 
       {/* Single column, standard headings, and plain-text separators so ATS parsers read the printed PDF in order. */}
-      <div className="space-y-7 p-6 text-copy-13 text-fg-secondary sm:p-8">
+      {/* 14px on screen; print keeps 13px so the PDF stays the same length. */}
+      {/* Only this part scrolls, so the scrollbar starts below the toolbar. */}
+      <div className="min-h-0 space-y-7 overflow-y-auto overscroll-contain p-6 text-copy-14 text-fg-secondary sm:p-8 print:overflow-visible print:text-copy-13">
         <header className="space-y-1 border-b border-line pb-5">
           <h2 id="resume-modal-title" className="text-heading-32 text-fg">
             {profile.name}
           </h2>
           <p className="text-heading-16 text-fg">{profile.title}</p>
-          <p className="flex flex-wrap gap-x-2 pt-1">
-            <a href={`mailto:${profile.email}`} className={link}>
+          <ContactRow className="pt-1">
+            <a href={`mailto:${profile.email}`} className={contactLink}>
               {profile.email}
             </a>
-            <span aria-hidden="true">|</span>
+            <a href={`tel:${t.phone.replace(/\s/g, "")}`} className={contactLink}>
+              {t.phone}
+            </a>
             <span>{profile.location}</span>
-          </p>
-          <p className="flex flex-wrap gap-x-2">
-            {[siteUrl, profile.linkedin, profile.github, profile.behance].map((href, i) => (
-              <span key={href} className="flex gap-x-2">
-                {i > 0 && <span aria-hidden="true">|</span>}
-                <a href={href} target="_blank" rel="noopener noreferrer" className={link}>
-                  {bare(href)}
-                </a>
-              </span>
+          </ContactRow>
+          <ContactRow>
+            {[siteUrl, profile.linkedin, profile.github, profile.behance].map((href) => (
+              <a key={href} {...external(href)} className={contactLink}>
+                {bare(href)}
+              </a>
             ))}
-          </p>
+          </ContactRow>
         </header>
 
         <section className="space-y-2">
@@ -103,15 +131,19 @@ export function ResumeDialog() {
 
         <section className="space-y-3">
           <h3 className={heading}>{t.projects}</h3>
-          {projects.slice(0, 4).map((p) => {
+          {cvProjects.map((p) => {
             const href = p.liveUrl ?? p.githubUrl;
             return (
               <div key={p.id} className="break-inside-avoid space-y-1">
-                <h4 className="text-heading-14 text-fg">{p.title}</h4>
+                {/* A product made for an employer names the company, on the same line. */}
+                <h4 className="text-heading-14 text-fg">
+                  {p.title}
+                  {company(p) && ` | ${company(p)}`}
+                </h4>
                 <p>{p.tagline}</p>
                 <p>{`${t.tools} ${p.techStack.join(", ")}`}</p>
                 {href && (
-                  <a href={href} target="_blank" rel="noopener noreferrer" className={link}>
+                  <a {...external(href)} className={`${link} wrap-anywhere`}>
                     {bare(href)}
                   </a>
                 )}

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, type ReactNode } from "react";
-import { dialogIn } from "./motion";
 
 // Opens the single <dialog id="resume-dialog"> rendered by ResumeDialog.
 export function ResumeButton({ className, title, children }: { className: string; title?: string; children: ReactNode }) {
@@ -11,9 +10,7 @@ export function ResumeButton({ className, title, children }: { className: string
       title={title}
       aria-haspopup="dialog"
       onClick={() => {
-        const dialog = document.getElementById("resume-dialog") as HTMLDialogElement | null;
-        dialog?.showModal();
-        dialogIn(dialog);
+        (document.getElementById("resume-dialog") as HTMLDialogElement | null)?.showModal();
       }}
       className={className}
     >
@@ -44,11 +41,25 @@ export function PrintButton({ className, children }: { className: string; childr
         dialog.showModal();
       }
     };
+    // A press on the backdrop closes the CV. The backdrop belongs to the dialog element, and the
+    // dialog has no padding, so a press that starts and ends on the dialog itself is on the backdrop.
+    // Checking where the press started keeps a text selection dragged out of the CV from closing it.
+    let pressedBackdrop = false;
+    const onPointerDown = (e: PointerEvent) => {
+      pressedBackdrop = e.target === dialog;
+    };
+    const onClick = (e: MouseEvent) => {
+      if (pressedBackdrop && e.target === dialog) dialog.close();
+    };
     window.addEventListener("beforeprint", before);
     window.addEventListener("afterprint", after);
+    dialog.addEventListener("pointerdown", onPointerDown);
+    dialog.addEventListener("click", onClick);
     return () => {
       window.removeEventListener("beforeprint", before);
       window.removeEventListener("afterprint", after);
+      dialog.removeEventListener("pointerdown", onPointerDown);
+      dialog.removeEventListener("click", onClick);
     };
   }, []);
 

@@ -13,12 +13,10 @@ export const MOTION_OK = "(prefers-reduced-motion: no-preference)";
 
 export const reducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-// Dialogs appear instantly (native showModal); this eases the panel in after it is already open.
-export function dialogIn(el: Element | null) {
-  if (!el || reducedMotion()) return;
-  gsap.fromTo(
-    el,
-    { opacity: 0, y: 12, scale: 0.98 },
-    { opacity: 1, y: 0, scale: 1, duration: 0.28, ease: "power2.out", clearProps: "opacity,transform" },
-  );
-}
+// One motion scale for the whole site (seconds): fast for small feedback (menus), base for
+// panels and state changes, slow for scroll reveals. Things ease out as they enter and in as they leave.
+// The CSS transitions use the matching durations (duration-200 / duration-300), as do the dialog
+// enter and exit transitions in globals.css.
+export const DURATION = { fast: 0.2, base: 0.3, slow: 0.6 };
+export const EASE = "power2.out";
+export const EASE_EXIT = "power2.in";

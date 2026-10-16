@@ -3,7 +3,7 @@
 /*
  * Design tokens, adapted from Vercel Geist (vercel.com/geist, values read 2026-09-30).
  *
- * Layer 1: raw Geist scales (--gray-*, --background-*, --blue-*), redefined per theme.
+ * Layer 1: raw Geist scales (--gray-*, --background-*), redefined per theme.
  * Layer 2: semantic Tailwind tokens in @theme (bg-page, text-fg, border-line, text-heading-48 …).
  * Components use layer 2 only.
  *
@@ -15,40 +15,69 @@
 /* Theme is a `dark` class on <html>, set before paint by the inline script in layout.tsx. */
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* .theme-light forces the light scale inside a dark page (used by the printable CV). */
+/* .theme-light forces the light scale inside a dark page (used by the printable CV).
+   Adaptation: the light page is a soft off-white (#f7f7f7, Geist uses #fff) and the surface and
+   border steps are shifted down with it, so no screen surface is pure white. Print uses white. */
 :root,
 .dark .theme-light {
-  --background-100: #fff;
-  --background-200: #fafafa;
-  --gray-100: #f2f2f2;
-  --gray-200: #ebebeb;
-  --gray-300: #e6e6e6;
-  --gray-400: #eaeaea;
-  --gray-500: #c9c9c9;
-  --gray-600: #a8a8a8;
+  --background-100: #f7f7f7;
+  --background-200: #f2f2f2;
+  --gray-100: #ededed;
+  --gray-200: #e8e8e8;
+  --gray-300: #e3e3e3;
+  --gray-400: #e0e0e0;
+  --gray-500: #c4c4c4;
+  --gray-600: #a3a3a3;
   --gray-900: #4d4d4d;
   --gray-1000: #171717;
-  --blue-700: #0070f7;
-  --blue-900: #0064e2;
+  --green-700: #45a557;
+  --card: #fafafa;
+  --raised: #fafafa;
   --shadow-color: #0000000a;
   color-scheme: light;
 }
 
+/* Adaptation: the dark page is a soft near-black (#141414, Geist uses #000) with the surface and
+   border steps lifted with it, and the brightest text and fill is #e6e6e6, so the dark theme has
+   neither pure black nor pure white. */
 .dark {
-  --background-100: #0a0a0a;
-  --background-200: #000;
-  --gray-100: #1a1a1a;
-  --gray-200: #1f1f1f;
-  --gray-300: #292929;
-  --gray-400: #2e2e2e;
-  --gray-500: #454545;
+  --background-100: #141414;
+  --background-200: #0f0f0f;
+  --gray-100: #1f1f1f;
+  --gray-200: #242424;
+  --gray-300: #2b2b2b;
+  --gray-400: #303030;
+  --gray-500: #474747;
   --gray-600: #878787;
-  --gray-900: #a0a0a0;
-  --gray-1000: #ededed;
-  --blue-700: #0071f6;
-  --blue-900: #50a8ff;
+  --gray-900: #a3a3a3;
+  --gray-1000: #e6e6e6;
+  --green-700: #45a557;
+  --card: #191919;
+  --raised: #1f1f1f;
   --shadow-color: #00000066;
   color-scheme: dark;
+}
+
+/* Without JavaScript the theme script cannot run and <html> keeps its server-rendered `dark`
+   class, so a reader whose system is set to light gets the light scale here instead.
+   Keep these values in step with the light scale above; the rule must stay after `.dark`. */
+@media (scripting: none) and (prefers-color-scheme: light) {
+  .dark {
+    --background-100: #f7f7f7;
+    --background-200: #f2f2f2;
+    --gray-100: #ededed;
+    --gray-200: #e8e8e8;
+    --gray-300: #e3e3e3;
+    --gray-400: #e0e0e0;
+    --gray-500: #c4c4c4;
+    --gray-600: #a3a3a3;
+    --gray-900: #4d4d4d;
+    --gray-1000: #171717;
+    --card: #fafafa;
+    --raised: #fafafa;
+    --shadow-color: #0000000a;
+    color-scheme: light;
+  }
 }
 
 @theme inline {
@@ -59,30 +88,35 @@
   /* Surfaces */
   --color-page: var(--background-100);
   --color-subtle: var(--background-200);
-  --color-card: var(--background-100);
+  /* Cards are one small step lighter than the page, so they read as surfaces and not only as outlines. */
+  --color-card: var(--card);
   --color-card-hover: var(--gray-100);
   --color-card-active: var(--gray-200);
+  /* Layers above the page (dialogs, menus). On dark, one step lighter than the page so the layer
+     reads as raised; the backdrop and shadow alone do not show against near-black. */
+  --color-raised: var(--raised);
   --color-nav: color-mix(in srgb, var(--background-100) 85%, transparent);
 
   /* Borders (1px everywhere) */
   --color-line: var(--gray-400);
   --color-line-subtle: var(--gray-300);
   --color-line-hover: var(--gray-500);
+  /* Interactive controls (buttons, clickable cards) start one step stronger so their edge is visible. */
+  --color-line-control: var(--gray-500);
   --color-line-strong: var(--gray-600);
 
   /* Text */
   --color-fg: var(--gray-1000);
   --color-fg-secondary: var(--gray-900);
 
-  /* Accent: blue-700 for fills and focus, blue-900 for text on the page background */
-  --color-accent: var(--blue-700);
-  --color-accent-text: var(--blue-900);
-  --color-on-accent: #fff;
+  /* Status: green-700 for the "available" dot */
+  --color-success: var(--green-700);
 
   /* Fixed white backing for screenshots exported on white, in both themes */
   --color-media: #fff;
 
-  /* Inverted high-contrast fill for primary actions (Geist primary button) */
+  /* Inverted high-contrast fill for primary actions (Geist primary button). The palette is
+     black and white only: emphasis comes from this fill and from text-fg, not an accent hue. */
   --color-inverse: var(--gray-1000);
   --color-on-inverse: var(--background-100);
 }
@@ -104,63 +138,77 @@
   --shadow-menu: 0 1px 1px var(--shadow-color), 0 4px 8px -4px var(--shadow-color), 0 16px 24px -8px var(--shadow-color);
   --shadow-modal: 0 1px 1px var(--shadow-color), 0 8px 16px -4px var(--shadow-color), 0 24px 32px -8px var(--shadow-color);
 
-  /* Type scale: Geist heading / copy / label / button styles as text-* utilities. */
-  --text-heading-56: 56px;
-  --text-heading-56--line-height: 56px;
-  --text-heading-56--letter-spacing: -3.36px;
+  /* Type scale: Geist heading / copy / label / button styles as text-* utilities (the number is
+     the size in px at the default 16px root). Sizes and line heights are in rem and tracking in em,
+     so text follows the reader's browser font-size setting. */
+  --text-heading-56: 3.5rem;
+  --text-heading-56--line-height: 3.5rem;
+  --text-heading-56--letter-spacing: -0.06em;
   --text-heading-56--font-weight: 600;
-  --text-heading-48: 48px;
-  --text-heading-48--line-height: 56px;
-  --text-heading-48--letter-spacing: -2.88px;
+  --text-heading-48: 3rem;
+  --text-heading-48--line-height: 3.5rem;
+  --text-heading-48--letter-spacing: -0.06em;
   --text-heading-48--font-weight: 600;
-  --text-heading-40: 40px;
-  --text-heading-40--line-height: 48px;
-  --text-heading-40--letter-spacing: -2.4px;
+  --text-heading-40: 2.5rem;
+  --text-heading-40--line-height: 3rem;
+  --text-heading-40--letter-spacing: -0.06em;
   --text-heading-40--font-weight: 600;
-  --text-heading-32: 32px;
-  --text-heading-32--line-height: 40px;
-  --text-heading-32--letter-spacing: -1.28px;
+  --text-heading-32: 2rem;
+  --text-heading-32--line-height: 2.5rem;
+  --text-heading-32--letter-spacing: -0.04em;
   --text-heading-32--font-weight: 600;
-  --text-heading-24: 24px;
-  --text-heading-24--line-height: 32px;
-  --text-heading-24--letter-spacing: -0.96px;
+  --text-heading-24: 1.5rem;
+  --text-heading-24--line-height: 2rem;
+  --text-heading-24--letter-spacing: -0.04em;
   --text-heading-24--font-weight: 600;
-  --text-heading-20: 20px;
-  --text-heading-20--line-height: 26px;
-  --text-heading-20--letter-spacing: -0.4px;
+  --text-heading-20: 1.25rem;
+  --text-heading-20--line-height: 1.625rem;
+  --text-heading-20--letter-spacing: -0.02em;
   --text-heading-20--font-weight: 600;
-  --text-heading-16: 16px;
-  --text-heading-16--line-height: 24px;
-  --text-heading-16--letter-spacing: -0.32px;
+  --text-heading-16: 1rem;
+  --text-heading-16--line-height: 1.5rem;
+  --text-heading-16--letter-spacing: -0.02em;
   --text-heading-16--font-weight: 600;
-  --text-heading-14: 14px;
-  --text-heading-14--line-height: 20px;
-  --text-heading-14--letter-spacing: -0.28px;
+  --text-heading-14: 0.875rem;
+  --text-heading-14--line-height: 1.25rem;
+  --text-heading-14--letter-spacing: -0.02em;
   --text-heading-14--font-weight: 600;
-  --text-copy-20: 20px;
-  --text-copy-20--line-height: 36px;
-  --text-copy-18: 18px;
-  --text-copy-18--line-height: 28px;
-  --text-copy-16: 16px;
-  --text-copy-16--line-height: 24px;
-  --text-copy-14: 14px;
-  --text-copy-14--line-height: 20px;
-  --text-copy-13: 13px;
-  --text-copy-13--line-height: 18px;
-  --text-label-14: 14px;
-  --text-label-14--line-height: 20px;
-  --text-label-13: 13px;
-  --text-label-13--line-height: 16px;
-  --text-label-12: 12px;
-  --text-label-12--line-height: 16px;
-  --text-button-14: 14px;
-  --text-button-14--line-height: 20px;
+  --text-copy-20: 1.25rem;
+  --text-copy-20--line-height: 2.25rem;
+  --text-copy-18: 1.125rem;
+  --text-copy-18--line-height: 1.75rem;
+  --text-copy-16: 1rem;
+  --text-copy-16--line-height: 1.5rem;
+  --text-copy-14: 0.875rem;
+  --text-copy-14--line-height: 1.25rem;
+  --text-copy-13: 0.8125rem;
+  --text-copy-13--line-height: 1.125rem;
+  --text-label-14: 0.875rem;
+  --text-label-14--line-height: 1.25rem;
+  --text-label-13: 0.8125rem;
+  --text-label-13--line-height: 1rem;
+  --text-label-12: 0.75rem;
+  --text-label-12--line-height: 1rem;
+  --text-button-14: 0.875rem;
+  --text-button-14--line-height: 1.25rem;
   --text-button-14--font-weight: 500;
 }
 
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 5rem;
+  /* Keeps the scrollbar's space when the page is locked behind a dialog, so nothing shifts sideways. */
+  scrollbar-gutter: stable;
+}
+
+/* While a modal dialog (the CV) is open, the page behind it stays where it is: the wheel or a
+   swipe on the backdrop does not move it, and reaching the end of the dialog does not carry on
+   into the page. */
+html:has(dialog:modal) {
+  overflow: hidden;
+}
+dialog {
+  overscroll-behavior: contain;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -174,31 +222,156 @@ body {
   color: var(--gray-1000);
 }
 
-/* Focus: Geist-style 2px ring in the accent colour, offset from the element. */
+/* Focus: 2px ring in the text colour (black on light, white on dark), offset from the element. */
 :focus-visible {
-  outline: 2px solid var(--blue-700);
+  outline: 2px solid var(--gray-1000);
   outline-offset: 2px;
 }
 
-/* Hero design canvas: Figma-like light grey page with a faint dot grid. Used inside .theme-light. */
+/* Hero design canvas: a design tool's page with a faint dot grid, in the current theme. */
 .design-canvas {
   background-color: var(--gray-100);
   background-image: radial-gradient(circle, var(--gray-500) 1px, transparent 1.25px);
   background-size: 20px 20px;
 }
 
+/* Dialogs ease in and out in CSS. `display` and `overlay` transition discretely, so the dialog stays
+   rendered (and in the top layer, where supported) until it has faded out. Browsers without
+   @starting-style simply open and close it instantly. */
+dialog {
+  --dialog-from: translateY(12px) scale(0.98);
+  opacity: 0;
+  transform: var(--dialog-from);
+  transition:
+    opacity 0.3s ease-out,
+    transform 0.3s ease-out,
+    overlay 0.3s allow-discrete,
+    display 0.3s allow-discrete;
+}
+dialog[open] {
+  opacity: 1;
+  transform: none;
+  @starting-style {
+    opacity: 0;
+    transform: var(--dialog-from);
+  }
+}
 dialog::backdrop {
+  background: rgb(0 0 0 / 0);
+  transition:
+    background-color 0.3s ease-out,
+    overlay 0.3s allow-discrete,
+    display 0.3s allow-discrete;
+}
+dialog[open]::backdrop {
   background: rgb(0 0 0 / 0.6);
+  @starting-style {
+    background: rgb(0 0 0 / 0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  dialog,
+  dialog::backdrop {
+    transition: none;
+  }
 }
 
-/* Printing the CV: show only the open resume dialog. */
+/* Scroll reveals: [data-reveal] blocks fade and rise as they enter the viewport, driven by the
+   scroll position itself (no JavaScript, and nothing is ever hidden waiting for a script).
+   The move finishes within the first 10rem of an element coming into view. Browsers without
+   scroll-driven animations show the content as it is. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    [data-reveal] {
+      animation: reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0 entry 10rem;
+    }
+  }
+}
+@keyframes reveal {
+  from {
+    opacity: 0;
+    translate: 0 1.5rem;
+  }
+}
+
+/* Card spotlight: a soft light under the pointer on hoverable cards. HoverMotion moves it with
+   --spot-x / --spot-y; it only shows while hovering with a fine pointer, and not in print. */
+[data-hover="card"] {
+  position: relative;
+}
+[data-hover="card"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    28rem circle at var(--spot-x, 50%) var(--spot-y, 0%),
+    color-mix(in oklab, var(--color-fg) 7%, transparent),
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 300ms ease-out;
+}
+@media (hover: hover) and (pointer: fine) {
+  [data-hover="card"]:hover::after {
+    opacity: 1;
+  }
+}
+
+/* Set by ThemeToggle for one frame, so the whole page changes theme at once instead of some
+   elements snapping while others run their colour transitions. */
+.theme-switching * {
+  transition: none !important;
+}
+
 @media print {
-  body > *:not(#resume-dialog) {
-    display: none !important;
+  /* Paper is white and browsers drop backgrounds, so print always uses Geist's white light scale,
+     in both themes and inside .theme-light. */
+  :root,
+  .dark,
+  .dark .theme-light {
+    --background-100: #fff;
+    --background-200: #fafafa;
+    --gray-100: #f2f2f2;
+    --gray-200: #ebebeb;
+    --gray-300: #e6e6e6;
+    --gray-400: #eaeaea;
+    --gray-500: #c9c9c9;
+    --gray-600: #a8a8a8;
+    --gray-900: #4d4d4d;
+    --gray-1000: #171717;
+    --card: #fff;
+    --raised: #fff;
+    color-scheme: light;
   }
   html,
   body {
     background: #fff !important;
+  }
+  dialog {
+    transition: none;
+  }
+  /* Printing the page itself: the header flows with the content, and blocks still waiting for
+     the scroll reveals are off. */
+  #main-header {
+    position: static;
+  }
+  [data-reveal] {
+    animation: none;
+  }
+  [data-card-reveal] > * {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  [data-hover="card"]::after {
+    display: none;
+  }
+  /* Printing the CV: while the resume dialog is open, it is the only thing printed. */
+  body:has(#resume-dialog[open]) > *:not(#resume-dialog) {
+    display: none !important;
   }
   /* PrintButton reopens the CV as a non-modal dialog for printing, so it can flow in the page. */
   #resume-dialog {

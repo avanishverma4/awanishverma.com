@@ -16,17 +16,33 @@ export type ProjectImage = { src: string; width: number; height: number; alt: st
 
 export type Project = {
   id: string;
+  // URL of the case study page: /work/<slug>. The seven original slugs are the live site's.
+  slug: string;
+  // The role (an id in `experiences`) the product was made in, when it was made for an employer.
+  // The case study shows that company, and the role lists the case study.
+  experienceId?: string;
   title: string;
   tagline: string;
   category: string;
   cover: ProjectImage;
   gallery: ProjectImage[];
+  // Heading for the images after the cover, when they are not app or web screens.
+  galleryTitle?: string;
   // Only verifiable outcomes; unsupported metrics from the original site were removed.
   outcome?: string;
   team?: string;
   description: string;
   overview: string;
-  architecture: string;
+  // Optional case-study narrative. Each shows as its own section when filled in; nothing is
+  // invented for projects that do not have it yet.
+  problem?: string;
+  role?: string;
+  process?: string[];
+  // What the work found (for analysis projects), shown as its own section.
+  findings?: string[];
+  // How the work was done, in a sentence (optional), and the methods used, as a list.
+  approach?: string;
+  methods: string[];
   keyFeatures: string[];
   techStack: string[];
   liveUrl?: string;
@@ -53,7 +69,8 @@ export const profile = {
   "title": "UI/UX Designer",
   "longBio": `UI/UX Designer with ${totalExperience} of professional experience, including ${uiuxExperience} in UI/UX design. I turn complex problems into clear, human-centered digital products. Skilled in user research, usability testing, interaction design, information architecture, wireframing, prototyping, design systems and design tokens in Figma, accessibility (WCAG 2.1 AA), and frontend implementation with React and Tailwind CSS.`,
   "location": "Bengaluru, India / Remote Worldwide",
-  "availability": "Available for product design contracts and design system advisory.",
+  // The one availability line, used in the hero, contact section, and footer.
+  "availability": "Available for contract and senior roles",
   "email": "avanishverma4@gmail.com",
   "github": "https://github.com/avanishverma4",
   "linkedin": "https://linkedin.com/in/awanish-verma",
@@ -61,21 +78,23 @@ export const profile = {
   "instagram": "https://www.instagram.com/avanishverma4"
 };
 
-// Order is the Work section order: DOCTO first as the featured bento tile.
+// Order is the Work section order: DOCTO first as the featured bento tile, then the Food Delivery
+// App. The CV lists the projects named in cvProjectIds, below the list.
 export const projects: Project[] = [
   {
     "id": "project-4",
-    "title": "Doctor-Patient Management App",
-    "tagline": "Healthcare platform UI/UX connecting doctors and patients with streamlined appointment booking & EHR.",
+    "slug": "doctor-patient-management-app",
+    "title": "DOCTO — Doctor-Patient Management App",
+    "tagline": "Healthcare platform UI/UX connecting doctors and patients with streamlined appointment booking and EHR.",
     "category": "UI/UX & Product Design",
     "cover": {"src": "/images/projects/docto-cover.jpg", "width": 1260, "height": 750, "alt": "DOCTO cover: angled phone screens including the doctor home, login, patient information, and splash screens."},
     "gallery": [{"src": "/images/projects/docto-cover.jpg", "width": 1260, "height": 750, "alt": "DOCTO cover: angled phone screens including the doctor home, login, patient information, and splash screens."}, {"src": "/images/projects/docto-screens.jpg", "width": 1600, "height": 877, "alt": "Four DOCTO screens: Today's appointment, Patient information with appointments and prescriptions, Missed appointment, and search results."}, {"src": "/images/projects/docto-colors.jpg", "width": 1440, "height": 1509, "alt": "DOCTO design system colour page: primary blue, secondary red, grey, and alert colour scales with hex values."}],
     "description": "A comprehensive healthcare UI/UX case study featuring dual-role interfaces for medical professionals and patients, electronic health record (EHR) management, and telehealth consultations.",
     "overview": "Designed to bridge communication between healthcare providers and patients. Focused on high legibility, HIPAA-compliant design patterns, empathetic color palettes, and clear appointment scheduling workflows.",
-    "architecture": "Healthcare UX Patterns, Figma Wireframing, Dual Persona Architecture, Accessible Medical Dashboards.",
+    "methods": ["Healthcare UX Patterns", "Figma Wireframing", "Dual Persona Architecture", "Accessible Medical Dashboards"],
     "keyFeatures": [
       "Patient portal for friction-free specialist search and instant slot booking",
-      "Doctor clinical dashboard with patient vitals, medical history & prescription generator",
+      "Doctor clinical dashboard with patient vitals, medical history, and a prescription generator",
       "Secure video consultation call interface with real-time note-taking",
       "Lab report viewer with intuitive chart visualizations of health parameters"
     ],
@@ -89,20 +108,48 @@ export const projects: Project[] = [
     "liveUrl": "https://www.behance.net/gallery/221640093/Doctor-Patient-Management-App"
   },
   {
+    "id": "project-11",
+    "slug": "food-delivery-app",
+    "title": "Food Delivery App",
+    "tagline": "Mobile food ordering app UI: browse by category, open a dish, manage the cart, and reorder from order history.",
+    "category": "Mobile & Web Apps",
+    "cover": {"src": "/images/projects/food-cover.jpg", "width": 1600, "height": 1000, "alt": "Three Food Delivery App screens: the home screen with search, categories, and burger cards; the Vegetable Burger dish page with an Add to Cart button; and the cart with a total and a Checkout button."},
+    "gallery": [{"src": "/images/projects/food-cover.jpg", "width": 1600, "height": 1000, "alt": "Three Food Delivery App screens: the home screen with search, categories, and burger cards; the Vegetable Burger dish page with an Add to Cart button; and the cart with a total and a Checkout button."}, {"src": "/images/projects/food-screens-1.jpg", "width": 1760, "height": 900, "alt": "Four Food Delivery App screens: onboarding with the headline \"Good Food For Good Mood\", the home screen, the Vegetable Burger dish page, and the cart."}, {"src": "/images/projects/food-screens-2.jpg", "width": 1760, "height": 900, "alt": "Three Food Delivery App screens: Saved dishes, Order History with Completed and Ongoing tabs, and Settings with the profile and account links."}],
+    "team": "Published on Behance with multiple owners.",
+    "description": "Three more screens cover what happens around an order: saved dishes, order history with completed and ongoing tabs, and account settings.",
+    "overview": "A food delivery app designed as seven iPhone-size screens (375 × 812). The flow runs from an onboarding screen to a home screen with search, food categories, and a grid of burgers, then to a dish page, the cart, and checkout.",
+    "approach": "Designed in Figma.",
+    "methods": ["UI/UX", "App Design", "Mobile UI"],
+    "keyFeatures": [
+      "Home screen with search, a category row, and dish cards with a price, a save heart, and an add button",
+      "Dish page with a large photo, a quantity stepper, delivery fee, delivery time, rating, and an Add to Cart button",
+      "Cart with quantity controls on every item and a subtotal, shipping, and total summary above Checkout",
+      "Order history with Completed and Ongoing tabs and an Order Again link on every past order"
+    ],
+    "techStack": [
+      "Mobile UI/UX",
+      "App Design",
+      "Figma"
+    ],
+    "liveUrl": "https://www.behance.net/gallery/179559893/Food-Delivery-App"
+  },
+  {
     "id": "project-1",
+    "slug": "xpertonline-chatbot",
+    "experienceId": "exp-2",
     "title": "XpertOnline Chatbot",
     "tagline": "AI-powered conversational assistant UI/UX design with intuitive chat flow and smart intent architecture.",
     "category": "UI/UX & Product Design",
-    "cover": {"src": "/images/projects/xpertonline-qualitative-analysis.jpg", "width": 1600, "height": 900, "alt": "Qualitative analysis slide for use case 3, lab test reports: conversation steps and findings beside a dark-mode XpertOnline chatbot screen."},
+    "cover": {"src": "/images/projects/xpertonline-cover.jpg", "width": 1200, "height": 750, "alt": "Three XpertOnline chatbot screens in dark mode: the pre-consultation checklist before and after the usability test, and the bot explaining a lab result and offering other languages."},
     "gallery": [{"src": "/images/projects/xpertonline-qualitative-analysis.jpg", "width": 1600, "height": 900, "alt": "Qualitative analysis slide for use case 3, lab test reports: conversation steps and findings beside a dark-mode XpertOnline chatbot screen."}, {"src": "/images/projects/xpertonline-refined-wireframes.jpg", "width": 1600, "height": 900, "alt": "Refined wireframes slide: before and after chatbot screens for the pre-consultation checklist, with the justification for splitting one message into two."}],
-    "team": "Group project with Jyotirmoy Goswami, Sphoorthy Gowda, and Mukesh Gupta.",
+    "team": "Designed with a team.",
     "description": "End-to-end UI/UX design case study for an intelligent conversational AI chatbot interface, optimizing response legibility, prompt quick-actions, and multi-turn dialogue UX.",
     "overview": "Designed and prototyped XpertOnline Chatbot to streamline automated support and AI assistance. Focused on reducing friction in complex workflows, designing visual state indicators for streaming responses, and creating intuitive follow-up prompts.",
-    "architecture": "User Flow Mapping, Figma Interactive Components, Conversation UI Patterns, Design Tokens, Accessibility Contrast Validation.",
+    "methods": ["User Flow Mapping", "Figma Interactive Components", "Conversation UI Patterns", "Design Tokens", "Accessibility Contrast Validation"],
     "keyFeatures": [
       "Conversational UI with dynamic typing states and structured response cards",
       "Contextual quick-action prompts and intent-based suggestion pills",
-      "Accessible dark & light themes optimized for prolonged screen reading",
+      "Accessible dark and light themes optimized for prolonged screen reading",
       "Handoff architecture with comprehensive Figma component states"
     ],
     "techStack": [
@@ -115,71 +162,112 @@ export const projects: Project[] = [
     "liveUrl": "https://www.behance.net/gallery/231083459/XpertOnline-Chatbot"
   },
   {
-    "id": "project-2",
-    "title": "Water Drink Reminder App",
-    "tagline": "Intuitive hydration tracking mobile UI/UX with habit-forming visual micro-interactions and smart goals.",
-    "category": "Mobile & Web Apps",
-    "cover": {"src": "/images/projects/water-cover.jpg", "width": 1600, "height": 800, "alt": "Drops Water Tracker cover: home screen with the daily water goal and progress gauge, plus the For Today and My Profile screens."},
-    "gallery": [{"src": "/images/projects/water-cover.jpg", "width": 1600, "height": 800, "alt": "Drops Water Tracker cover: home screen with the daily water goal and progress gauge, plus the For Today and My Profile screens."}, {"src": "/images/projects/water-screens.jpg", "width": 1600, "height": 857, "alt": "Four Water Tracker screens: Home, For Today with water, walk, calories, sleep, and heart cards, Set Your Goal, and a 100% goal preview."}],
-    "description": "A user-centric mobile app design focused on daily hydration tracking, subtle gamification, liquid progress animations, and timely notification ergonomics.",
-    "overview": "Designed to help users keep healthy hydration habits with minimal effort. Features fluid wave animations, daily goals based on personal metrics, and one-tap logging shortcuts.",
-    "architecture": "Mobile First UX, Figma Smart Animate, Habit Loop Psychology, Custom Iconography & Liquid Wave UI Animations.",
+    "id": "project-12",
+    "slug": "social-media-addiction-dashboard",
+    "title": "Social Media Addiction Dashboard",
+    "tagline": "Six-page interactive Power BI report on how 705 students in 110 countries scroll, sleep, and study.",
+    "category": "Data Analytics",
+    "cover": {"src": "/images/powerbi/overview.jpg", "width": 1601, "height": 901, "alt": "Executive Overview page of the Power BI report: cards for 705 students, 4.92 hours of daily usage, 64.3% affected academically, and 6.87 hours of sleep, above charts of addiction score by academic level, usage by age, the gender split, and a monthly usage trend."},
+    "gallery": [{"src": "/images/powerbi/wellbeing.jpg", "width": 1601, "height": 901, "alt": "Mental Health & Lifestyle page: a gender slicer and three cards (average mental health score 6.23, sleep 6.87 hours, 199 addicted students) over a country by health band matrix, a scatter of addicted score against mental health score by country, and a line of sleep hours by age."}, {"src": "/images/powerbi/academics.jpg", "width": 1601, "height": 901, "alt": "Academic Impact page: an age range slider and two cards over a bar chart of daily usage by academic level and a column chart of academic impact by most-used platform, led by Instagram and TikTok."}, {"src": "/images/powerbi/relationships.jpg", "width": 1601, "height": 901, "alt": "Relationships & Conflicts page: country and academic level slicers over conflict level by relationship status, a relationship status pie (Single 384, In Relationship 289, Complicated 32), and a student table that drills through to a profile."}, {"src": "/images/powerbi/story.jpg", "width": 1601, "height": 901, "alt": "Interactive Story View page: Gender View and Academic Level View bookmark buttons above a bar chart of daily usage by gender and a donut of most-used platform by gender."}],
+    "galleryTitle": "Report pages",
+    "outcome": "Every task in the brief built: 6 pages, 82 visuals, 3 tables, and 11 measures.",
+    "description": "The report has six pages: an executive overview, mental health and lifestyle, academic impact, relationships and conflicts, a bookmark-driven story view, and a drill-through profile for any one student.",
+    "overview": "An interactive Power BI dashboard that analyses how students’ social media use relates to their sleep, academic performance, mental health, and relationship conflicts, built from one Excel workbook of 705 students.",
+    "problem": "Four groups read the same data for different reasons: academic advisors want usage against academic level and platform, counsellors want sleep, mental health, and addiction scores, researchers want country and gender breakdowns, and a counsellor sitting with one student needs that student’s record at a glance.",
+    "role": "Solo Power BI mini project. I built the data model, DAX, theme, and report, and wrote its 9-page documentation.",
+    "process": [
+      "Load: two Excel sheets read through Power Query, with explicit types, trimmed text, and blank and duplicate IDs removed, from one DatasetPath parameter.",
+      "Model: Student_Details and Platform_Details joined one-to-one on Student_ID with cross-filtering both ways, plus a CALENDAR() date table marked as the model’s time table.",
+      "DAX: Health Band and Conflict Level calculated columns, and 11 measures from Avg Usage Hours to a year-to-date Monthly Trend with DATESYTD.",
+      "Report: six 1280 × 720 pages in a custom Social Pulse theme, with slicers, page navigation buttons, bookmarks, and a drill-through page."
+    ],
+    "approach": "The dark theme borrows its data colours from the platforms it studies: Instagram pink, TikTok cyan, Facebook blue, and WhatsApp green.",
+    "methods": ["Power Query cleaning", "Star schema modelling", "DAX measures and calculated columns", "Time intelligence", "Bookmarks and drill-through", "Custom report theme"],
     "keyFeatures": [
-      "One-tap quick intake logging with custom vessel volume presets",
-      "Fluid visual hydration gauge with real-time wave animation feedback",
-      "Smart adaptive reminder notifications based on daily user activity routines",
-      "Weekly and monthly habit analytics charts with goal progress milestones"
+      "Header navigation on every page, with the current page highlighted",
+      "Slicers for gender, country, academic level, and a numeric age range",
+      "A story page where two bookmark buttons swap the charts between a gender view and an academic level view",
+      "Right-click any student in the table to drill through to their profile: platform, sleep, usage, addiction score, conflicts, and mental health rating"
+    ],
+    "findings": [
+      "64.3% of students (453 of 705) say social media affects their academic performance",
+      "Affected students average 5.54 hours a day against 3.80, and sleep 6.34 hours a night against 7.81",
+      "94% of TikTok users and all 54 WhatsApp users report academic impact, against 30% of Facebook users",
+      "High school students score highest on addiction (8.04 of 9), though they are only 27 students",
+      "199 students (28%) score 8 or 9 on addiction, the report’s definition of an addicted student",
+      "Addicted score and mental health score correlate at −0.95: strong for survey data, and not proof of cause"
     ],
     "techStack": [
-      "Mobile UI/UX",
-      "Figma",
-      "Habit Design",
-      "Prototyping",
-      "Micro-interactions"
+      "Power BI",
+      "DAX",
+      "Power Query",
+      "Data Modelling",
+      "Data Visualization"
     ],
-    "liveUrl": "https://www.behance.net/gallery/207598711/Water-Drink-Reminder-App"
+    "githubUrl": "https://github.com/avanishverma4/powerbi-mini_project"
   },
   {
-    "id": "project-3",
-    "title": "Plant App UX Design Process",
-    "tagline": "Comprehensive end-to-end UX research, wireframing, and UI design process for plant care & identification.",
-    "category": "UI/UX & Product Design",
-    "cover": {"src": "/images/projects/plant-cover.jpg", "width": 1398, "height": 740, "alt": "Gecare plant shop app cover: plant list and plant detail screens."},
-    "gallery": [{"src": "/images/projects/plant-cover.jpg", "width": 1398, "height": 740, "alt": "Gecare plant shop app cover: plant list and plant detail screens."}, {"src": "/images/projects/plant-checkout.jpg", "width": 760, "height": 660, "alt": "Order details screen with cart, delivery, payment and totals, and an order accepted confirmation."}],
-    "description": "A deep-dive product design case study detailing user interviews, competitive analysis, persona creation, wireframing, and visual UI design for plant enthusiasts.",
-    "overview": "Documented the complete UX design lifecycle for a plant care assistant app. From discovering user pain points around over-watering to building plant diagnosis visual flows and tailored sunlight schedules.",
-    "architecture": "User Research, Empathy Maps, Persona Mapping, Low-Fi & High-Fi Wireframes, Figma Interactive Prototypes, Design System.",
+    "id": "project-9",
+    "slug": "retail-store-sql-analysis",
+    "title": "Retail Store SQL Analysis",
+    "tagline": "SQL analysis of a retail store database: a six-table MySQL schema, a re-runnable data load, and 42 documented business queries.",
+    "category": "Data Analytics",
+    "cover": {"src": "/images/sql/query-result.jpg", "width": 1485, "height": 928, "alt": "The verification query from the documentation: a UNION ALL statement that counts the rows of all six tables, with its result: customers 30, products 50, orders 400, order_items 1201, payments 400, product_reviews 50."},
+    "gallery": [{"src": "/images/sql/cover.jpg", "width": 1485, "height": 930, "alt": "Title page of the documentation: \"Retail Store SQL Solution Documentation\", a complete technical walkthrough of the retail_store database and all 42 business queries across six levels."}, {"src": "/images/sql/verification-levels.jpg", "width": 1485, "height": 1965, "alt": "Documentation page: the UNION ALL verification query with its result (30 customers, 50 products, 400 orders, 1201 order items, 400 payments, 50 reviews), and a table of the six query levels with their question counts and core techniques."}, {"src": "/images/sql/dataset-profile.jpg", "width": 1485, "height": 1680, "alt": "Documentation page, Dataset Profile: 2,131 rows across six tables, with product categories, order statuses, payment methods, the trading window, and a note that four queries correctly return zero rows."}],
+    "galleryTitle": "Documentation pages",
+    "outcome": "All 42 questions answered, each with its expected result recorded.",
+    "description": "The dataset has 2,131 rows across six tables: 30 customers, 50 products, 400 orders, 1,201 order items, 400 payments, and 50 product reviews, covering one year of trading.",
+    "overview": "A retail business records every customer, product, order, line item, payment, and review in an operational database, but the raw tables answer nothing on their own. This project builds and documents a complete, verified SQL answer set for the store, from single-table retrieval to set operations.",
+    "problem": "Marketing has no clean contact list, merchandising cannot see which categories perform, finance cannot break settlement down by payment method, and inventory cannot separate what sells from what sits. One question can span three tables, the data is stored per line item while questions are asked per order, customer, category, and day, and “never sold” or “never ordered” means reasoning about rows that are not there.",
+    "role": "Solo SQL mini project from Data Analytics with GenAI. I wrote the script and its 45-page documentation.",
+    "process": [
+      "Schema: create the retail_store database and its six tables, with keys and constraints, using CREATE TABLE IF NOT EXISTS.",
+      "Load: insert the supplied dataset with INSERT IGNORE, so the script can be re-run without duplicate-key errors.",
+      "Verify: one UNION ALL query reports the row count of all six tables before any analysis begins.",
+      "Query: answer the 42 questions in six levels, each with a plain-language explanation and its expected result."
+    ],
+    "approach": "Every query is written to be readable first: keywords on their own lines, short table aliases, and an explicit alias for every calculated column.",
+    "methods": ["SELECT, WHERE, ORDER BY", "Aggregations and GROUP BY", "INNER, LEFT, and RIGHT JOIN", "Scalar and correlated subqueries", "EXISTS and NOT EXISTS", "UNION"],
     "keyFeatures": [
-      "AI photo-scan camera interface for instant botanical identification",
-      "Custom watering & sunlight schedule reminders tailored to plant species",
-      "Step-by-step diagnostic flows for troubleshooting plant health & yellowing leaves",
-      "Community botanical marketplace & care tip sharing feed"
+      "One script that builds the database, loads the data, verifies the load, and answers every question in order",
+      "42 queries across six levels: basics, filtering and formatting, aggregations, joins, subqueries, and set operations",
+      "An expected result for every query, including four that correctly return no rows",
+      "INTERSECT, which the MySQL setup does not support, replaced with an INNER JOIN and DISTINCT"
+    ],
+    "findings": [
+      "Revenue of ₹69,60,973.66 across 400 orders, an average order value of ₹17,402.43",
+      "All 30 customers have ordered and all 50 products have sold: no dormant segment and no dead stock in this dataset",
+      "Electronics leads on units sold (687), but Clothing has the highest average item price (₹3,473.17)",
+      "Debit Card settles the largest value (₹19,30,577.88) and UPI the smallest (₹16,17,408.78); no single method dominates",
+      "194 of 400 orders exceed the placing customer’s own average order value",
+      "23 of 30 customers have both ordered and reviewed a product"
     ],
     "techStack": [
-      "UX Research",
-      "User Testing",
-      "Figma",
-      "Wireframing",
-      "Information Architecture"
+      "SQL",
+      "MySQL 8",
+      "MySQL Workbench",
+      "Data Analysis"
     ],
-    "liveUrl": "https://www.behance.net/gallery/178415273/Plant-App-UX-Design-Process"
+    "githubUrl": "https://github.com/avanishverma4/data_analytics_SQL_1"
   },
   {
     "id": "project-5",
+    "slug": "academy-of-dental-excellence",
+    "experienceId": "exp-2",
     "title": "Academy of Dental Excellence",
     "tagline": "Dental education web platform with course enrollment, clinical masterclasses, and a student portal.",
     "category": "Mobile & Web Apps",
-    "cover": {"src": "/images/projects/dental-home.jpg", "width": 1440, "height": 900, "alt": "Academy of Dental Excellence home page: navigation and a Diploma and Master's programme hero."},
-    "gallery": [{"src": "/images/projects/dental-home.jpg", "width": 1440, "height": 900, "alt": "Academy of Dental Excellence home page: navigation and a Diploma and Master's programme hero."}],
+    "cover": {"src": "/images/projects/dental-home.jpg", "width": 1440, "height": 900, "alt": "Academy of Dental Excellence home page: navigation and a Diploma and Master’s programme hero."},
+    "gallery": [{"src": "/images/projects/dental-home.jpg", "width": 1440, "height": 900, "alt": "Academy of Dental Excellence home page: navigation and a Diploma and Master’s programme hero."}, {"src": "/images/projects/dental-intro.jpg", "width": 1440, "height": 770, "alt": "Home page section: a 3D ADE logo beside the headline \"Transform your practice with ADE’s internationally recognised faculty and hands-on training\", a short paragraph, and a Discover our courses link."}, {"src": "/images/projects/dental-courses.jpg", "width": 1440, "height": 600, "alt": "Courses page: three course cards, two postgraduate diplomas leading to a master’s and one diploma, each with its faculty leads and a View details link."}],
     "outcome": "Live production website.",
     "description": "A production web platform designed for dental practitioners offering advanced hands-on workshops, online certification courses, and clinical resource downloads.",
     "overview": "Designed and developed the digital presence for Academy of Dental Excellence. Created a high-trust visual style, responsive course catalogs, and a simple event registration flow.",
-    "architecture": "Web Architecture, UI/UX Design, Responsive Layouts, SEO Optimization, Conversion Design.",
+    "methods": ["Web Architecture", "UI/UX Design", "Responsive Layouts", "SEO Optimization", "Conversion Design"],
     "keyFeatures": [
       "Interactive course catalog with filtering by specialty (Endodontics, Implantology, Aesthetics)",
       "Workshop registration with secure payment checkout",
       "Video masterclass streaming interface with downloadable lecture notes",
-      "Faculty & speaker showcase with clinical credentials and past workshop galleries"
+      "Faculty and speaker showcase with clinical credentials and past workshop galleries"
     ],
     "techStack": [
       "UI/UX Design",
@@ -191,15 +279,43 @@ export const projects: Project[] = [
     "liveUrl": "https://dentalexcellence.academy/"
   },
   {
+    "id": "project-10",
+    "slug": "i2i-connect-landing-page",
+    "experienceId": "exp-2",
+    "title": "i2i CONNECT Landing Page",
+    "tagline": "Landing page for i2i CONNECT, a cloud-based teleradiology reporting platform, built around one action: request a demo.",
+    "category": "Mobile & Web Apps",
+    "cover": {"src": "/images/projects/connect-home.jpg", "width": 1440, "height": 720, "alt": "i2i CONNECT landing page: a blue navigation bar, a hero photo of a brain scan with the headline \"Transforming Radiology Across Borders\" and a Subscribe now button, and the start of the About i2i CONNECT section."},
+    "gallery": [{"src": "/images/projects/connect-home.jpg", "width": 1440, "height": 720, "alt": "i2i CONNECT landing page: a blue navigation bar, a hero photo of a brain scan with the headline \"Transforming Radiology Across Borders\" and a Subscribe now button, and the start of the About i2i CONNECT section."}, {"src": "/images/projects/connect-services.jpg", "width": 1440, "height": 500, "alt": "About section: a paragraph describing the platform above four service points with icons: Experienced Radiologists, Secure & Standards Compliant, Amazing Service Timelines, and On Call Emergency Reporting."}],
+    "description": "The page runs in one scroll: a hero carousel with a Subscribe now button, a short explanation of the platform, four service points, and a three-field demo request form.",
+    "overview": "A single-page landing page for i2i CONNECT, a cloud-based tele-diagnostics platform where screening centres and clinics upload medical images and a panel of specialists reports on them remotely.",
+    "methods": ["Landing Page Design", "Single-Page Layout", "Lead Capture Form"],
+    "keyFeatures": [
+      "Hero carousel with one headline and a single call to action that jumps to the demo form",
+      "About section that explains the platform in one paragraph",
+      "Four service points with icons: radiologist expertise, compliance, service timelines, and on-call emergency reporting",
+      "Request a demo form with three fields: name, email, and phone number"
+    ],
+    "techStack": [
+      "Web Design",
+      "UI Design",
+      "HTML5",
+      "CSS3",
+      "Bootstrap"
+    ],
+    "liveUrl": "https://connect-henna-nine-32.vercel.app/"
+  },
+  {
     "id": "project-6",
+    "slug": "password-generator",
     "title": "Password Generator",
     "tagline": "Sleek, customizable strong password generator tool with real-time entropy calculation and instant copy.",
     "category": "Interactive Prototypes",
     "cover": {"src": "/images/projects/password-generator.jpg", "width": 1440, "height": 900, "alt": "Password generator in dark mode: length slider, character options, strength meter, and Generate button."},
-    "gallery": [{"src": "/images/projects/password-generator.jpg", "width": 1440, "height": 900, "alt": "Password generator in dark mode: length slider, character options, strength meter, and Generate button."}],
+    "gallery": [{"src": "/images/projects/password-generator.jpg", "width": 1440, "height": 900, "alt": "Password generator in dark mode: length slider, character options, strength meter, and Generate button."}, {"src": "/images/projects/password-generator-strong.jpg", "width": 1440, "height": 900, "alt": "Password generator after generating an 18-character password: the strength meter reads Strong with all four bars filled, entropy of about 107 bits, and an estimated crack time of over 100 years."}],
     "description": "A modern web application utility designed for maximum privacy, live password strength analytics, custom character parameters, and copy-to-clipboard interactions.",
     "overview": "Built to demonstrate micro-interaction polish, accessible control elements, dark mode visual aesthetic, and client-side cryptographic security.",
-    "architecture": "React, TypeScript, Web Crypto API, Tailwind CSS, Motion animations.",
+    "methods": ["React", "TypeScript", "Web Crypto API", "Tailwind CSS", "Motion animations"],
     "keyFeatures": [
       "Configurable length sliders with real-time visual strength meter",
       "Toggle options for uppercase, lowercase, numbers, and special symbols",
@@ -217,14 +333,15 @@ export const projects: Project[] = [
   },
   {
     "id": "project-7",
+    "slug": "jumblefix",
     "title": "Jumblefix",
     "tagline": "Fast, interactive web tool for solving and unjumbling word puzzles with clean, responsive UI.",
     "category": "Interactive Prototypes",
     "cover": {"src": "/images/projects/jumblefix-home.jpg", "width": 1425, "height": 900, "alt": "Jumblefix home page: letter tiles for TRAINED, an Unscramble button, and results grouped by word length."},
-    "gallery": [{"src": "/images/projects/jumblefix-home.jpg", "width": 1425, "height": 900, "alt": "Jumblefix home page: letter tiles for TRAINED, an Unscramble button, and results grouped by word length."}],
+    "gallery": [{"src": "/images/projects/jumblefix-home.jpg", "width": 1425, "height": 900, "alt": "Jumblefix home page: letter tiles for TRAINED, an Unscramble button, and results grouped by word length."}, {"src": "/images/projects/jumblefix-results.jpg", "width": 1440, "height": 900, "alt": "Jumblefix results for TRAINED: 179 words from 7 letters, grouped by length with a score beside each word; the three 7-letter perfect anagrams are highlighted, with filters for starts with, ends with, and contains above."}],
     "description": "A lightweight, highly performant web application for solving anagrams, jumbled words, and word puzzles with a clean, minimal interface.",
     "overview": "Designed and built Jumblefix as a minimal, fast utility app. Features immediate keyboard focus, real-time query filtering, and smooth UI layout transitions.",
-    "architecture": "Next.js, TypeScript, Trie / Anagram Algorithm, Tailwind CSS, Vercel.",
+    "methods": ["Next.js", "TypeScript", "Trie / Anagram Algorithm", "Tailwind CSS", "Vercel"],
     "keyFeatures": [
       "Instant anagram solver with length-based result grouping",
       "Clean dark/light theme options with focused input ergonomics",
@@ -242,6 +359,9 @@ export const projects: Project[] = [
   }
 
 ];
+
+// Projects shown in the CV, in this order: four design case studies and the SQL analysis.
+export const cvProjectIds = ["project-4", "project-11", "project-1", "project-12", "project-9"];
 
 export const experiences: Experience[] = [
   {
@@ -270,7 +390,7 @@ export const experiences: Experience[] = [
   },
   {
     "id": "exp-2",
-    "role": "Graphic Designer",
+    "role": "Graphic & UI Designer",
     "company": "i2i TeleSolutions & Telemedicine",
     "location": "India",
     "period": "Apr 2018 – Oct 2023",
@@ -388,7 +508,7 @@ export const skillGroups: SkillGroup[] = [
     name: "Frontend Development",
     scope: "Building and prototyping interfaces in code.",
     skills: [
-      { name: "React 19 / Next.js 15", detail: "App Router, Interactive UI Components, Responsive Layouts" },
+      { name: "React 19 / Next.js 16", detail: "App Router, Interactive UI Components, Responsive Layouts" },
       { name: "Tailwind CSS v4 & Modern CSS", detail: "CSS Variables, Container Queries, 8pt Grid Systems" },
       { name: "TypeScript & UI State", detail: "Typed Component Props, Clean State Architecture" },
     ],
@@ -431,12 +551,13 @@ export const nav = [
   { href: "#projects", label: "Work" },
   { href: "#experience", label: "Experience" },
   { href: "#skills", label: "Skills" },
+  { href: "#testimonials", label: "Testimonials" },
   { href: "#contact", label: "Contact" },
 ];
 
 export const socials = [
-  { label: "GitHub", href: profile.github, note: "Code & token pipelines" },
-  { label: "LinkedIn", href: profile.linkedin, note: "Career & writing" },
+  { label: "GitHub", href: profile.github, note: "Code and token pipelines" },
+  { label: "LinkedIn", href: profile.linkedin, note: "Career and writing" },
   { label: "Behance", href: profile.behance, note: "Case studies" },
   { label: "Instagram", href: profile.instagram, note: "Interface shots" },
 ];
@@ -446,12 +567,13 @@ export const ui = {
   skipLink: "Skip to main content",
   header: {
     monogram: "AV",
-    status: "Available for contract and senior roles",
     tagline: profile.title,
     brandLabel: "Awanish Verma — back to top",
+    homeLabel: "Awanish Verma — home page",
     navLabel: "Section navigation",
     mobileNavLabel: "Mobile section navigation",
     openMenu: "Open navigation menu",
+    closeMenu: "Close navigation menu",
     resume: "View CV",
     resumeShort: "CV",
     resumeMobile: "View CV",
@@ -459,7 +581,7 @@ export const ui = {
     switchTo: "Switch to ",
   },
   hero: {
-    status: "Open to work",
+    status: profile.availability,
     role: profile.title,
     // Existing site headline, used as the one line on what he designs.
     summary: "Complex problems, shaped into clear, human-centered products.",
@@ -472,54 +594,53 @@ export const ui = {
     primaryCta: "View selected work",
     secondaryCta: "Open Behance profile",
     connect: "Connect",
-    // Hero canvas: frames exported at 2x from Awanish's Figma file (page "Wireframe / App Design"),
-    // shown with their Figma frame names and size, like the file's canvas.
+    // Hero canvas: three sections of the Khan Academy home page redesign, cropped at section
+    // boundaries from the 1600px-wide page on Awanish's Behance project and shown as frames on a canvas.
+    // The first frame is the large lead frame; the badge shows each frame's pixel size.
     canvas: {
-      page: "Doctor-Patient Management App / Wireframe / App Design",
-      frameSize: { width: 720, height: 1600 },
-      selectedBadge: "360 × 800",
+      page: "Khan Academy Website Redesign / Home page",
       frames: [
-        { name: "splash", src: "/images/docto/splash.png", alt: "DOCTO splash screen: the app wordmark and a doctor illustration on indigo." },
-        { name: "Login with Mobile", src: "/images/docto/login.png", alt: "Login screen with a phone number field, a primary button, and Google, Facebook, and Twitter sign-in." },
-        { name: "OTP Validation", src: "/images/docto/otp.png", alt: "OTP validation screen with six code boxes and a Submit button." },
-        { name: "Homescreen", src: "/images/docto/home.png", alt: "Doctor home screen: a greeting, 12 of 26 appointments, today's appointment cards, and a missed appointments list.", selected: true },
+        { name: "Hero", src: "/images/khan/hero.jpg", width: 1600, height: 884, selected: true, alt: "Khan Academy home page hero: the headline \"For every student, every classroom, real results\", Learners, Teachers, and Parents buttons, a photo of a child in an online class with study-time and progress cards, and a row of key supporter logos." },
+        { name: "Course categories", src: "/images/khan/courses.jpg", width: 1600, height: 822, alt: "\"Find your courses\" section: eleven course category chips with icons and video counts, with Arts & humanities highlighted." },
+        { name: "Learners", src: "/images/khan/learners.jpg", width: 1600, height: 660, alt: "\"You can learn anything\" section for learners and students, with a Learners start here button beside a circular collage of student photos." },
       ],
-      caption: "DOCTO, Doctor-Patient Management App: high-fidelity screens.",
-      linkLabel: "View case study",
-      href: projects.find((p) => p.id === "project-4")?.liveUrl ?? profile.behance,
+      caption: "Khan Academy Website Redesign. Home page.",
+      linkLabel: "View on Behance",
+      // The frames and the caption link lead to the project on Behance; it has no case study page here.
+      title: "Khan Academy Website Redesign",
+      href: "https://www.behance.net/gallery/186483775/Khan-Academy-Website-Redesign",
     },
   },
   projects: {
     index: "01",
     eyebrow: "Selected work",
-    heading: "Product, mobile, and web ",
+    heading: "Product, mobile, web, and data ",
     headingEmphasis: "case studies",
-    filterLabel: "Filter case studies by category",
-    allWork: "All work",
-    shown: (n: number) => `${n} case studies shown.`,
-    empty: "No case studies in this category yet.",
-    showAll: "Show all work",
     openCaseStudy: "Open case study: ",
+    viewCaseStudy: "View case study",
   },
   caseStudy: {
     label: "Case study",
-    close: "Close case study",
-    outcome: "Outcome",
-    tabsLabel: "Case study sections",
-    tabs: {
-      overview: "Overview",
-      architecture: "Process and tools",
-      features: "Features",
-      gallery: "Gallery",
-    },
-    technologies: "Tools and methods",
-    process: "Process",
+    back: "All work",
+    category: "Category",
+    company: "Company",
+    tools: "Skills and tools",
     team: "Team",
+    outcome: "Outcome",
+    overview: "Overview",
+    problem: "Problem",
+    role: "My role",
+    process: "Process",
+    methods: "Approach and methods",
     capabilities: "Key features",
+    findings: "Key findings",
+    gallery: "Screens",
     sourceCode: "View source code",
     viewBehance: "Open case study on Behance",
     viewLive: "Open live site",
-    closeFooter: "Close",
+    moreNavLabel: "More case studies",
+    previous: "Previous",
+    next: "Next",
   },
   experience: {
     index: "02",
@@ -527,6 +648,8 @@ export const ui = {
     heading: "Roles and ",
     headingEmphasis: "outcomes",
     current: "Current role.",
+    // Shown in a role that has case studies (projects with its id as `experienceId`).
+    caseStudies: "Case studies from this role:",
   },
   skills: {
     index: "03",
@@ -534,6 +657,11 @@ export const ui = {
     heading: "Design, frontend, video, and ",
     headingEmphasis: "data tools",
     intro: `${uiuxExperience} of UI/UX design, from user research to design systems, plus the tools I use for frontend, video, and data work.`,
+    otherHeading: "Other tools",
+    otherScope: "Video and data tools I use alongside design work.",
+    // Phone widths only: the button that unfolds each skill's detail line.
+    showDetails: "Show details",
+    hideDetails: "Hide details",
   },
   testimonials: {
     index: "04",
@@ -547,9 +675,12 @@ export const ui = {
     heading: "Email me about your ",
     headingEmphasis: "project",
     intro:
-      "I take on work where design decisions still matter: early product vision, systems that need structure, and teams that need direction. Tell me what you're building and where it's stuck. A paragraph is enough to start.",
+      "I take on work where design decisions still matter: early product vision, systems that need structure, and teams that need direction. Tell me what you’re building and where it’s stuck. A paragraph is enough to start.",
     emailTitle: "Email",
     emailNote: "No contact form",
+    copyEmail: "Copy email",
+    emailCopied: "Copied",
+    emailCopiedToast: "Email copied to clipboard",
     replyLabel: "Reply time",
     replyValue: "Within 24 hours",
     locationLabel: "Location",
@@ -563,7 +694,7 @@ export const ui = {
         body: "Token pipelines, component libraries, and the governance that keeps them alive after launch.",
       },
       {
-        title: "Design advisory & audits",
+        title: "Design advisory and audits",
         body: "Short engagements: UX audits, accessibility reviews, and direction for in-house design teams.",
       },
     ],
@@ -581,11 +712,13 @@ export const ui = {
     title: "CV",
     print: "Print or save as PDF",
     close: "Close curriculum vitae",
+    // Shown in the CV only, not in the contact section or footer.
+    phone: "+91 7892234174",
     summary: "Summary",
     experience: "Experience",
     skillsLabel: "Skills:",
     projects: "Projects",
-    tools: "Tools:",
+    tools: "Skills and tools:",
     coreSkills: "Skills",
     education: "Education",
     certifications: "Certifications",
@@ -615,7 +748,7 @@ export const ui = {
   notFound: {
     code: "404",
     title: "Page not found",
-    heading: "This page isn't part of the portfolio.",
+    heading: "This page isn’t part of the portfolio.",
     body: "The link may be out of date, or the address may be mistyped. All content is on the home page.",
     home: "Go to home page",
     work: "View selected work",

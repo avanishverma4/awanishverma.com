@@ -650,3 +650,311 @@ Awanish asked for the Work section as a bento grid.
   - Filtered to "UI/UX & Product Design": 3 uniform tiles at opacity 1.
   - Keyboard: the first card (DOCTO) takes focus with a visible outline, and Enter opens its case study.
   - axe: 0 violations in dark and light.
+
+### Hero canvas: Khan Academy Website Redesign (2026-10-01)
+
+Awanish asked for the hero image to change to either the Khan Academy Website Redesign or Omnifood (both on his Behance profile).
+
+- **Chosen:** Khan Academy Website Redesign (https://www.behance.net/gallery/186483775/Khan-Academy-Website-Redesign). Omnifood was not used because it is the practice project from a widely taken HTML/CSS course, so reviewers are likely to recognise it.
+- **Source:** `https://mir-s3-cdn-cf.behance.net/project_modules/source/33bf88186483775.6576c0a022b3e.jpg` (1600×6186, one long home page image). There is no Figma file for this project, so the frames are crops of that image, cut at section boundaries found by a background-colour scan.
+- **Frames** (`public/images/khan/`, JPEG q92): `hero.jpg` (y 0–883, 1600×884), `courses.jpg` (y 884–1705, 1600×822), `learners.jpg` (y 2929–3588, 1600×660).
+- **Layout** (`HeroCanvas.tsx`): the hero frame leads (two of three columns from sm, full width below) with the other two stacked beside it (side by side under it on mobile). The size badge now shows the active frame's pixel size. The frame labels are section names, not Figma frame names.
+- **Removed:** `public/images/docto/{splash,login,otp,home}.png` (no longer used). README updated. DOCTO is still the featured tile in the Work section.
+- **Check:** `npm run lint` and `npm run typecheck` exit 0. Browser at 1440, 820, and 390: all three images load, no horizontal scroll, and the badge clears the frames below it on mobile.
+
+### Second design review: high-impact items (2026-10-01)
+
+- **Khan Academy in the Work section:** added as `project-8`, second in the list after DOCTO, so the project shown in the hero has a card and a case study. Text is limited to what is visible in the design and stated on the Behance page (tools: Figma, Photoshop; fields: Web Design, Branding, UI/UX). It is described as a "redesign concept"; **Awanish to confirm that wording**. New image: `public/images/khan/home.jpg` (the full 1600×6186 page) for the case study.
+- **CV:** the CV lists the first four projects, so it now shows DOCTO, Khan Academy, XpertOnline, Water (Plant App dropped off).
+- **Hero frames are links:** each frame and the caption link open the Khan Academy case study dialog (`openCaseStudy` event in `Projects.tsx`). Without JavaScript they jump to the card. Keyboard focus moves the selection box like hover.
+- **Filters removed:** four category chips for seven or eight projects, with overlapping categories. The grid is always the bento layout. Category stays as a label on each card.
+- **Bento for eight tiles:** DOCTO 4×2; Khan and XpertOnline stacked beside it; Water and Plant wide; Dental, Password Generator, Jumblefix in a row of three. At sm, DOCTO and Khan span both columns and the other six pair up.
+- **Dialog focus:** the dialog now opens after its content renders, so focus lands on the close button instead of the dialog itself. Closing returns focus to the card or frame that opened it.
+- **Not done:** restructuring case studies as problem / role / process / outcome. That needs content from Awanish.
+- **Check:** lint and typecheck exit 0. Browser at 1440, 820, and 390: eight tiles with no gaps, frame and caption links open the right case study, both dialog images load, Escape closes and restores focus.
+
+### Black and white palette, and low-risk design fixes (2026-10-01)
+
+Awanish asked to remove the blue accent ("just keep white and black") and to implement the low-risk tier of the third design review.
+
+**Palette**
+- Removed `--blue-700`/`--blue-900` and the `accent`, `accent-text`, and `on-accent` tokens. Their uses now take `fg` or the `inverse` fill: section index numbers, the hero selection box, handles, size badge and active frame label, the timeline rail fill and reached dots, and the focus ring (2px in the text colour: black on light, white on dark).
+- `textLink` (contact email, CV links) is no longer coloured, so it carries a permanent underline that darkens on hover.
+- **Kept:** the green "available" dot in the hero. It is a status colour, not the accent. **Awanish to confirm** whether it should also go.
+
+**Low-risk fixes**
+- **Print:** printing the page printed nothing, because the print rule hid everything except the CV dialog even when it was closed. The rule now applies only while the dialog is open (`body:has(#resume-dialog[open])`). Printing the page itself uses the light scale, a static header, and shows blocks still waiting for their scroll reveal.
+- **Hero:** the caption link has a gap before its arrow; the summary uses `text-balance` (no break after "human-"); the two facts align when one label wraps; frames are out of the tab order with a short name ("Open case study: Khan Academy Website Redesign (Hero)"), leaving the caption link as the one keyboard stop.
+- **Type:** experience text capped at 65ch; `text-balance` on section headings, card titles, and the case-study title; curly apostrophes in UI copy; "&" changed to "and" in sentences (taglines, feature lines, profile notes). Names, categories, and skill labels keep "&".
+- **Forced colours:** the primary button has a transparent border, so it keeps its shape when backgrounds are dropped.
+- **Mobile menu:** `MobileMenu` renders its own summary; the label and icon follow the open state ("Close navigation menu", ×), and it closes on a press outside or when focus moves out.
+- **Timeline:** ScrollTrigger refreshes after a role opens or closes; the rail fill and the dots share the 70% viewport line.
+- **Motion scale:** `DURATION` (0.2 / 0.3 / 0.6s), `EASE`, and `EASE_EXIT` in `motion.ts`, used by every GSAP tween except the pointer parallax; the card image hover is 300ms. The theme icon no longer overshoots.
+- **Contact:** "Copy email" button (`CopyButton.tsx`) beside the address, with a polite status announcement.
+- **Spacing:** section padding 64px from `sm` and 40px below (was 96 and 56), so the gap between sections is 128px, not 192px.
+
+**Check results** (real output)
+- `npm run lint`: exit 0. `npm run typecheck`: exit 0. `npm run build` not run (the dev server was in use).
+- Browser (dev server, tab in front):
+  - A scan of every element's computed text, background, border, and outline colour found one non-grey value, the green dot.
+  - Print emulation: header, main, and footer visible with the CV closed; only the dialog with it open.
+  - Hero tab stops: both actions, GitHub, LinkedIn, and the caption link.
+  - Timeline at 1440: the fill tip sits at 626px against a 630px line; after opening a second role the fill rescaled (0.74 to 0.54) and the dots stayed correct.
+  - Copy button: writes the address, shows "Copied" with the status text, and reverts after 2s (clipboard stubbed in the test).
+  - Mobile menu at 390: label toggles and an outside press closes it. No horizontal scroll.
+  - No console errors.
+- **Not run:** forced-colours mode, a screen reader pass, and an actual paper or PDF print.
+
+### Medium-risk design fixes (2026-10-01)
+
+Awanish said "continue" after the low-risk tier; this is the medium-risk tier of the third design review.
+
+- **Case studies have a URL and obey Back** (`Projects.tsx`): opening one pushes `#project-id` (native `history.pushState`, per `node_modules/next/dist/docs/01-app/01-getting-started/04-linking-and-navigating.md`, "Native History API"). Back closes it, Forward reopens it, and loading the site with the hash opens that case study. Closing with the button or Escape removes the hash (history back, or `replaceState` when the page was loaded on the link). `history.scrollRestoration` is `manual` while a case study is open, so the page behind it does not move.
+- **Short viewports:** new `short` variant (`max-height: 30rem`). The case-study dialog scrolls as a whole there, so its fixed header and footer no longer take most of the height.
+- **Type scale in rem:** sizes and line heights in rem, tracking in em. Same rendering at the default 16px root; text now follows the reader's browser font-size setting.
+- **Reading text:** experience and case-study body text is 16/24 (was 14/20), the case-study lead and testimonial quotes are 18/28, and case-study subheadings are 16px. Badges are 13px sans (were 12px mono), matching the hero focus chips. Mono stays on eyebrows, index numbers, dates, categories, and the canvas labels. The CV keeps 13px so its printed length does not change (still 3 pages).
+- **Dialog motion in CSS:** `dialogIn` (GSAP) is removed. Dialogs and their backdrop ease in and out with `@starting-style` and `allow-discrete` transitions; the full-screen case study on a phone slides up as a sheet (`.dialog-sheet`). Off under reduced motion and in print. Browsers without support open and close instantly. The case-study content stays mounted after closing so it does not vanish mid-fade.
+- **Theme switch:** `.theme-switching` holds every transition for the frame of the switch, so the page changes at once.
+- **Dark mode surfaces:** the hero canvas follows the page theme (dark canvas, light frames). New `raised` token (`#1a1a1a` on dark, white on light) for the case-study dialog and the mobile menu, so they stand off the near-black page. The case-study footer lost its `subtle` fill.
+- **Mobile Work section:** the last three projects are compact rows below `sm` (image beside the text, tagline hidden). The section is about 2,950px tall at 390px (was about 3,830px).
+
+**Left for the follow-up below:** the role headings (review item 18) and the XpertOnline cover.
+
+**Check results** (real output)
+- `npm run lint`: exit 0. `npm run typecheck`: exit 0. `npm run build`: exit 0, 8 static routes.
+- Browser, production server (`next start -p 3100`), tab in front:
+  - History at 1440: open, Back, Forward, close button each gave the expected hash and open state with the page at the same scroll position (1195px throughout). A shared link (`/#project-8`) opened the Khan Academy case study and closing removed the hash.
+  - Dialog opacity reaches 1 with no transform; focus lands on the close button.
+  - Short viewport (740×360): the dialog scrolls (`overflow-y: auto`, 322px of 2,423px).
+  - CV: opens at opacity 1; `Page.printToPDF` gives 3 pages and the dialog is modal again afterwards.
+  - Theme toggle works and the `theme-switching` class is gone afterwards. No horizontal scroll at 390. No console errors.
+  - Screenshots checked: dark canvas, dark dialog, short dialog, mobile compact cards, mobile experience, mobile case study.
+- Test note: on the dev server some runs showed scroll jumps and a reopened dialog. Event logging showed the dev page reloading mid-test; the same sequence was clean on the production server.
+- **Not run:** Safari and Firefox (dialog exit animation and `@starting-style` behave differently there), a screen reader pass, forced-colours mode.
+
+### Remaining medium-risk items (2026-10-01)
+
+Awanish said "Continue with medium risk"; these are the two items left over from the section above.
+
+- **Experience roles are heading + button + region** (`ExperienceTimeline.tsx`): each role is an `<h3>` containing a `<button aria-expanded aria-controls>`, and its panel is a labelled `role="region"`. This replaces `<details>`/`<summary>` with an `<h3 class="contents">` inside the summary, which some screen readers flatten. Open state is React state (first role open); the open and close animations, reduced-motion behaviour, and ScrollTrigger refresh are unchanged.
+  - **No JavaScript:** the buttons cannot work, so a `<noscript>` style shows every panel. Before, closed roles could still be opened without JavaScript; now they are all open.
+  - **Trade-off:** Chrome's find-in-page no longer opens a closed role (it did for `<details>`).
+- **XpertOnline cover:** new optional `coverFit: "contain"` on a project. The slide is shown whole on its white backing instead of cropped mid-word. A purpose-made cover would still look better; that needs an image from Awanish.
+
+**Check results** (real output)
+- `npm run lint`: exit 0. `npm run typecheck`: exit 0. `npm run build`: exit 0.
+- Server HTML: 4 `<h3><button aria-expanded>` roles, no `<details>` in the section, and the `<noscript>` style is present.
+- Browser, production server, tab in front: first role open on load (`aria-expanded="true"`, panel 310px); a mouse click opened the second (286px, inline styles cleared) and Enter closed it (`hidden`, `aria-expanded="false"`). Timeline dots stayed correct. No console errors, no horizontal scroll at 390.
+- Screenshots checked: experience at 1440 and 390, XpertOnline tile at 1440.
+- **Not run:** a screen reader pass (the reason for the change, so worth doing in VoiceOver), Safari and Firefox.
+
+### Medium tier closed out, then the high-risk tier (2026-10-01)
+
+Awanish: "green dot stays. Now proceed with high risk after fix medium risk completely."
+
+**Decision:** the green "available" dot stays as the one non-grey colour.
+
+**Medium tier, remaining gaps**
+- **Find-in-page for roles:** closed role panels are `hidden="until-found"` (set after render, because React only writes a plain `hidden`), and `beforematch` opens the role. This restores what `<details>` did natively.
+- **No-JavaScript roles:** the `<noscript>` rule did not work as first written: Tailwind's `[hidden]` rule is `!important` in the base layer, and for `!important` an earlier layer wins over unlayered CSS. The rule is now in `@layer theme`. Verified with script execution disabled: all four panels have height (310, 286, 232, 232px).
+- **XpertOnline cover:** `public/images/projects/xpertonline-cover.jpg` (1200×750), composed in the browser from the three phone screens in the two existing slides (bounds found by a pixel scan) on white. The layout is new; every screen is Awanish's own. `coverFit` was removed again. The two slides stay in the gallery. **Awanish to confirm** the composed cover.
+- **CV text:** 14px on screen, 13px in print (`print:text-copy-13`), so the PDF length is unchanged.
+- **Forced colours:** checked with Chrome's `forced-colors: active` emulation. The primary action keeps a 1px border. Noted, not changed: the green dot and the header monogram's fill are dropped there, as backgrounds are.
+
+**High-risk tier**
+- **Case study pages** (`/work/<slug>`, `src/app/work/[slug]/page.tsx`, `CaseStudy.tsx`): eight static pages (`generateStaticParams`, `dynamicParams = false`, so unknown slugs are 404). The seven original slugs are the live site's; Khan Academy is `khan-academy-website-redesign`. Docs read: `dynamic-routes.md`, `generate-static-params.md`, `generate-metadata.md`, `page.md` (PageProps helper), `link.md`, and the "Scroll Behavior Override" section of the version 16 upgrade guide.
+  - Each page: back link, index and title (`h1`), tagline, a facts list (category, tools, team, outcome), the outbound link, the cover, the write-up in a 65ch column, the remaining screens, and previous/next links.
+  - Metadata per page: title, description (the tagline), canonical, and the cover as the Open Graph and Twitter image. The sitemap lists all eight.
+  - Cards, hero frames, and the hero caption are `next/link` links. The case-study dialog, the `#project-id` history handling, the `short` variant, and the sheet animation added in the medium tier are removed with it.
+  - `SiteFrame` holds what every page shares (skip link, header, main, footer, CV dialog). `SectionLink` renders an in-page anchor on the home page and a `/#section` route link elsewhere. On a case study page the header marks Work as current and the brand links home.
+  - `data-scroll-behavior="smooth"` on `<html>`: route changes start at the top instantly, and in-page anchors still scroll smoothly.
+- **Case study structure:** `architecture` (a comma-separated keyword string) became `methods: string[]`, shown as chips under "Approach and methods", with an optional `approach` sentence (Khan Academy). No wording was added. New optional fields `problem`, `role`, and `process` render as "Problem", "My role", and "Process" when filled in. **Content gap:** no project has them yet; they need Awanish's own account of each project.
+- **Scroll reveals in CSS:** `ScrollReveal.tsx` is deleted. `[data-reveal]` uses a scroll-driven animation (`animation-timeline: view()`, finishing within the first 10rem of entry). Nothing is hidden by script any more. Browsers without scroll-driven animations (Firefox at the time of writing) show the content with no reveal. The reveal now follows the scroll position, so it also reverses when a block leaves at the bottom, and items in a row no longer stagger.
+- **Hero intro:** on load the selection box is dragged out from the lead frame's top-left corner (0.6s), then its size badge fades in. Motion-safe only; the frames and the h1 do not animate; hovering a frame during the intro takes over cleanly.
+
+**Check results** (real output)
+- `npm run lint`: exit 0. `npm run typecheck`: exit 0. `npm run build`: exit 0, 17 static pages including the eight `/work/*` routes.
+- `curl` on the production server: `/` 200, two `/work/*` pages 200, `/work/nope` 404, sitemap 9 URLs. `/work/xpertonline-chatbot` has its canonical, description, `og:image` and `twitter:image` (the new cover), one `h1`.
+- Browser, production server, tab in front:
+  - Clicking the Khan Academy card navigated to its page at scroll 0 with the right title; Back returned to `/` at the same scroll position (1195px). Work is marked current in the header on the case study page.
+  - Hero intro: box width went 347, 538, 635, 671, 674px with opacity 0.51 to 1; final 674px, badge opacity 1. Under reduced motion the box is at full size from the first sample and the reveal animation is `none`.
+  - Reveal: a block 60px into view is at opacity 0.52 and 11px offset; at 200px it is at 1 with no offset.
+  - Roles: closed panels carry `hidden="until-found"`; a `beforematch` event opened the third role.
+  - Mobile (390) case study page in dark: no horizontal scroll, one `h1`; the CV dialog opens there at 14px.
+  - No console errors. Screenshots checked: case study top, middle, and end at 1440; top and middle at 390 dark; forced colours.
+- **Not run:** Safari and Firefox, a screen reader pass, an actual find-in-page (the `beforematch` event was dispatched by script), and a Lighthouse run.
+
+### Plant App removed, SQL data analytics case study added (2026-10-01)
+
+Awanish: "Remove plant app in work section and add https://github.com/avanishverma4/data_analytics_SQL_1 for data analytics case study."
+
+- **Removed:** Plant App UX Design Process (`project-3`) from `projects`, with `plant-cover.jpg` and `plant-checkout.jpg`. `/work/plant-app-ux-design-process` now returns 404. The CV lists the first four projects, so it is unchanged. **Reversible:** the entry and images are in git history.
+- **Added:** "Retail Store SQL Analysis" (`project-9`, `/work/retail-store-sql-analysis`, category "Data Analytics"), in the Plant App's place as tile 05 beside Water.
+- **Source:** the repository's four files, read on 2026-10-01: the solution script (2,709 lines), the data insertion script, the project brief PDF, and the 45-page "Retail Store SQL Documentation" PDF (text extracted with PDFKit).
+  - Every statement in the case study comes from that documentation: the problem statement (section 01), the four stages (section 03), the level table, the dataset profile (section 05), and the key findings (section 12). Row counts were cross-checked against the insert script (30, 50, 400, 1,201, 400, 50).
+  - "My role" says it is a solo SQL mini project from Data Analytics with GenAI, from the cover page. **Awanish to confirm** the wording, and whether to name the course provider.
+- **Images** (`public/images/sql/`): three crops of the documentation PDF rendered at 3× with PDFKit: the title block (`cover.jpg`, 1485×930), the verification query and level table (page 4), and the dataset profile (page 8).
+- **New optional project fields:** `findings` ("Key findings" section) and `galleryTitle` (here "Documentation pages" instead of "Screens"). This is the first project to use `problem`, `role`, and `process`.
+- With no live URL, the GitHub link is the page's primary action ("View source code").
+- **Copy:** the Work heading is now "Product, mobile, web, and data case studies."
+
+**Check results** (real output)
+- `npm run lint`: exit 0. `npm run typecheck`: exit 0. `npm run build`: exit 0, 17 static pages.
+- Production server: the new page 200, the Plant App page 404, no "Plant App" text on the home page. The Work section lists eight cards with the SQL project fifth.
+- Browser: the page has one `h1` and the sections Overview, Problem, My role, Process, Approach and methods, Key features, Key findings; the cover loads; no horizontal scroll at 1440 or 390; no console errors. Screenshots checked: the Work row and the case study page at 1440.
+- Not re-run after the last two small edits (curly quotes and the "Documentation pages" heading): the browser check. Lint and typecheck were re-run.
+
+### SQL case study added to the CV (2026-10-01)
+
+Awanish: "Add this in CV as well."
+
+- The CV's Projects block now lists five projects: DOCTO, Khan Academy, XpertOnline, Water, and Retail Store SQL Analysis (title, tagline, tools, and its GitHub link).
+- The list is `cvProjectIds` in `src/content/site.ts` (was "the first four projects"), so the CV no longer depends on the Work section's order.
+- **Check:** `npm run lint` and `npm run typecheck` exit 0. Dev server: the CV dialog shows the five projects with the SQL project last; `Page.printToPDF` still gives 3 pages. `npm run build` not re-run for this change.
+
+### WebKit test pass, CV contact row and phone, soft light palette (2026-10-01)
+
+Awanish: "Use browser harness to test on safari", then "fix the CV dialog contact row on mobile, add phone number +91 7892234174 only in CV", "Fix it" (the 320px overflow), and "Don't use harsh white in the light mode".
+
+- **Test pass:** run in Playwright's WebKit 26.6, not Safari. Safari 27's "Allow remote automation" setting is off, and browser-harness only drives Chrome. Home and the eight case studies at 1440×900 and iPhone 14: 132 of 132 checks passed (status, horizontal overflow, images, scroll reveals, console and network errors, theme toggle, CV dialog, accordion, timeline, anchor navigation, mobile menu, reduced motion).
+  - **Not verified:** the header's backdrop blur (this WebKit build's screenshots do not render `backdrop-filter`), real Safari's toolbar behaviour, printing, and the copy button.
+- **CV contact rows** (`ResumeDialog.tsx`, new `ContactRow`): each item carries its "|" in a fixed slot on its left, and the row is clipped there, so a separator that wraps to a new line no longer leads it. This also fixes the desktop row, where the Behance link wrapped with a leading "|".
+- **Phone:** `ui.resume.phone` (`+91 7892234174`), shown between the email and the location as a `tel:` link, in the CV only. The CV dialog is server-rendered on every page, so the number is in the public HTML.
+- **CV at 320px:** the long project URLs now wrap (`wrap-anywhere`), which removes a 70px sideways scroll inside the dialog.
+- **Light palette:** the light page is `#f7f7f7` (was `#fff`), with the surface and border steps shifted down with it: background-200 `#f2f2f2`, gray-100 `#ededed`, 200 `#e8e8e8`, 300 `#e3e3e3`, 400 `#e0e0e0`, 500 `#c4c4c4`, 600 `#a3a3a3`, raised `#fafafa`. Text colours are unchanged. The light `theme-color` is `#f7f7f7`.
+  - Print keeps the white scale in both themes and inside `.theme-light`, so the CV PDF is still black on white.
+  - `--color-media` stays `#fff`: it backs screenshots that were exported on white.
+  - Contrast (computed in WebKit): secondary text `#4d4d4d` is 7.89:1 on the page, 7.55:1 on background-200, and 7.22:1 on gray-100.
+
+**Check results** (real output)
+- `tsc --noEmit` and `eslint src`: no errors. `npm run build` not run.
+- WebKit, light and dark, 1440 and iPhone 14, home and the DOCTO case study: the only pure-white surfaces left are the image backings (`bg-media`). Print media: `--background-100` resolves to `#fff` on the page and in the CV dialog.
+- The 132-check pass was run before the CV and palette changes and was not repeated in full afterwards. axe was not re-run on the new palette.
+
+### Soft dark palette (2026-10-01)
+
+Awanish: "Also fix it in dark mode" (after "Don't use harsh white in the light mode"). Read as: remove the harsh extremes from the dark theme too.
+
+- **Dark scale:** the page is `#141414` (was `#0a0a0a`), background-200 `#0f0f0f` (was `#000`), gray-100 `#1f1f1f`, 200 `#242424`, 300 `#2b2b2b`, 400 `#303030`, 500 `#474747`, raised `#1f1f1f`. Primary text and the primary button fill are `#e6e6e6` (was `#ededed`); secondary text is `#a3a3a3` (was `#a0a0a0`).
+- **Images:** the hero canvas frames and the case study screens now get the same `dark:brightness-90` as the Work covers, so white-backed images do not glare.
+- The dark `theme-color` and the manifest's `background_color` and `theme_color` are `#141414`. The Open Graph image keeps `#0a0a0a`.
+- Contrast (computed in WebKit): primary text 14.76:1 on the page; secondary text 7.30:1 on the page, 7.60:1 on background-200, and 6.53:1 on gray-100.
+
+**Check results** (real output)
+- `tsc --noEmit` and `eslint src`: no errors. `npm run build` not run.
+- WebKit, dark, 1440 and iPhone 14, home and the DOCTO case study: no console errors; every image is dimmed (11 of 11 on home, 3 of 3 on the case study); no pure black or pure white surface or text outside the image backings. axe not re-run.
+
+### UI and UX test, findings by risk tier (2026-10-01)
+
+Awanish: "Test UI and UX of the codebase and mention them as low risk, medium risk and high risk". Findings only; nothing was changed. Tiers follow the earlier reviews: the risk of making the change.
+
+**Checks run** (Playwright WebKit 26.6, dev server unless noted)
+- axe (WCAG 2 A/AA, 2.1 AA, 2.2 AA, best-practice) on home, three case studies, and the 404 page, light and dark, 1440 and iPhone 14: 0 violations. With the CV dialog open: one, `target-size` (contact-row links 20px tall).
+- Nine viewports from 320 to 2560 on four pages: no horizontal scroll except 5px at 320 (the header). No reveal block left faded at the end of a page.
+- Keyboard at 1440: 43 tab stops in reading order, each with a focus ring, none hidden under the header. CV dialog: focus enters, stays inside, and returns to the opener on Escape.
+- Touch targets at 390: none under 24px. Structure: one `h1` per page, no skipped heading levels, every image has `alt`.
+- `npm run build`: exit 0, 17 static pages. Production server at iPhone 14: 653 KB of script (210 KB gzipped), 25 KB gzipped HTML, 280 KB of images after a full scroll, no console errors.
+- 22 link targets fetched: all respond except four Behance gallery URLs, which return 403 to a scripted request (not confirmed broken).
+
+**High risk**
+- Experience claim against the timeline: the hero and CV say "8 years" of UI/UX design, and the timeline shows "Graphic Designer" for Apr 2018 to Oct 2023 and a UI/UX title only from Oct 2023. Needs Awanish's wording.
+- Mobile home page length: 10,102px at 390 (12 screens), 11,024px at 320. Work is 2,949px, Skills 1,794px, the hero 1,354px.
+
+**Medium risk**
+- The page scrolls behind the open CV dialog: a wheel on the backdrop moved the page 600px, and scrolling past the end of the CV carried the page to 5,678px.
+- Mobile hero order: the two experience figures and the focus areas come after the canvas, about 1,000px down; the two side frames are about 105px wide.
+- Skills on mobile: twelve two-line rows in a single column.
+- The SQL project's cover is a crop of the documentation's title page, so the tile shows the title twice.
+
+**Low risk**
+- 320px: the header is 5px too wide; the menu button touches the edge and the page scrolls sideways.
+- CV dialog: contact-row links are 20px tall (WCAG 2.2 target size is 24px); its nine external links do not say they open a new tab; a press on the backdrop does not close it.
+- 404 page: the tab title and canonical URL are the home page's, and it has no site header or footer.
+- Without JavaScript the site is dark even when the OS is set to light.
+- "React 19 / Next.js 15" in Skills; the site runs Next.js 16.
+- Compact project rows on mobile crop their thumbnails mid-text (Dental).
+- Since the soft light palette, cards and the page share `#f7f7f7`, so cards are separated by their border only.
+
+**Not run:** real Safari, a screen reader, physical devices, printing the CV, and the header's backdrop blur (not rendered in this WebKit build's screenshots).
+
+### Low-risk tier of the UI and UX test (2026-10-01)
+
+Awanish: "Start with low-risk".
+
+- **320px header:** the gap between the brand and the controls is 8px below `sm` (was 16px). The menu button ends at 317px and no page scrolls sideways.
+- **CV dialog**
+  - Contact-row links have 2px of padding above and below, so each target is 24px tall. The line height and the printed length do not change.
+  - Every external link's accessible name ends with "(opens in a new tab)" (`aria-label`, not hidden text, so the printed PDF's text is unchanged).
+  - A press on the backdrop closes the CV (`ResumeButton.tsx`, in `PrintButton`'s effect). A selection dragged from the CV out onto the backdrop does not.
+- **404 page:** rendered inside `SiteFrame` (header, footer, theme toggle, CV). Its title is "Page not found — Awanish Verma", it has no canonical URL, and its robots tags are `noindex` only. `SiteFrame`, `Header`, and `NavLinks` take `marked` (default `#projects`); the 404 page passes `null`, so no section link is marked there.
+- **No JavaScript:** `@media (scripting: none) and (prefers-color-scheme: light)` gives `.dark` the light scale. The rule repeats the light values and must stay after `.dark` in `globals.css`. Left as is: the theme button still shows the sun icon and images keep the dark theme's 90% dimming there.
+- **Skills:** "React 19 / Next.js 16" (was 15). **Awanish to confirm.**
+- **Compact project rows (below `sm`):** new optional `coverFocus` on a project (`left` or `right`). Dental keeps the right side (the photo); Jumblefix keeps the left (its heading from the first letter). From `sm` the covers are unchanged.
+- **Cards:** new `--card` value, one small step lighter than the page (`#fafafa` on `#f7f7f7`; `#191919` on `#141414`; white in print). Cards matched the page before the palette change too, so this is a small design change, not a regression fix.
+
+**Check results** (real output)
+- `tsc --noEmit` and `eslint src`: no errors. `npm run build`: compiled, 17 static pages.
+- WebKit 26.6, dev server:
+  - 320px: overflow 0 on `/`, `/work/jumblefix`, and the 404 page.
+  - CV dialog open, 1440 and iPhone 14: axe 0 violations (was `target-size`); six contact links 24px tall; no external link without the hint; backdrop press closes; a press inside and a drag out do not. No console errors.
+  - 404: status 404, one `h1`, header/main/footer present, axe 0 violations, no link marked current; the header's Work link lands on `/#projects`.
+  - No JavaScript at 390: light page on a light OS, dark on a dark OS. With JavaScript, a saved dark choice on a light OS is still dark.
+  - Home page axe in light and dark: 0 violations.
+- **Not run:** real Safari, a screen reader, and a print of the CV after the link padding change.
+
+### Medium-risk tier of the UI and UX test (2026-10-01)
+
+Awanish: "continue with medium tier".
+
+- **Page locked behind the CV** (`globals.css`): `html:has(dialog:modal) { overflow: hidden }`, `overscroll-behavior: contain` on dialogs, and `scrollbar-gutter: stable` on `html` so nothing shifts when the lock applies. Printing reopens the CV as a non-modal dialog, so the lock is off there.
+- **Hero order below `lg`** (`Hero.tsx`): the facts column has no box there (`max-lg:contents`), so its parts are placed separately: intro, the two experience figures as a compact row, the canvas, then focus areas and links. The earlier order put the canvas second so work showed in the first screen; at 390px the canvas now starts at 603px, about 100px lower. From `lg` nothing changes.
+- **Skills below `sm`** (`SkillList.tsx`, new client component): each core group lists its skills by name, with one "Show details" button per group that unfolds the detail lines (`aria-expanded`, `aria-controls`). From `sm` the details always show and the button is hidden. Without JavaScript a `<noscript>` style shows the details and hides the button.
+- **SQL cover:** `public/images/sql/query-result.jpg` (1485×928), a straight crop of the documentation's verification page: the UNION ALL query and its result table. The title page stays as the first "Documentation pages" image. **Awanish to confirm** the cover; the old one is still `cover.jpg`. In the 2:1 desktop tile the result table is cut after its third row.
+
+**Not done:** the two small side frames in the mobile hero canvas (about 142px wide) are unchanged; removing them belongs with the page-length item in the high-risk tier.
+
+**Check results** (real output)
+- `tsc --noEmit` and `eslint src`: no errors. `npm run build`: compiled, 17 static pages.
+- WebKit 26.6, dev server:
+  - CV open at 1440: 0px layout shift on open; a wheel on the backdrop and 40 wheels past the end of the CV left the page where it was (the CV itself scrolled to its end, 2,152px); the page scrolls again after closing. Opening and closing at 300px and 2,500px keeps the position, at 1440 and iPhone 14.
+  - Heights at 390: page 9,757px (was 10,102), Skills 1,466px (was 1,794), hero 1,338px. At 320: page 10,608px (was 11,024). At 768 and 1440 the Skills section and page height are unchanged.
+  - Skills toggle at 390: 0 of 12 details shown, then 9 after opening the first group; label and `aria-expanded` follow; target 44px tall. No JavaScript: 12 details shown, buttons hidden.
+  - axe on the home page at 390 (one group open) and 1440: 0 violations. No console errors, no horizontal scroll at 320, 390, 768, 1440.
+  - SQL case study: the cover is the new crop, the Open Graph image follows it, and the three documentation pages still load.
+- **Not run:** real Safari and iOS (the scroll lock on a touch device was not exercised by a real swipe), a screen reader.
+
+### XpertOnline and Dental Excellence attributed to i2i TeleSolutions (2026-10-01)
+
+Awanish: "Academy of Dental Excellence and XpertOnline CChatbot was i2i TeleSolutions product".
+
+- New optional `experienceId` on a project; both projects carry `exp-2` (i2i TeleSolutions & Telemedicine, Apr 2018 to Oct 2023). The company name is read from the role, so it is written once.
+- **Case study pages:** a "Company" row in the facts list, after Category.
+- **Experience:** the i2i role ends with "Case studies from this role:" and links to both case studies (`ExperienceTimeline.tsx`). Other roles are unchanged.
+- **CV:** the XpertOnline project heading reads "XpertOnline Chatbot | i2i TeleSolutions & Telemedicine" (same line, so the length does not change). Dental Excellence is not in the CV's project list.
+- **Not changed, for Awanish to decide:**
+  - The role title stays "Graphic Designer" and its description and achievements are as they were. This links UI/UX product work to the 2018 to 2023 role, which supports the "8 years" figure, but the title still reads as graphic design.
+  - XpertOnline's Team line still says "Group project with Jyotirmoy Goswami, Sphoorthy Gowda, and Mukesh Gupta." **Confirm the wording** now that it is shown as a company product.
+- **Check:** `tsc --noEmit`, `eslint src`: no errors; `npm run build`: 17 static pages. WebKit at 1440: both case studies show the Company row and Jumblefix does not; the role's two links are visible when it is open and the first opens `/work/xpertonline-chatbot`; axe 0 violations with the role open; no console errors.
+
+### i2i role title and XpertOnline team line (2026-10-01)
+
+Awanish answered the two open questions: "1. Yes. 2. Just say designed with team."
+
+- **Role title:** the i2i role (Apr 2018 to Oct 2023) is "Graphic & UI Designer" (was "Graphic Designer"), in the Experience section and the CV. Awanish said yes to a broader title without giving wording, so this is the example that was offered; **confirm it matches the title he used at i2i.** The role's description and achievements are unchanged.
+- **XpertOnline team line:** "Designed with a team." (was "Group project with Jyotirmoy Goswami, Sphoorthy Gowda, and Mukesh Gupta."). The three names are no longer on the site.
+- **Check:** `tsc --noEmit` and `eslint src`: no errors. Dev server HTML: the home page shows the new title in the timeline and the CV, and the XpertOnline case study shows the new team line. `npm run build` not re-run for this text change.
+
+### High-risk tier of the UI and UX test: mobile page length (2026-10-01)
+
+Awanish: "Proceed with high risk". The other high-risk item (the "8 years" figure against the timeline) was handled in the two entries above.
+
+- **Work section below `sm`** (`Projects.tsx`): the grid has two columns at every width below `lg`. DOCTO and Khan Academy stay full-width cards. The other six are small tiles in three rows of two: cover (16:10, uncropped), number, title, category, and an arrow. The tagline and the words "View case study" are hidden on those tiles; the whole tile is still the link. The `compact` row variant and the `coverFocus` field added in the low-risk tier are removed (the square thumbnail they served is gone).
+- **Hero canvas below `sm`** (`HeroCanvas.tsx`): only the lead frame shows. The two side frames were about 142px wide. They load lazily now, so a phone does not download them.
+- **Footer below `md`**: the Sections and Profiles lists sit side by side under the name.
+- **Not changed:** Experience (first role open), Skills, Testimonials, and Contact. Tablet and desktop layouts are as before.
+
+**Check results** (real output)
+- `tsc --noEmit` and `eslint src`: no errors. `npm run build`: compiled, 17 static pages.
+- WebKit 26.6, dev server, home page height: 8,358px at 390 (was 9,757; 10,102 at the start of the test), 9,232px at 320 (was 10,608), 8,223px at 430. Work is 1,934px at 390 (was 2,949), the hero 1,193px (was 1,338), the footer 534px. At 768 and 1440 the page height is unchanged (8,075px and 6,579px).
+- At 390, 320, 430, 768, and 1440: no horizontal scroll, no broken images, no console errors, axe 0 violations (390 also in dark). At phone widths the two side-frame images are not requested. A tap on a small tile opens its case study.
+- **Not run:** real Safari and iOS, a screen reader.
