@@ -38,11 +38,13 @@ function ContactRow({ className = "", children }: { className?: string; children
 export function ResumeDialog() {
   const t = ui.resume;
   const cvProjects = cvProjectIds.flatMap((id) => projects.filter((p) => p.id === id));
-  // CV keyword lines, plus the Video Editing and Data Analytics tools from the skills section.
+  // CV keyword lines, plus the Data Analytics, Graphic Design, and Video Editing tools from the skills section.
+  const extraGroups = ["Data Analytics", "Graphic Design", "Video Editing"];
   const skillLines = [
     ...t.coreSkillGroups,
     ...skillGroups
-      .filter((g) => g.name === "Video Editing" || g.name === "Data Analytics")
+      .filter((g) => extraGroups.includes(g.name))
+      .sort((a, b) => extraGroups.indexOf(a.name) - extraGroups.indexOf(b.name))
       .map((g) => ({ label: g.name, keywords: g.skills.map((s) => s.name).join(", ") })),
   ];
   return (
@@ -77,7 +79,7 @@ export function ResumeDialog() {
           <h2 id="resume-modal-title" className="text-heading-32 text-fg">
             {profile.name}
           </h2>
-          <p className="text-heading-16 text-fg">{profile.title}</p>
+          <p className="text-heading-16 text-fg">{t.headline}</p>
           <ContactRow className="pt-1">
             <a href={`mailto:${profile.email}`} className={contactLink}>
               {profile.email}

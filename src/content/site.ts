@@ -761,6 +761,8 @@ export const ui = {
   },
   resume: {
     title: "CV",
+    // The CV's line under the name: the LinkedIn headline's two lead roles.
+    headline: "UI/UX Designer & Data Analyst",
     print: "Print or save as PDF",
     close: "Close curriculum vitae",
     // Shown in the CV only, not in the contact section or footer.
@@ -782,7 +784,7 @@ export const ui = {
       {
         label: "Design Systems",
         keywords:
-          "Design Systems, Design Tokens, Component Libraries, Figma (Auto Layout, Variables, Components), Style Dictionary, Multi-Brand Theming, Design-to-Code Handoff",
+          "Design Systems, UI Kits, Component Libraries, Figma (Auto Layout, Variables, Components), Adobe XD, Design-to-Code Handoff",
       },
       {
         label: "User Research",
@@ -793,15 +795,6 @@ export const ui = {
         label: "Frontend & Tools",
         keywords:
           "React, Next.js, TypeScript, HTML5, CSS3, Tailwind CSS, WordPress, WCAG 2.1 AA Accessibility, Git",
-      },
-      {
-        label: "Data Analytics",
-        keywords: "SQL (MySQL, PostgreSQL), Python, Power BI (DAX, Power Query), Microsoft Excel, Data Visualization, A/B Testing",
-      },
-      {
-        label: "Graphic Design & Video",
-        keywords:
-          "Brand Identity, Print Collateral, Adobe Photoshop, Illustrator, CorelDRAW, Premiere Pro, After Effects, DaVinci Resolve, Motion Graphics, Colour Grading",
       },
     ],
   },
