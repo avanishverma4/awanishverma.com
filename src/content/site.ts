@@ -67,10 +67,10 @@ export type SkillGroup = { name: string; scope: string; skills: Skill[] };
 export const profile = {
   "name": "Awanish Verma",
   "title": "UI/UX Designer",
-  "longBio": `UI/UX Designer with ${totalExperience} of professional experience, including ${uiuxExperience} in UI/UX design. I turn complex problems into clear, human-centered digital products. Skilled in user research, usability testing, interaction design, information architecture, wireframing, prototyping, design systems and design tokens in Figma, accessibility (WCAG 2.1 AA), and frontend implementation with React and Tailwind CSS.`,
-  "location": "Bengaluru, India / Remote Worldwide",
+  "longBio": `I design digital products people enjoy using, and I use data to show whether they work. ${totalExperience} across graphic design, UI/UX, and front-end development, including ${uiuxExperience} in UI/UX: print branding at Skanda Graphics, telemedicine products at i2i TeleSolutions, and today an eLearning and government-jobs platform at Acadlog. Skilled in user research, user flows, wireframes, prototypes, and design systems in Figma and Adobe XD; responsive, accessible builds with React, Next.js, and Tailwind CSS; and data analytics with SQL, Python, Power BI, and Excel, so design decisions start from evidence rather than opinion.`,
+  "location": "Patna, India / Remote",
   // The one availability line, used in the hero, contact section, and footer.
-  "availability": "Available for contract and senior roles",
+  "availability": "Open to UI/UX, web, and data analyst roles, remote-friendly",
   "email": "avanishverma4@gmail.com",
   "github": "https://github.com/avanishverma4",
   "linkedin": "https://linkedin.com/in/awanish-verma",
@@ -259,7 +259,7 @@ export const projects: Project[] = [
     "category": "Mobile & Web Apps",
     "cover": {"src": "/images/projects/dental-home.jpg", "width": 1440, "height": 900, "alt": "Academy of Dental Excellence home page: navigation and a Diploma and Master’s programme hero."},
     "gallery": [{"src": "/images/projects/dental-home.jpg", "width": 1440, "height": 900, "alt": "Academy of Dental Excellence home page: navigation and a Diploma and Master’s programme hero."}, {"src": "/images/projects/dental-intro.jpg", "width": 1440, "height": 770, "alt": "Home page section: a 3D ADE logo beside the headline \"Transform your practice with ADE’s internationally recognised faculty and hands-on training\", a short paragraph, and a Discover our courses link."}, {"src": "/images/projects/dental-courses.jpg", "width": 1440, "height": 600, "alt": "Courses page: three course cards, two postgraduate diplomas leading to a master’s and one diploma, each with its faculty leads and a View details link."}],
-    "outcome": "Live production website.",
+    "outcome": "Live production website: 15% faster load times and 20% higher course completion.",
     "description": "A production web platform designed for dental practitioners offering advanced hands-on workshops, online certification courses, and clinical resource downloads.",
     "overview": "Designed and developed the digital presence for Academy of Dental Excellence. Created a high-trust visual style, responsive course catalogs, and a simple event registration flow.",
     "methods": ["Web Architecture", "UI/UX Design", "Responsive Layouts", "SEO Optimization", "Conversion Design"],
@@ -366,89 +366,115 @@ export const cvProjectIds = ["project-4", "project-11", "project-1", "project-12
 export const experiences: Experience[] = [
   {
     "id": "exp-1",
-    "role": "Senior UI/UX Designer",
+    "role": "UI/UX Designer",
     "company": "Acadlog",
-    "location": "Patna, India",
+    "location": "Remote, India",
     "period": "Oct 2023 – Present",
     "current": true,
-    "description": "Lead product design across a portfolio of EdTech learning platforms, owning UX research, information architecture, design systems, and design-to-code handoff for web and mobile.",
+    "description": "Lead UX and UI for Acadlog India, an eLearning and government-jobs preparation platform, from first concept to live product.",
     "achievements": [
-      "Built a multi-brand design token system in Figma used across 3 education platforms, reducing new-screen design time and handoff inconsistencies between design and engineering.",
-      "Led end-to-end UX for the student learning experience, from discovery research and user flows to high-fidelity interactive prototypes, to improve course completion.",
-      "Ran 60+ moderated usability testing sessions and turned the findings into interface changes that reduced onboarding drop-off.",
-      "Delivered a WCAG 2.1 AA accessible component library with engineering in React and Tailwind CSS, resolving critical accessibility audit issues before launch."
+      "Redesigned the website on a modern grid layout with accessible (WCAG) colour and type, lifting user engagement by 25%.",
+      "Designed a personalised dashboard with job alerts and dynamic filters, increasing user retention by 30%.",
+      "Built mobile-first user flows, wireframes, and rapid low-fidelity prototypes in Figma, then refined them through usability testing and user feedback.",
+      "Worked with developers on lazy-loading and Core Web Vitals so the responsive design performs well on every device."
     ],
     "skills": [
       "UI/UX Design",
-      "Design Strategy",
-      "Design Systems",
+      "User Interface Design",
       "Figma",
-      "User Research",
-      "Accessibility (WCAG 2.1 AA)",
+      "Mobile-First Design",
+      "Usability Testing",
+      "Accessibility (WCAG)",
       "Prototyping"
     ]
   },
   {
-    "id": "exp-2",
-    "role": "Graphic & UI Designer",
-    "company": "i2i TeleSolutions & Telemedicine",
-    "location": "India",
-    "period": "Apr 2018 – Oct 2023",
-    "current": false,
-    "description": "Owned visual design and UI production for telemedicine and healthtech products, spanning brand identity, patient-facing interfaces, clinical dashboards, and marketing systems.",
+    "id": "exp-5",
+    "role": "Video Editor & Motion Designer",
+    "company": "Self-employed",
+    "location": "Remote, India",
+    "period": "Jun 2025 – Present",
+    "current": true,
+    "description": "Write, edit, and publish documentary-style videos for two YouTube channels I run: Perspective Point (geopolitics documentaries and explainers) and Anime Lore (anime lore Shorts and chapter explainers).",
     "achievements": [
-      "Designed 500+ digital and print assets for patient apps, clinical dashboards, and marketing campaigns, keeping the brand consistent across products.",
-      "Rebuilt the product visual identity and UI kit, improving engagement on core patient-facing screens.",
-      "Standardized reusable UI components and layout templates, speeding up design turnaround on recurring requests.",
-      "Worked with clinicians and product managers to turn care workflows into legible, accessible healthcare interfaces."
+      "Own the full pipeline: research and fact-checking, scriptwriting, voiceover, editing, motion graphics, colour grading, music and sound mixing, captions, and thumbnails.",
+      "Edit in Premiere Pro and DaVinci Resolve, and build reusable, code-driven motion-graphics templates (HTML/JS, Python audio tooling) that speed up each new video.",
+      "Design channel branding, end cards, and thumbnails, and optimise titles, tags, and hashtags for reach."
     ],
     "skills": [
-      "Visual Design",
-      "Healthcare UI",
-      "Brand Identity",
-      "UI Production",
+      "Adobe Premiere Pro",
+      "DaVinci Resolve",
+      "Motion Graphics",
+      "Colour Grading",
+      "Scriptwriting"
+    ]
+  },
+  {
+    "id": "exp-2",
+    "role": "UI & Graphic Designer",
+    "company": "i2i TeleSolutions & Telemedicine",
+    "location": "Bengaluru, India (Remote)",
+    "period": "Apr 2018 – Oct 2023",
+    "current": false,
+    "description": "Owned UI and visual design for telemedicine and tele-diagnostics products, including i2i CONNECT, XpertClinic, and the Academy of Dental Excellence platform.",
+    "achievements": [
+      "Built a design system and UI kit that standardised components and cut turnaround on recurring design requests by 50%.",
+      "XpertClinic: led end-to-end UX for a doctor-patient app in Figma and Adobe XD, and reworked the information architecture so information retrieval became 25% faster.",
+      "Academy of Dental Excellence: redesigned the learning-platform UI in Adobe XD and optimised the HTML, CSS, and JavaScript, giving 15% faster load times and 20% higher course completion.",
+      "Rebuilt the product's visual identity, lifting engagement on core patient-facing screens by 30%.",
+      "Designed 500+ digital and print assets (patient apps, clinical dashboards, campaigns) with consistent branding.",
+      "Ran user research and usability tests with clinicians, product managers, and developers to turn care workflows into accessible, high-legibility interfaces."
+    ],
+    "skills": [
+      "UI Design",
+      "Healthcare UX",
+      "Design Systems",
       "Figma",
+      "Adobe XD",
+      "React.js",
       "Adobe Creative Suite"
     ]
   },
   {
     "id": "exp-3",
-    "role": "Freelance Designer",
+    "role": "Freelance UI & Graphic Designer",
     "company": "Self-employed",
-    "location": "Bangalore, India",
+    "location": "Bengaluru, India",
     "period": "Dec 2017 – Apr 2018",
     "current": false,
-    "description": "Delivered end-to-end UI/UX and brand design engagements for startup and SMB clients across web and mobile products.",
+    "description": "Delivered UI/UX, web, and brand design for startup and SMB clients.",
     "achievements": [
-      "Delivered 15+ UI/UX and brand identity projects for startup and SMB clients across web and mobile.",
-      "Built high-fidelity interactive prototypes so clients could validate concepts before development, shortening build cycles.",
-      "Delivered projects on schedule and earned repeat clients through rapid iteration and structured design reviews."
+      "Delivered 15+ projects spanning responsive websites (including a matrimonial site), mobile UI, and brand identity.",
+      "Built interactive prototypes and ran user testing so clients could validate ideas before development.",
+      "Designed logos, flyers, and social-media graphics; targeted visuals lifted audience engagement by 5% in 3 months.",
+      "Retouched and improved product photography in Photoshop for consistent brand visuals."
     ],
     "skills": [
       "UI/UX Design",
       "Interactive Prototyping",
-      "Wireframing",
+      "Web Design",
       "Brand Design",
-      "Client Collaboration"
+      "Adobe Photoshop"
     ]
   },
   {
     "id": "exp-4",
-    "role": "Visual Designer",
+    "role": "Graphic & Visual Designer",
     "company": "Skanda Graphics",
-    "location": "India",
+    "location": "Bengaluru, India",
     "period": "Sep 2015 – Dec 2017",
     "current": false,
-    "description": "Executed branding and communication design for enterprise clients, from concept development through print-ready and digital production.",
+    "description": "Branding and communication design for enterprise clients, from concept to print-ready and digital files.",
     "achievements": [
-      "Designed branding and communication campaigns for enterprise clients across 50+ projects, from concept to print-ready and digital production.",
-      "Streamlined creative workflows with reusable templates and shared asset libraries, reducing project turnaround time.",
-      "Produced print and digital collateral to precise brand specifications, earning repeat enterprise engagements."
+      "Delivered branding and communication campaigns for enterprise clients across 50+ projects.",
+      "Built reusable templates and shared asset libraries that cut project turnaround by 10%.",
+      "Produced print and digital collateral to pixel-accurate brand specifications, earning repeat enterprise engagements.",
+      "Managed and mentored junior designers and kept branding consistent across client work."
     ],
     "skills": [
       "Visual Design",
       "Branding",
-      "Communication Design",
+      "Logo Design",
       "Print & Digital Production",
       "Adobe Creative Suite"
     ]
@@ -457,11 +483,25 @@ export const experiences: Experience[] = [
 
 export const education = [
   {
+    "id": "edu-3",
+    "qualification": "Data Analytics Course with Gen AI",
+    "institution": "Career 247",
+    "location": "Online",
+    "period": "Aug 2026 – Present"
+  },
+  {
     "id": "edu-1",
     "qualification": "Diploma in Graphics, Web & Animation",
     "institution": "MAAC India",
     "location": "Bengaluru, India",
     "period": "Aug 2014 – Aug 2015"
+  },
+  {
+    "id": "edu-2",
+    "qualification": "Bachelor of Engineering, Computer Science",
+    "institution": "Visvesvaraya Technological University",
+    "location": "Karnataka, India",
+    "period": "Jun 2009 – Jun 2013"
   }
 ];
 
@@ -477,6 +517,12 @@ export const certifications = [
     "name": "Introduction to Web Development with HTML5, CSS3, and JavaScript",
     "issuer": "edX",
     "year": "2025"
+  },
+  {
+    "id": "cert-4",
+    "name": "Build Responsive Real-World Websites with HTML and CSS",
+    "issuer": "Udemy",
+    "year": "2022"
   },
   {
     "id": "cert-3",
@@ -516,12 +562,17 @@ export const skillGroups: SkillGroup[] = [
   {
     name: "Video Editing",
     scope: "Editing footage, colour grading, and motion graphics.",
-    skills: [{ name: "DaVinci Resolve" }, { name: "Adobe After Effects" }, { name: "Adobe Premiere Pro" }],
+    skills: [{ name: "DaVinci Resolve" }, { name: "Adobe After Effects" }, { name: "Adobe Premiere Pro" }, { name: "Motion Graphics" }, { name: "Colour Grading" }],
   },
   {
     name: "Data Analytics",
     scope: "Cleaning, querying, analysing, and visualising data.",
-    skills: [{ name: "Microsoft Excel" }, { name: "Power BI" }, { name: "SQL" }, { name: "Python" }],
+    skills: [{ name: "Microsoft Excel" }, { name: "Power BI" }, { name: "DAX" }, { name: "Power Query" }, { name: "SQL" }, { name: "MySQL" }, { name: "PostgreSQL" }, { name: "Python" }],
+  },
+  {
+    name: "Graphic Design",
+    scope: "Brand identity, marketing and print collateral, iconography, and typography.",
+    skills: [{ name: "Adobe Photoshop" }, { name: "Adobe Illustrator" }, { name: "CorelDRAW" }, { name: "Logo Design" }],
   },
 ];
 
@@ -656,9 +707,9 @@ export const ui = {
     eyebrow: "Skills",
     heading: "Design, frontend, video, and ",
     headingEmphasis: "data tools",
-    intro: `${uiuxExperience} of UI/UX design, from user research to design systems, plus the tools I use for frontend, video, and data work.`,
+    intro: `${uiuxExperience} of UI/UX design, from user research to design systems, plus the tools I use for frontend, video, data, and graphic design work.`,
     otherHeading: "Other tools",
-    otherScope: "Video and data tools I use alongside design work.",
+    otherScope: "Video, data, and graphic design tools I use alongside design work.",
     // Phone widths only: the button that unfolds each skill's detail line.
     showDetails: "Show details",
     hideDetails: "Hide details",
@@ -741,7 +792,16 @@ export const ui = {
       {
         label: "Frontend & Tools",
         keywords:
-          "React, Next.js, TypeScript, HTML5, CSS3, Tailwind CSS, WCAG 2.1 AA Accessibility, Adobe Creative Suite (Photoshop, Illustrator, After Effects), Git",
+          "React, Next.js, TypeScript, HTML5, CSS3, Tailwind CSS, WordPress, WCAG 2.1 AA Accessibility, Git",
+      },
+      {
+        label: "Data Analytics",
+        keywords: "SQL (MySQL, PostgreSQL), Python, Power BI (DAX, Power Query), Microsoft Excel, Data Visualization, A/B Testing",
+      },
+      {
+        label: "Graphic Design & Video",
+        keywords:
+          "Brand Identity, Print Collateral, Adobe Photoshop, Illustrator, CorelDRAW, Premiere Pro, After Effects, DaVinci Resolve, Motion Graphics, Colour Grading",
       },
     ],
   },
@@ -767,7 +827,7 @@ export const ui = {
   },
   meta: {
     title: `${profile.title} — Awanish Verma`,
-    description: `UI/UX designer in Bengaluru, available worldwide. ${totalExperience} of professional experience, ${uiuxExperience} in UI/UX design: product case studies, design tokens, and interaction design.`,
+    description: `UI/UX designer and data analyst in Patna, India, open to remote work. ${totalExperience} of professional experience, ${uiuxExperience} in UI/UX design: product case studies, web development, and Power BI and SQL analysis.`,
     siteName: `Awanish Verma — ${profile.title}`,
     imageAlt: `Awanish Verma, ${profile.title}`,
     twitter: "@awanishverma",
