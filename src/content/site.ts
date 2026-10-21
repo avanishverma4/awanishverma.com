@@ -495,13 +495,6 @@ export const education = [
     "institution": "MAAC India",
     "location": "Bengaluru, India",
     "period": "Aug 2014 – Aug 2015"
-  },
-  {
-    "id": "edu-2",
-    "qualification": "Bachelor of Engineering, Computer Science",
-    "institution": "Visvesvaraya Technological University",
-    "location": "Karnataka, India",
-    "period": "Jun 2009 – Jun 2013"
   }
 ];
 
