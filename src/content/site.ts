@@ -360,8 +360,8 @@ export const projects: Project[] = [
 
 ];
 
-// Projects shown in the CV, in this order: four design case studies and the SQL analysis.
-export const cvProjectIds = ["project-4", "project-11", "project-1", "project-12", "project-9"];
+// Projects shown in the CV, in this order: three design case studies, the Power BI dashboard, and the SQL analysis.
+export const cvProjectIds = ["project-4", "project-5", "project-1", "project-12", "project-9"];
 
 export const experiences: Experience[] = [
   {
