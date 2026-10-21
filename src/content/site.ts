@@ -641,7 +641,7 @@ export const ui = {
       { value: uiuxExperience, label: "UI/UX design" },
     ],
     focusLabel: "Focus areas",
-    focus: ["User research", "Token pipelines", "Interaction architecture", "Design systems"],
+    focus: ["User research", "UI/UX design", "Web development", "Data analytics"],
     primaryCta: "View selected work",
     secondaryCta: "Open Behance profile",
     connect: "Connect",
@@ -737,16 +737,16 @@ export const ui = {
     locationLabel: "Location",
     services: [
       {
-        title: "Product design leadership",
-        body: "Owning a new product vision end to end — research, IA, interaction, and the shipped interface.",
+        title: "UI/UX design",
+        body: "User research, user flows, wireframes, prototypes, and design systems in Figma, from first concept to live product.",
       },
       {
-        title: "Design system architecture",
-        body: "Token pipelines, component libraries, and the governance that keeps them alive after launch.",
+        title: "Web design and development",
+        body: "Responsive, accessible sites built with React, Next.js, Tailwind CSS, or WordPress.",
       },
       {
-        title: "Design advisory and audits",
-        body: "Short engagements: UX audits, accessibility reviews, and direction for in-house design teams.",
+        title: "Data analytics and dashboards",
+        body: "SQL queries, Excel, and Power BI dashboards that show whether a design or product is working.",
       },
     ],
   },
